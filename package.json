@@ -1,0 +1,52 @@
+{
+  "name": "sirix-svelte-frontend",
+  "description": "SirixDB Console",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "sapper dev",
+    "build:sapper": "npm run build:tailwind && sapper build --legacy",
+    "export": "set NODE_ENV=production && sapper export __sapper__/export --entry / /databases",
+    "start": "node __sapper__/build",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "tauri": "tauri",
+    "build:tauri": "tauri build",
+    "test": "run-p --race dev cy:run",
+    "watch:tailwind": "postcss ./tailwind.css -o static/index.css -w",
+    "build:tailwind": "postcss ./tailwind.css -o static/index.css",
+    "build-prod:tailwind": "set NODE_ENV=production && postcss ./tailwind.css -o static/index.css"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.7.1",
+    "compression": "^1.7.1",
+    "polka": "next",
+    "sirix": "github:sirixdb/sirix-typescript-client",
+    "sirv": "^0.4.0",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@pyoner/svelte-ts-preprocess": "^1.2.1",
+    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-replace": "^2.2.0",
+    "@wessberg/rollup-plugin-ts": "^1.2.16",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^7.1.0",
+    "rollup": "^1.20.0",
+    "rollup-plugin-babel": "^4.0.2",
+    "rollup-plugin-svelte": "^5.0.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "sapper": "^0.27.0",
+    "svelte": "^3.18.2",
+    "tailwindcss": "^1.2.0",
+    "tauri": "^0.4.1"
+  }
+}
