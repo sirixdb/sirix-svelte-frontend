@@ -14,12 +14,23 @@ In order to use `docker-compose`:
 8. Remove the `oAuthFlowType` and `redirect.uri` fields from the above file, and modify the `keycloak` and `cors` fields as apropriate.
 9. Create a user: `Users` => `Add User` => Username admin. Under `Credentials` => New password => admin / admin. Set Temporary to off. Under `Role Mappings` add the 4 roles: `create`, `delete`, `modify`, `view`.
 10. Start the SirixDB HTTP-Server with the command `sudo docker-compose up -d server`.
-11. before developing, run `npm run build:tailwind`.
-12. Start the sapper server: `npm run dev`.
-13. In your browser call http://localhost:3000 and the frontend should appear.
+11. before developing, run `npm run build:tailwind`. This command should also be run after running the build or export NPM scripts.
 
-## Build with Tauri
+## Developing in the browser
 
+1. Start the sapper server: `npm run dev`.
+2. In your browser navigate to http://localhost:3000.
+
+## Develop with Tauri
+
+You need to follow the [tauri setup guide](https://github.com/tauri-apps/tauri/wiki) first. Note that the NPM tauri package is included in the dependencies of this project. 
+
+1. run `npm run dev`.
+2. run `npm run tauri dev`.
+
+#### To build with Tauri
+
+> NOTE: this does not yet work properly.
 1. run `npm run export`.
 2. run `tauri build`.
 
