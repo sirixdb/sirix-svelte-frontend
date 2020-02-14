@@ -21,10 +21,10 @@
     revision: number
   ) => {
     sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName).read(null, revision, 2, true)
-        .then((jsonRes: JSON) => {
-          jsonResource.set(jsonRes);
-          console.log(jsonRes)
+      db.resource(resourceName).readWithMetadata({revision, maxLevel: 2})
+        .then((nodes) => {
+          jsonResource.set(nodes);
+          console.log(nodes)
         })
     })
   };
