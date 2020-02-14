@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
-    "build:sapper": "npm run build:tailwind && sapper build --legacy",
+    "build:sapper": "npm run build-prod:tailwind && sapper build --legacy",
     "export": "set NODE_ENV=production && sapper export __sapper__/export --entry / /databases",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
