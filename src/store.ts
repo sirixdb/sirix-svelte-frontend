@@ -1,20 +1,40 @@
 import { writable, Writable } from "svelte/store";
-import { DatabaseInfo } from "sirix/src/info";
+import { DatabaseInfo, MetaNode } from "sirix/src/info";
 
-function JSONResource(init: object) {
+function JSONResource(init: MetaNode) {
   const { subscribe, set, update } = writable(init);
 
   return {
     subscribe,
     set,
-    inject: (path: Array<number | string>, key: number | string, insertNode: object) => {
+    inject: (path: Array<number | string>, insertKey: number | string, insertNode: MetaNode) => {
       update(
-        (obj: object) => {
-          const node = path.reduce((oldNode: object, key: number | string) => {
-            return oldNode[key]
-          }, obj)
-          node[key] = insertNode;
-          return obj
+        (metaNode: MetaNode) => {
+          // path is an array of strings and/or numbers,
+          // which make up the sequence of keys to reach the intended node.
+          // we can use reduce to iterate through the path, and filter
+          // the MetaNode object
+          const node = path.reduce((oldNode: MetaNode, key: number | string) => {
+            if (key === null) {
+              // return root if key is null
+              return oldNode;
+            } else {
+              // we are going to assume that if a key is specified,
+              // then we are dealing with an an object or array,
+              // both of which are encoded as arrays of objects
+              const nodeValue = oldNode.value as MetaNode[];
+              if (typeof key === "string") {
+                // we assume that if the key is a string,
+                // not a number then we are dealing with an object
+                return nodeValue.find(item => item.key === key);
+              } else {
+                // the key is a number and we are dealing with an array
+                return nodeValue[key];
+              }
+            }
+          }, metaNode)
+          node[insertKey] = insertNode;
+          return metaNode
         }
       )
     },
