@@ -18,13 +18,13 @@
       "title": "SirixDB Console"
     },
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+      "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline' https://localhost:9443"
     },
     "edge": {
       "active": true
     },
     "inliner": {
-      "active": false
+      "active": true
     }
   }
 }

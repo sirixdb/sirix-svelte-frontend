@@ -26,7 +26,7 @@ In order to use `docker-compose`:
 You need to follow the [tauri setup guide](https://github.com/tauri-apps/tauri/wiki) first. Note that the NPM tauri package is included in the dependencies of this project. 
 
 1. run `npm run dev`.
-2. run `npm run tauri dev`.
+2. in another terminal, run `npm run tauri dev`.
 
 #### To build with Tauri
 

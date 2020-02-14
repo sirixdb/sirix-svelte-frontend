@@ -1,8 +1,8 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "TODO",
-	"short_name": "TODO",
+	"name": "SirixDB Console",
+	"short_name": "SirixDB Console",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [
