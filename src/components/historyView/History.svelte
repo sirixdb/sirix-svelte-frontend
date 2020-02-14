@@ -3,13 +3,16 @@
 
   import { onDestroy } from "svelte";
   import { selected } from "../../store";
-  let dbName;
-  let dbType;
-  let resourceName;
+  let current = {
+    dbName: "",
+    dbType: "",
+    resourceName: ""
+  }
   const unsubscribe = selected.subscribe(sel => {
     let { dbName, dbType, resourceName } = sel;
-    if (dbName) {
+    if (dbName && (dbName !== current.dbName || resourceName !== current.resourceName)) {
       loadHistory(dbName, resourceName);
+      current = { dbName, dbType, resourceName }
     }
   });
   onDestroy(unsubscribe);

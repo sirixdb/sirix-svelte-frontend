@@ -8,7 +8,15 @@
   }
   export let commit: Commit;
 
-  let [date, time] = commit.revisionTimestamp.split("T");
+ let date: string, time: string;
+  $: [date, time] = commit.revisionTimestamp.split("T");
+  
+  import { selected } from "../../store";
+  const selectRevision = () => {
+    selected.update(info => {
+      return {...info, revision: commit.revision};
+    });
+  };
 
   let showMessage = false;
 </script>
@@ -25,7 +33,7 @@
     <div style="left: -1px" class="absolute rounded-full bg-gray-200 w-3 h-3" />
     <!-- end time-line -->
     <div style="top: -3px" class="ml-4">
-      <span class="text-gray-600">
+      <span on:click={selectRevision} class="text-gray-600 cursor-pointer">
         {date}
         <br />
         {time}

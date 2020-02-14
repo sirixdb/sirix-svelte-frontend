@@ -5,7 +5,7 @@
 
   import { selected } from "../../store";
   const selectResource = () => {
-    selected.set({ dbName, dbType, resourceName });
+    selected.set({ dbName, dbType, resourceName, revision: 0 });
   };
 
   import DeleteDialog from "./DeleteDialog.svelte";
