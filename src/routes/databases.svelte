@@ -48,19 +48,19 @@
 <div style="top: 64px" id="grid-container" class="bottom-0">
   <section
     id="dbs-view"
-    class="overflow-y-hidden overflow-y-scroll bottom-0 min-h-full">
+    class="overflow-y-scroll bottom-0 min-h-full">
     <Tree />
   </section>
 
   <section
     id="history-view"
-    class="overflow-y-hidden overflow-y-scroll bottom-0 min-h-full">
+    class="overflow-y-scroll bottom-0 min-h-full">
     <History />
   </section>
 
   <section
     id="resource-view"
-    class="overflow-y-hidden overflow-y-scroll bottom-0 min-h-full">
+    class="overflow-y-scroll bottom-0 min-h-full">
     <Controller />
   </section>
 </div>
