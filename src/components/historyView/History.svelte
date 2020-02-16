@@ -44,23 +44,37 @@
 
   import Commit from "./Commit.svelte";
   import Slider from "./Slider.svelte";
+
+  let width;
 </script>
+
+<style>
+  #fade-screen {
+    background-image: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 1)
+    );
+  }
+</style>
 
 <!-- NOTE we shouldn't need this #if once this tree is not constant -->
 {#if list.length !== 0}
-  <div class="mt-1">
-    <Slider bind:checked={reverse} />
-    &nbsp;
-    {#if reverse}
-      <span transition:blur={{ amount: 3 }}>Descending</span>
-    {:else}
-      <span transition:blur={{ amount: 3 }}>Ascending</span>
-    {/if}
+  <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
+    <div class="z-20">
+      <Slider bind:checked={reverse} />
+      &nbsp;
+      {#if reverse}
+        <span transition:blur={{ amount: 3 }}>Descending</span>
+      {:else}
+        <span transition:blur={{ amount: 3 }}>Ascending</span>
+      {/if}
+    </div>
   </div>
 
-  <div>
+  <div class="mt-4" bind:clientWidth={width}>
     <ul class="ml-0 my-0 max-h-screen list-none inline">
-      {#each list as commit (commit.revision)}
+      {#each list as commit}
         <Commit {commit} />
       {/each}
     </ul>
