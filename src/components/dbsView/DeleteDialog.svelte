@@ -29,8 +29,8 @@
               }
               return sel;
             });
-            refresh();
             hideForm();
+            refresh();
           })
           .catch(err => {
             console.log(err);
@@ -45,8 +45,8 @@
               }
               return sel;
             });
-            refresh();
             hideForm();
+            refresh();
           })
           .catch(err => {
             console.error(err);
