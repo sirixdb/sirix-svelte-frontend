@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import Login from "../components/login/Login.svelte";
   import { goto } from "@sapper/app";
   import { loggedIn } from "../store";
