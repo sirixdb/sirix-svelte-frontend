@@ -21,11 +21,15 @@
     revision: number
   ) => {
     sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName).readWithMetadata({revision, maxLevel: 2})
+      db.resource(resourceName).readWithMetadata({revision})
         .then((nodes) => {
           jsonResource.set(nodes);
-          console.log(nodes)
         })
     })
   };
+  import JsonNode from "./JsonNode.svelte";
 </script>
+
+{#if $jsonResource !== null}
+  <JsonNode node={$jsonResource} />
+{/if}

@@ -16,14 +16,14 @@
   }
 </script>
 
-<section class="inline-block float-left">
+<section class="inline-block float-left h-screen">
   <Tree />
 </section>
 
-<section class="inline-block float-left ml-4">
+<section class="inline-block float-left ml-4 h-screen">
   <History />
 </section>
 
-<section class="inline-block float-left ml-4">
+<section style="top: 64px" class="overflow-hidden overflow-y-scroll w-3/5 right-0 fixed bottom-0">
   <Controller />
 </section>

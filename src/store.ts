@@ -16,8 +16,10 @@ function JSONResource(init: MetaNode) {
           // the MetaNode object
           const node = path.reduce((oldNode: MetaNode, key: number | string) => {
             if (key === null) {
-              // return root if key is null
-              return oldNode;
+              // if key is null, then return the `value` node of the current node.
+              // this is used with OBJECT_ * _VALUE types,
+              // as they don't have a key or index within the value field
+              return oldNode.value;
             } else {
               // we are going to assume that if a key is specified,
               // then we are dealing with an an object or array,
