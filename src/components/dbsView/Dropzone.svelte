@@ -1,12 +1,14 @@
 <script lang="ts">
   export let dbType: string;
   export let file: string;
+  export let fileName: string;
   let fileType;
   $: fileType = dbType === "json" ? "application/json" : "application/xml";
 
   let fileInput: HTMLInputElement;
   const read = (f: File) => {
     const fr = new FileReader();
+    fileName = f.name;
     fr.onload = () => {
       file = fr.result as any;
     };

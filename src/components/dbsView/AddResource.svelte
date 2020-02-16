@@ -2,9 +2,13 @@
   export let showForm: boolean;
   export let dbName: string;
   export let dbType: string;
-  let resourceName;
+  let resourceName: string;
   let submitting: boolean = false;
   let file = "";
+  let fileName = "";
+
+  // use file name as default resourceName, if no name has been provided
+  $: resourceName = fileName !== "" && resourceName === undefined ? fileName : resourceName;
 
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
@@ -41,7 +45,7 @@
         name="name"
         class="text-lg p-2 rounded-sm" />
     </span>
-    <Dropzone {dbType} bind:file />
+    <Dropzone {dbType} bind:file bind:fileName />
   </div>
   <div>
     <button
