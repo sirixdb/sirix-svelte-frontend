@@ -8,7 +8,8 @@
   let fileName = "";
 
   // use file name as default resourceName, if no name has been provided
-  $: resourceName = fileName !== "" && resourceName === undefined ? fileName : resourceName;
+  $: resourceName =
+    fileName !== "" && resourceName === undefined ? fileName : resourceName;
 
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
@@ -18,12 +19,14 @@
   const formSubmit = () => {
     submitting = true;
     sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName).create(file).then(() => {
-        dbInfo.update(arr => {
-          return Object.assign(arr, sirix.sirixInfo.databaseInfo);
+      db.resource(resourceName)
+        .create(file)
+        .then(() => {
+          dbInfo.update(arr => {
+            return Object.assign(arr, sirix.sirixInfo.databaseInfo);
+          });
+          showForm = false;
         });
-        showForm = false;
-      });
     });
     submitting = false;
   };
@@ -49,9 +52,9 @@
   </div>
   <div>
     <button
-      class={submitting ? loading : resourceName === '' || file === '' ? disabled : enabled}
+      class={submitting ? loading : resourceName === '' || resourceName === undefined || file === '' ? disabled : enabled}
       type="button"
-      disabled={submitting || resourceName === '' || file === ''}
+      disabled={submitting || resourceName === '' || resourceName === undefined || file === ''}
       on:click={formSubmit}>
       Create
     </button>
