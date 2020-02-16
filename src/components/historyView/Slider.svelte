@@ -7,7 +7,7 @@
   class="relative inline-block w-10 h-6 bg-blue-500 rounded-full">
   <input bind:checked={checked} type="checkbox" id="slider" class="w-0 h-0 opacity-0" />
   <span
-    style="transition: .4s"
+    style="transition: .3s"
     id="switch"
     class="absolute cursor-pointer rounded-full inset-0 bg-teal-500 {checked ? 'bg-blue-400' : ''}">
     <span
