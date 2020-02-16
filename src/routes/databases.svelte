@@ -20,16 +20,19 @@
   #grid-container {
     display: grid;
     column-gap: 20px;
-    grid-template-columns: 4fr 3fr 10fr;
+    grid-auto-columns: 4fr 3fr 10fr;
+    grid-auto-rows: calc(100vh - 57px);
+    grid-template-areas: "dbs-view history-view resource-view"
   }
   #dbs-view {
-    grid-column: 0 1;
+    max-height: 100%;
+    grid-area: dbs-view;
   }
   #history-view {
-    grid-column: 1 2;
+    grid-area: history-view;
   }
   #resource-view {
-    grid-column: 2 3;
+    grid-area: resource-view;
   }
 
   section::-webkit-scrollbar {
