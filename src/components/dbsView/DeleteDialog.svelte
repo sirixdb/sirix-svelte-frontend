@@ -8,7 +8,7 @@
 
   import { sirix } from "../../sirix";
 
-  import { dbInfo } from "../../store";
+  import { dbInfo, selected } from "../../store";
 
   const refresh = () => {
     dbInfo.update(arr => {
@@ -22,8 +22,15 @@
         db.resource(resourceName)
           .delete(null)
           .then(() => {
-            hideForm();
+            selected.update(sel => {
+              if (sel.dbName === dbName && sel.resourceName === resourceName) {
+                sel.dbName = null;
+                sel.resourceName = null;
+              }
+              return sel;
+            });
             refresh();
+            hideForm();
           })
           .catch(err => {
             console.log(err);
@@ -31,8 +38,15 @@
       } else {
         db.delete()
           .then(() => {
-            hideForm();
+            selected.update(sel => {
+              if (sel.dbName === dbName) {
+                sel.dbName = null;
+                sel.resourceName = null;
+              }
+              return sel;
+            });
             refresh();
+            hideForm();
           })
           .catch(err => {
             console.error(err);

@@ -3,16 +3,10 @@
 
   import { onDestroy } from "svelte";
   import { selected, jsonResource } from "../../store";
-  let dbName: string;
-  let dbType: string;
-  let resourceName: string;
-  const unsubscribe = selected.subscribe(sel => {
-    let { dbName, dbType, resourceName, revision } = sel;
-    if (resourceName && revision) {
-      loadRevision(dbName, dbType, resourceName, revision);
-    }
-  });
-  onDestroy(unsubscribe);
+
+  const emptyRevision = () => {
+    jsonResource.set(null);
+  };
 
   const loadRevision = (
     dbName: string,
@@ -21,12 +15,27 @@
     revision: number
   ) => {
     sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName).readWithMetadata({revision})
-        .then((nodes) => {
+      db.resource(resourceName)
+        .readWithMetadata({ revision })
+        .then(nodes => {
           jsonResource.set(nodes);
-        })
-    })
+        });
+    });
   };
+
+  let dbName: string;
+  let dbType: string;
+  let resourceName: string;
+  const unsubscribe = selected.subscribe(sel => {
+    let { dbName, dbType, resourceName, revision } = sel;
+    if (resourceName && revision) {
+      loadRevision(dbName, dbType, resourceName, revision);
+    } else if (resourceName === null) {
+      emptyRevision();
+    }
+  });
+  onDestroy(unsubscribe);
+
   import JsonNode from "./JsonNode.svelte";
 </script>
 
