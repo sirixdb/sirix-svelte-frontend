@@ -50,6 +50,7 @@
   let nodeType: NodeType;
   let childNodes: MetaNode[];
   let childNode: MetaNode;
+  let path: Array<number | string | null>;
   let primitive: boolean;
   let key: number | string | null;
   let textColor: string;
@@ -66,13 +67,20 @@
     key =
       nodeType === NodeType.OBJECT_KEY
         ? node.key
-        : // if we are inside an object, but the current node is a value node,
+        : // if we are inside an object, but the current node is not an OBJECT_KEY,
         // then use null as the key for reaching the current node from the
         // parent OBJECT_KEY node
-        nodeType.startsWith("OBJECT_") && !nodeType.endsWith("KEY")
+        typeof parentPath[parentPath.length - 1] === "string"
         ? null
         : // we are inside an array, so the index is the key
           index;
+
+    // if this is the root node, the path should remain an empty array
+    if (key === undefined && parentPath.length === 0) {
+      path = parentPath;
+    } else {
+      path = parentPath.concat(key as string);
+    }
 
     textColor =
       nodeType === NodeType.STRING_VALUE ||
@@ -134,10 +142,10 @@
 {/if}
 
 {#if !primitive && expanded}
-  <div class="pl-4 hover:bg-gray-300" transition:expandAndFade>
+  <div transition:expandAndFade>
     {#each childNodes as n, index (n.metadata.nodeKey)}
-      <div>
-        <svelte:self node={n} {index} parentPath={parentPath.concat(key)} />
+      <div class="pl-4 hover:bg-gray-300">
+        <svelte:self node={n} {index} parentPath={path} />
       </div>
     {/each}
   </div>
