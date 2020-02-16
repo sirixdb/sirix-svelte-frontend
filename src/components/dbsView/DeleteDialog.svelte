@@ -18,7 +18,7 @@
 
   const del = () => {
     sirix.database(dbName).then(db => {
-      if (resourceName) {
+      if (resourceName !== null) {
         db.resource(resourceName)
           .delete(null)
           .then(() => {
