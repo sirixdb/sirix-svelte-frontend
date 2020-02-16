@@ -13,7 +13,7 @@
   import { cubicOut } from "svelte/easing";
 
   const opts = {
-    duration: 500,
+    duration: 300,
     easing: cubicOut
   };
   const rotate = tweened(0, opts);

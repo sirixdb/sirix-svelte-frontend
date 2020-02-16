@@ -2,7 +2,7 @@
 import { sineInOut } from "svelte/easing";
 
 // svelte's built-in fade funciton, extended
-export function expandAndFade(node, { delay = 0, duration = 400 }) {
+export function expandAndFade(node, { delay = 0, duration = 300 }) {
   const o = +getComputedStyle(node).opacity;
   return {
     delay,
