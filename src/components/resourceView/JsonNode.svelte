@@ -54,50 +54,48 @@
   let primitive: boolean;
   let key: number | string | null;
   let textColor: string;
-  $: {
-    nodeType = node !== undefined ? node.metadata.type : undefined;
-    primitive = nodeType !== NodeType.OBJECT && nodeType !== NodeType.ARRAY;
-    if (!primitive) {
-      childNodes = node.value as MetaNode[];
-    } else if (nodeType === NodeType.OBJECT_KEY) {
-      childNode = node.value as MetaNode;
-    }
-    // get the key for reaching the current node from the parent node
-    // if the current node is an OBJECT_KEY, then the key attribute is the key
-    key =
-      nodeType === NodeType.OBJECT_KEY
-        ? node.key
-        : // if we are inside an object, but the current node is not an OBJECT_KEY,
-        // then use null as the key for reaching the current node from the
-        // parent OBJECT_KEY node
-        typeof parentPath[parentPath.length - 1] === "string"
-        ? null
-        : // we are inside an array, so the index is the key
-          index;
-
-    // if this is the root node, the path should remain an empty array
-    if (key === undefined && parentPath.length === 0) {
-      path = parentPath;
-    } else {
-      path = parentPath.concat(key as string);
-    }
-
-    textColor =
-      nodeType === NodeType.STRING_VALUE ||
-      nodeType === NodeType.OBJECT_STRING_VALUE ||
-      nodeType === NodeType.OBJECT_KEY
-        ? "text-orange-900"
-        : nodeType === NodeType.NUMBER_VALUE ||
-          nodeType === NodeType.OBJECT_NUMBER_VALUE
-        ? "text-green-600"
-        : nodeType === NodeType.NULL_VALUE ||
-          nodeType === NodeType.OBJECT_NULL_VALUE ||
-          nodeType === NodeType.BOOLEAN_VALUE ||
-          nodeType === NodeType.OBJECT_BOOLEAN_VALUE
-        ? "text-indigo-600"
-        : // OBJECT or ARRAY
-          "text-purple-800";
+  nodeType = node !== undefined ? node.metadata.type : undefined;
+  primitive = nodeType !== NodeType.OBJECT && nodeType !== NodeType.ARRAY;
+  if (!primitive) {
+    childNodes = node.value as MetaNode[];
+  } else if (nodeType === NodeType.OBJECT_KEY) {
+    childNode = node.value as MetaNode;
   }
+  // get the key for reaching the current node from the parent node
+  // if the current node is an OBJECT_KEY, then the key attribute is the key
+  key =
+    nodeType === NodeType.OBJECT_KEY
+      ? node.key
+      : // if we are inside an object, but the current node is not an OBJECT_KEY,
+      // then use null as the key for reaching the current node from the
+      // parent OBJECT_KEY node
+      typeof parentPath[parentPath.length - 1] === "string"
+      ? null
+      : // we are inside an array, so the index is the key
+        index;
+
+  // if this is the root node, the path should remain an empty array
+  if (key === undefined && parentPath.length === 0) {
+    path = parentPath;
+  } else {
+    path = parentPath.concat(key as string);
+  }
+
+  textColor =
+    nodeType === NodeType.STRING_VALUE ||
+    nodeType === NodeType.OBJECT_STRING_VALUE ||
+    nodeType === NodeType.OBJECT_KEY
+      ? "text-orange-900"
+      : nodeType === NodeType.NUMBER_VALUE ||
+        nodeType === NodeType.OBJECT_NUMBER_VALUE
+      ? "text-green-600"
+      : nodeType === NodeType.NULL_VALUE ||
+        nodeType === NodeType.OBJECT_NULL_VALUE ||
+        nodeType === NodeType.BOOLEAN_VALUE ||
+        nodeType === NodeType.OBJECT_BOOLEAN_VALUE
+      ? "text-indigo-600"
+      : // OBJECT or ARRAY
+        "text-purple-800";
 
   // transformations
   import { expandAndFade } from "../../utils/transition";
