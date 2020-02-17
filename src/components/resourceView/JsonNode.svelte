@@ -113,11 +113,11 @@
   const move = tweened(0, opts);
   $: {
     if (expanded) {
-      rotate.set(90, opts);
-      move.set(4, opts);
+      rotate.set(90, {});
+      move.set(4, {});
     } else {
-      rotate.set(0, opts);
-      move.set(0, opts);
+      rotate.set(0, {});
+      move.set(0, {});
     }
   }
 </script>
