@@ -51,7 +51,7 @@
   let primitive: boolean;
   let key: number | string | null;
   let textColor: string;
-  
+
   nodeType = node !== undefined ? node.metadata.type : undefined;
   primitive = nodeType !== NodeType.OBJECT && nodeType !== NodeType.ARRAY;
   const getChildren = () => {
@@ -82,29 +82,31 @@
     path = parentPath.concat(key as string);
   }
 
-  if (dbName !== undefined) {
-    if (
-      (nodeType === NodeType.OBJECT_KEY &&
-        Object.keys(childNode).length === 0) ||
-      (!primitive &&
-        node.metadata.childCount !== Object.keys(node.value).length)
-    ) {
-      sirix.database(dbName, dbType).then(db => {
-        db.resource(resourceName)
-          .readWithMetadata({
-            nodeId: node.metadata.nodeKey,
-            revision,
-            maxLevel: 3
-          })
-          .then(newNode => {
-            // Object.assign(), instead reassign,
-            // so that the new data is persisted beyond
-            // the lifetime of this component 
-            Object.assign(node, newNode);
-            node = node;
-            getChildren();
-          });
-      });
+  $: {
+    if (dbName !== undefined && expanded) {
+      if (
+        (nodeType === NodeType.OBJECT_KEY &&
+          Object.keys(childNode).length === 0) ||
+        (!primitive &&
+          node.metadata.childCount !== Object.keys(node.value).length)
+      ) {
+        sirix.database(dbName, dbType).then(db => {
+          db.resource(resourceName)
+            .readWithMetadata({
+              nodeId: node.metadata.nodeKey,
+              revision,
+              maxLevel: 3
+            })
+            .then(newNode => {
+              // Object.assign(), instead reassign,
+              // so that the new data is persisted beyond
+              // the lifetime of this component
+              Object.assign(node, newNode);
+              node = node;
+              getChildren();
+            });
+        });
+      }
     }
   }
 
