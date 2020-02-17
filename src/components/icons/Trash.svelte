@@ -11,8 +11,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   preserveAspectRatio="xMidYMid meet"
   viewBox="145 180 355 375"
-  width={size}
-  height={size}>
+  style="height: {size}px; width: {size}px">
   <defs>
     <path d="M320 335L320 480" id="e5GIJXrT6" />
     <path d="M250 480L250 335" id="aAqejRBFk" />
