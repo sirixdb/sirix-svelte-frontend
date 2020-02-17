@@ -1,11 +1,14 @@
-<script>
+<script lang="ts">
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
 
   export let current;
+  export let list;
+
+  let dbName, dbType, resourceName;
 
   $: {
-    let { dbName, dbType, resourceName } = current;
+    ({ dbName, dbType, resourceName } = current);
   }
 
   const refresh = () => {
