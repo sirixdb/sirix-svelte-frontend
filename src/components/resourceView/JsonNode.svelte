@@ -99,18 +99,53 @@
           "text-purple-800";
   }
 
+  // transformations
   import { expandAndFade } from "../../utils/transition";
+
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
+
+  const opts = {
+    duration: 300,
+    easing: cubicOut
+  };
+  const rotate = tweened(0, opts);
+  const move = tweened(0, opts);
+  $: {
+    if (expanded) {
+      rotate.set(90, opts);
+      move.set(4, opts);
+    } else {
+      rotate.set(0, opts);
+      move.set(0, opts);
+    }
+  }
 </script>
 
 {#if key !== null && key !== undefined}
   <!-- we are inside an array, or this is an OBJECT_KEY node -->
-  <span on:click|stopPropagation={toggleExpansion}>{key}:</span>
+  <span on:click|stopPropagation={toggleExpansion}>
+    {#if (nodeType === NodeType.OBJECT_KEY &&
+         childNode &&
+         (childNode.metadata.type === NodeType.OBJECT ||
+         childNode.metadata.type === NodeType.ARRAY)) ||
+         nodeType === NodeType.OBJECT ||
+         nodeType === NodeType.ARRAY}
+      <span
+        style="transform: rotate({$rotate}deg) translateX({$move}px);"
+        class="inline-block -ml-2">
+        &#x1f892;
+      </span>
+    {/if}
+    {key}:
+  </span>
   {#if childNode}
     <!-- this is an OBJECT_KEY node -->
-    <span
-      class="hover:bg-gray-300"
-      transition:expandAndFade>
-      <svelte:self node={childNode} bind:expanded parentPath={parentPath.concat(key)} />
+    <span class="hover:bg-gray-300" transition:expandAndFade>
+      <svelte:self
+        node={childNode}
+        bind:expanded
+        parentPath={parentPath.concat(key)} />
     </span>
   {/if}
 {/if}
