@@ -155,7 +155,7 @@
     {#if (nodeType === NodeType.OBJECT_KEY && childNode && (childNode.metadata.type === NodeType.OBJECT || childNode.metadata.type === NodeType.ARRAY)) || nodeType === NodeType.OBJECT || nodeType === NodeType.ARRAY}
       <span
         style="transform: rotate({$rotate}deg) translateX({$move}px);"
-        class="inline-block px-2 cursor-pointer">
+        class="inline-block -ml-2 px-2 cursor-pointer">
         &#x1f892;
       </span>
     {/if}
