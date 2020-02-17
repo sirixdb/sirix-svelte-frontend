@@ -25,10 +25,11 @@
           dbInfo.update(arr => {
             return Object.assign(arr, sirix.sirixInfo.databaseInfo);
           });
+          submitting = false;
           showForm = false;
         });
     });
-    submitting = false;
+    
   };
   // class style values
   const base = "bg-blue-500 text-white font-bold py-2 px-4 rounded";

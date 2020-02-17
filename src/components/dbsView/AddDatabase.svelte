@@ -6,12 +6,15 @@
 
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
+  $: console.log(name)
 
   const formSubmit = () => {
+    submitting = true;
     sirix.database(name, dbType).then(db => {
       dbInfo.update(arr => {
         return Object.assign(arr, sirix.sirixInfo.databaseInfo);
       });
+      submitting = false;
       showForm = false;
     });
   };
