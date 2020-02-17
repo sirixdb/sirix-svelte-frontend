@@ -40,7 +40,8 @@
       if (resourceName !== null && revision) {
         loadRevision(dbName, dbType, resourceName, revision);
       }
-    } else if (resourceName === null || !sel.revision) {
+    }
+    if (resourceName === null || !sel.revision) {
       emptyRevision();
     }
   });
