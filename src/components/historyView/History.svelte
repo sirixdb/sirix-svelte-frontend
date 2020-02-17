@@ -67,9 +67,9 @@
       <Slider bind:checked={reverse} />
       &nbsp;
       {#if reverse}
-        <span transition:blur={{ amount: 3 }}>Descending</span>
+        <span class="fixed" transition:blur={{ amount: 3 }}>Descending</span>
       {:else}
-        <span transition:blur={{ amount: 3 }}>Ascending</span>
+        <span class="fixed" transition:blur={{ amount: 3 }}>Ascending</span>
       {/if}
     </div>
   </div>
