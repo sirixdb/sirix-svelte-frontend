@@ -25,7 +25,7 @@
 
   import { sirix } from "../../sirix";
 
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { jsonResource } from "../../store";
 
   // the current node
@@ -34,6 +34,11 @@
   export let index: number = undefined;
   // path through the json file to get to the parent node
   export let parentPath: string[] = [];
+  // information for updating the tree
+  export let dbName: string;
+  export let dbType: string;
+  export let resourceName: string;
+  export let revision: number;
   // whether to expand and show
   export let expanded = false;
   const toggleExpansion = () => {
@@ -81,6 +86,25 @@
     path = parentPath.concat(key as string);
   }
 
+  $: {
+    if (dbName !== undefined) {
+      if (node.metadata.childCount !== Object.keys(node.value).length) {
+        sirix.database(dbName, dbType).then(db => {
+          db.resource(resourceName)
+            .readWithMetadata({
+              nodeId: node.metadata.nodeKey,
+              revision,
+              maxLevel: 3
+            })
+            .then(nodes => {
+              console.log(nodes);
+//            jsonResource.inject(path, 0, nodes);
+            });
+        });
+      }
+    }
+  }
+
   textColor =
     nodeType === NodeType.STRING_VALUE ||
     nodeType === NodeType.OBJECT_STRING_VALUE ||
@@ -123,12 +147,7 @@
 {#if key !== null && key !== undefined}
   <!-- we are inside an array, or this is an OBJECT_KEY node -->
   <span on:click|stopPropagation={toggleExpansion}>
-    {#if (nodeType === NodeType.OBJECT_KEY &&
-         childNode &&
-         (childNode.metadata.type === NodeType.OBJECT ||
-         childNode.metadata.type === NodeType.ARRAY)) ||
-         nodeType === NodeType.OBJECT ||
-         nodeType === NodeType.ARRAY}
+    {#if (nodeType === NodeType.OBJECT_KEY && childNode && (childNode.metadata.type === NodeType.OBJECT || childNode.metadata.type === NodeType.ARRAY)) || nodeType === NodeType.OBJECT || nodeType === NodeType.ARRAY}
       <span
         style="transform: rotate({$rotate}deg) translateX({$move}px);"
         class="inline-block -ml-2">
@@ -143,6 +162,10 @@
       <svelte:self
         node={childNode}
         bind:expanded
+        {dbName}
+        {dbType}
+        {resourceName}
+        {revision}
         parentPath={parentPath.concat(key)} />
     </span>
   {/if}
@@ -178,7 +201,14 @@
   <div transition:expandAndFade>
     {#each childNodes as n, index (n.metadata.nodeKey)}
       <div class="pl-4 hover:bg-gray-300">
-        <svelte:self node={n} {index} parentPath={path} />
+        <svelte:self
+          node={n}
+          {index}
+          parentPath={path}
+          {dbName}
+          {dbType}
+          {resourceName}
+          {revision} />
       </div>
     {/each}
   </div>

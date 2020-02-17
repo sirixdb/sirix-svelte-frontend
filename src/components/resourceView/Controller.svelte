@@ -16,8 +16,9 @@
   ) => {
     sirix.database(dbName, dbType).then(db => {
       db.resource(resourceName)
-        .readWithMetadata({ revision })
+        .readWithMetadata({ revision, maxLevel: 3 })
         .then(nodes => {
+          console.log(nodes);
           jsonResource.set(nodes);
         });
     });
@@ -26,8 +27,9 @@
   let dbName: string;
   let dbType: string;
   let resourceName: string;
+  let revision: number;
   const unsubscribe = selected.subscribe(sel => {
-    let { dbName, dbType, resourceName, revision } = sel;
+    ({ dbName, dbType, resourceName, revision } = sel);
     if (resourceName && revision) {
       loadRevision(dbName, dbType, resourceName, revision);
     } else if (resourceName === null) {
@@ -40,5 +42,5 @@
 </script>
 
 {#if $jsonResource !== null}
-  <JsonNode node={$jsonResource} />
+  <JsonNode node={$jsonResource} {dbName} {dbType} {resourceName} {revision} />
 {/if}
