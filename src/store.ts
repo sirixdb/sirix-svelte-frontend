@@ -1,6 +1,8 @@
 import { writable, Writable } from "svelte/store";
 import { DatabaseInfo, MetaNode } from "sirix/src/info";
 
+// the JSONResource function and jsonResource store may be removed,
+// as the current implementation does not call for a store
 function JSONResource(init: MetaNode) {
   const { subscribe, set, update } = writable(init);
 

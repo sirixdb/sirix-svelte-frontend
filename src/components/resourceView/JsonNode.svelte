@@ -26,7 +26,6 @@
   import { sirix } from "../../sirix";
 
   import { onDestroy, onMount } from "svelte";
-  import { jsonResource } from "../../store";
 
   // the current node
   export let node: MetaNode = undefined;
@@ -45,13 +44,6 @@
     expanded = !expanded;
   };
 
-  if (node === undefined) {
-    const unsubscribe = jsonResource.subscribe(metaNode => {
-      node = metaNode;
-    });
-    onDestroy(unsubscribe);
-  }
-
   let nodeType: NodeType;
   let childNodes: MetaNode[];
   let childNode: MetaNode;
@@ -61,11 +53,14 @@
   let textColor: string;
   nodeType = node !== undefined ? node.metadata.type : undefined;
   primitive = nodeType !== NodeType.OBJECT && nodeType !== NodeType.ARRAY;
-  if (!primitive) {
-    childNodes = node.value as MetaNode[];
-  } else if (nodeType === NodeType.OBJECT_KEY) {
-    childNode = node.value as MetaNode;
-  }
+  const getChildren = () => {
+    if (!primitive) {
+      childNodes = node.value as MetaNode[];
+    } else if (nodeType === NodeType.OBJECT_KEY) {
+      childNode = node.value as MetaNode;
+    }
+  };
+  getChildren();
   // get the key for reaching the current node from the parent node
   // if the current node is an OBJECT_KEY, then the key attribute is the key
   key =
@@ -81,27 +76,30 @@
 
   // if this is the root node, the path should remain an empty array
   if (key === undefined && parentPath.length === 0) {
-    path = parentPath;
+    path = parentPath.concat(null);
   } else {
     path = parentPath.concat(key as string);
   }
 
-  $: {
-    if (dbName !== undefined) {
-      if (node.metadata.childCount !== Object.keys(node.value).length) {
-        sirix.database(dbName, dbType).then(db => {
-          db.resource(resourceName)
-            .readWithMetadata({
-              nodeId: node.metadata.nodeKey,
-              revision,
-              maxLevel: 3
-            })
-            .then(nodes => {
-              console.log(nodes);
-//            jsonResource.inject(path, 0, nodes);
-            });
-        });
-      }
+  if (dbName !== undefined) {
+    if (
+      (nodeType === NodeType.OBJECT_KEY &&
+        Object.keys(childNode).length === 0) ||
+      (!primitive &&
+        node.metadata.childCount !== Object.keys(node.value).length)
+    ) {
+      sirix.database(dbName, dbType).then(db => {
+        db.resource(resourceName)
+          .readWithMetadata({
+            nodeId: node.metadata.nodeKey,
+            revision,
+            maxLevel: 3
+          })
+          .then(newNode => {
+            node = newNode;
+            getChildren();
+          });
+      });
     }
   }
 
