@@ -14,7 +14,7 @@
 </style>
 
 <!-- The Modal -->
-<div class="fixed left-0 top-0 w-full h-full z-10 overflow-auto bg-gray-900">
+<div class="fixed left-0 top-0 w-full h-full z-10 overflow-auto bg-gray-900 z-30">
 
   <!-- Modal content -->
   <div
