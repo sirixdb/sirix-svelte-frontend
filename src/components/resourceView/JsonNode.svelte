@@ -28,7 +28,7 @@
   import { onDestroy, onMount } from "svelte";
 
   // the current node
-  export let node: MetaNode = undefined;
+  export let node: MetaNode = null;
   // index, assuming we are inside an array
   export let index: number = undefined;
   // path through the json file to get to the parent node
@@ -51,6 +51,7 @@
   let primitive: boolean;
   let key: number | string | null;
   let textColor: string;
+  
   nodeType = node !== undefined ? node.metadata.type : undefined;
   primitive = nodeType !== NodeType.OBJECT && nodeType !== NodeType.ARRAY;
   const getChildren = () => {
@@ -96,7 +97,11 @@
             maxLevel: 3
           })
           .then(newNode => {
-            node = newNode;
+            // Object.assign(), instead reassign,
+            // so that the new data is persisted beyond
+            // the lifetime of this component 
+            Object.assign(node, newNode);
+            node = node;
             getChildren();
           });
       });
@@ -197,7 +202,7 @@
 
 {#if !primitive && expanded}
   <div transition:expandAndFade>
-    {#each childNodes as n, index (n.metadata.nodeKey)}
+    {#each childNodes as n, index}
       <div class="pl-4 hover:bg-gray-300">
         <svelte:self
           node={n}

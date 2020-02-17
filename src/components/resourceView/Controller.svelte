@@ -2,10 +2,12 @@
   import { sirix } from "../../sirix";
 
   import { onDestroy } from "svelte";
-  import { selected, jsonResource } from "../../store";
+  import { selected } from "../../store";
+
+  let jsonResource = null;
 
   const emptyRevision = () => {
-    jsonResource.set(null);
+    jsonResource = null;
   };
 
   const loadRevision = (
@@ -18,8 +20,7 @@
       db.resource(resourceName)
         .readWithMetadata({ revision, maxLevel: 3 })
         .then(nodes => {
-          console.log(nodes);
-          jsonResource.set(nodes);
+          jsonResource = nodes;
         });
     });
   };
@@ -29,18 +30,24 @@
   let resourceName: string;
   let revision: number;
   const unsubscribe = selected.subscribe(sel => {
-    ({ dbName, dbType, resourceName, revision } = sel);
-    if (resourceName && revision) {
-      loadRevision(dbName, dbType, resourceName, revision);
-    } else if (resourceName === null) {
+    if (
+      (dbName !== sel.dbName ||
+      resourceName !== sel.resourceName ||
+      revision !== sel.revision) &&
+      sel.revision
+    ) {
+      ({ dbName, dbType, resourceName, revision } = sel);
+      if (resourceName !== null && revision) {
+        loadRevision(dbName, dbType, resourceName, revision);
+      }
+    } else if (resourceName === null || !sel.revision) {
       emptyRevision();
     }
   });
-  onDestroy(unsubscribe);
 
   import JsonNode from "./JsonNode.svelte";
 </script>
 
-{#if $jsonResource !== null}
-  <JsonNode node={$jsonResource} {dbName} {dbType} {resourceName} {revision} />
+{#if jsonResource !== null}
+  <JsonNode node={jsonResource} {dbName} {dbType} {resourceName} {revision} />
 {/if}
