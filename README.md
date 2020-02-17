@@ -33,6 +33,3 @@ You need to follow the [tauri setup guide](https://github.com/tauri-apps/tauri/w
 > NOTE: this does not yet work properly.
 1. run `npm run export`.
 2. run `tauri build`.
-
-
-Because the project uses a sapper runtime dependency (that does not exist until *after* compilation), any imports from sapper will trigger a typescript error. However, the project will still compile despite sapper import errors, and typescript will not complain on reloads, only on sapper startup.
