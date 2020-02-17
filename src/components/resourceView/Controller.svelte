@@ -18,7 +18,7 @@
   ) => {
     sirix.database(dbName, dbType).then(db => {
       db.resource(resourceName)
-        .readWithMetadata({ revision, maxLevel: 3 })
+        .readWithMetadata({ revision, maxLevel: 4 })
         .then(nodes => {
           jsonResource = nodes;
         });
