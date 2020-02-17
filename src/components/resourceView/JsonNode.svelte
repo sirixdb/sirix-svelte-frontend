@@ -104,13 +104,13 @@
 
 {#if key !== null && key !== undefined}
   <!-- we are inside an array, or this is an OBJECT_KEY node -->
-  <span>{key}:</span>
+  <span on:click|stopPropagation={toggleExpansion}>{key}:</span>
   {#if childNode}
+    <!-- this is an OBJECT_KEY node -->
     <span
       class="hover:bg-gray-300"
-      on:click|stopPropagation={toggleExpansion}
       transition:expandAndFade>
-      <svelte:self node={childNode} parentPath={parentPath.concat(key)} />
+      <svelte:self node={childNode} bind:expanded parentPath={parentPath.concat(key)} />
     </span>
   {/if}
 {/if}
