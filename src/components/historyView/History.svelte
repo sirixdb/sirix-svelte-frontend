@@ -44,6 +44,7 @@
 
   import Commit from "./Commit.svelte";
   import Slider from "./Slider.svelte";
+  import Refresh from "./Refresh.svelte";
 
   let width;
 </script>
@@ -62,6 +63,7 @@
 {#if list.length !== 0}
   <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
     <div class="z-20">
+      <Refresh {list} {current} />
       <Slider bind:checked={reverse} />
       &nbsp;
       {#if reverse}
@@ -72,7 +74,7 @@
     </div>
   </div>
 
-  <div class="mt-4" bind:clientWidth={width}>
+  <div class="mt-6" bind:clientWidth={width}>
     <ul class="ml-0 my-0 max-h-screen list-none inline">
       {#each list as commit}
         <Commit {commit} />
