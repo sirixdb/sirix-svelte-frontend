@@ -14,24 +14,25 @@ function JSONResource(init: MetaNode) {
           // which make up the sequence of keys to reach the intended node.
           // we can use reduce to iterate through the path, and filter
           // the MetaNode object
-          let node = path.reduce((oldNode: MetaNode, key: number | string) => {
+          let node = path.reduce((oldNode: MetaNode | MetaNode[], key: number | string) => {
             if (key === null) {
               // if key is null, then return the `value` node of the current node.
               // this is used with OBJECT_ * _VALUE types,
               // as they don't have a key or index within the value field
-              return oldNode.value;
+              const node = oldNode as MetaNode;
+              return node.value;
             } else {
               // we are going to assume that if a key is specified,
               // then we are dealing with an an object or array,
               // both of which are encoded as arrays of objects
-              const nodeValue = oldNode.value as MetaNode[];
+              const node = oldNode as MetaNode[];
               if (typeof key === "string") {
                 // we assume that if the key is a string,
                 // not a number then we are dealing with an object
-                return nodeValue.find(item => item.key === key);
+                return node.find(item => item.key === key).value;
               } else {
                 // the key is a number and we are dealing with an array
-                return nodeValue[key];
+                return node[key].value;
               }
             }
           }, metaNode)
@@ -40,6 +41,7 @@ function JSONResource(init: MetaNode) {
           } else {
             node[insertKey] = insertNode;
           }
+          console.log(metaNode)
           return metaNode
         }
       )
