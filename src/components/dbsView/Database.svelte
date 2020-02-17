@@ -18,7 +18,7 @@
   };
   const rotate = tweened(0, opts);
   const move = tweened(0, opts);
-  $: (() => {
+  $: {
     if (expanded) {
       rotate.set(90, {});
       move.set(4, {});
@@ -26,7 +26,7 @@
       rotate.set(0, {});
       move.set(0, {});
     }
-  })();
+  };
 
   import Resources from "./Resources.svelte";
   import Trash from "../icons/Trash.svelte";
