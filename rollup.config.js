@@ -6,10 +6,9 @@ import svelte from "rollup-plugin-svelte";
 import babel from "rollup-plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@wessberg/rollup-plugin-ts";
+import sveltePreprocess from 'svelte-preprocess';
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
-
-const svelteOptions = require("./svelte.config");
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -32,7 +31,11 @@ export default {
         "process.env.NODE_ENV": JSON.stringify(mode)
       }),
       svelte({
-        ...svelteOptions,
+        preprocess: sveltePreprocess({
+          typescript: {
+            transpileOnly: dev ? true : false,
+          }
+        }),
         dev,
         hydratable: true,
         emitCss: true
@@ -40,37 +43,37 @@ export default {
       resolve({
         browser: true
       }),
-      commonjs(),
       typescript(),
+      commonjs(),
 
       legacy &&
-        babel({
-          extensions: [".js", ".mjs", ".html", ".svelte"],
-          runtimeHelpers: true,
-          exclude: ["node_modules/@babel/**"],
-          presets: [
-            [
-              "@babel/preset-env",
-              {
-                targets: "> 0.25%, not dead"
-              }
-            ]
-          ],
-          plugins: [
-            "@babel/plugin-syntax-dynamic-import",
-            [
-              "@babel/plugin-transform-runtime",
-              {
-                useESModules: true
-              }
-            ]
+      babel({
+        extensions: [".js", ".mjs", ".html", ".svelte"],
+        runtimeHelpers: true,
+        exclude: ["node_modules/@babel/**"],
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              targets: "> 0.25%, not dead"
+            }
           ]
-        }),
+        ],
+        plugins: [
+          "@babel/plugin-syntax-dynamic-import",
+          [
+            "@babel/plugin-transform-runtime",
+            {
+              useESModules: true
+            }
+          ]
+        ]
+      }),
 
       !dev &&
-        terser({
-          module: true
-        })
+      terser({
+        module: true
+      })
     ],
 
     onwarn
@@ -85,18 +88,24 @@ export default {
         "process.env.NODE_ENV": JSON.stringify(mode)
       }),
       svelte({
-        ...svelteOptions,
+        preprocess: [
+          sveltePreprocess({
+            typescript: {
+              transpileOnly: dev ? true : false,
+            }
+          })
+        ],
         generate: "ssr",
         dev
       }),
       resolve(),
-      commonjs(),
       typescript(),
+      commonjs(),
       json()
     ],
     external: Object.keys(pkg.dependencies).concat(
       require("module").builtinModules ||
-        Object.keys(process.binding("natives"))
+      Object.keys(process.binding("natives"))
     ),
 
     onwarn
