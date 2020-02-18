@@ -29,12 +29,14 @@
   const unsubscribe = selected.subscribe(sel => {
     let { dbName, dbType, resourceName } = sel;
     if (
-      dbName &&
+      dbName && resourceName &&
       (dbName !== current.dbName || resourceName !== current.resourceName)
     ) {
       loadHistory(dbName, resourceName);
       current = { dbName, dbType, resourceName };
-    } else if (dbName === null) {
+    }
+    if (dbName === null || resourceName === null) {
+      current.resourceName = null; 
       history = [];
     }
   });

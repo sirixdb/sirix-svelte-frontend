@@ -20,7 +20,7 @@
 <div
   class="cursor-pointer text-gray-100 opacity-100 hover:bg-gray-700 p-2 m-1 mr-2
   ml-8 overflow-hidden rounded-full"
-  on:click={selectResource}>
+  on:click|stopPropagation={selectResource}>
   <span class="inline-block" bind:clientHeight={height}>{resourceName}</span>
   <span
     on:click|stopPropagation={() => (showDeleteDialog = true)}

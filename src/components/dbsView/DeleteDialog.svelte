@@ -24,7 +24,6 @@
           .then(() => {
             selected.update(sel => {
               if (sel.dbName === dbName && sel.resourceName === resourceName) {
-                sel.dbName = null;
                 sel.resourceName = null;
               }
               return sel;
