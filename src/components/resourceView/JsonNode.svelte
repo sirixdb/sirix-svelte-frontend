@@ -43,6 +43,8 @@
   const toggleExpansion = () => {
     expanded = !expanded;
   };
+  // needed for preloading
+  export let hover: boolean = false;
 
   let nodeType: NodeType;
   let childNodes: MetaNode[];
@@ -78,12 +80,13 @@
   // if this is the root node, the path should remain an empty array
   if (key === undefined && parentPath.length === 0) {
     path = parentPath.concat(null);
+    expanded = true;
   } else {
     path = parentPath.concat(key as string);
   }
 
   $: {
-    if (dbName !== undefined && expanded) {
+    if (dbName !== undefined && hover) {
       if (
         (nodeType === NodeType.OBJECT_KEY &&
           Object.keys(childNode).length === 0) ||
@@ -151,7 +154,10 @@
 
 {#if key !== null && key !== undefined}
   <!-- we are inside an array, or this is an OBJECT_KEY node -->
-  <span on:click|stopPropagation={toggleExpansion}>
+  <span
+    on:mouseover={() => (hover = true)}
+    on:mouseout={() => (hover = false)}
+    on:click|stopPropagation={toggleExpansion}>
     {#if (nodeType === NodeType.OBJECT_KEY && childNode && (childNode.metadata.type === NodeType.OBJECT || childNode.metadata.type === NodeType.ARRAY)) || nodeType === NodeType.OBJECT || nodeType === NodeType.ARRAY}
       <span
         style="transform: rotate({$rotate}deg) translateX({$move}px);"
@@ -163,9 +169,10 @@
   </span>
   {#if childNode}
     <!-- this is an OBJECT_KEY node -->
-    <span class="hover:bg-gray-300" transition:expandAndFade>
+    <span transition:expandAndFade>
       <svelte:self
         node={childNode}
+        bind:hover
         bind:expanded
         {dbName}
         {dbType}
@@ -192,11 +199,17 @@
 
 {#if !primitive}
   {#if nodeType === NodeType.ARRAY}
-    <span on:click|stopPropagation={toggleExpansion}>
+    <span
+      on:mouseover={() => (hover = true)}
+      on:mouseout={() => (hover = false)}
+      on:click|stopPropagation={toggleExpansion}>
       [{node.metadata.childCount}]
     </span>
   {:else}
-    <span on:click|stopPropagation={toggleExpansion}>
+    <span
+      on:mouseover={() => (hover = true)}
+      on:mouseout={() => (hover = false)}
+      on:click|stopPropagation={toggleExpansion}>
       {'{' + node.metadata.childCount + '}'}
     </span>
   {/if}
@@ -205,7 +218,10 @@
 {#if !primitive && expanded}
   <div transition:expandAndFade>
     {#each childNodes as n, index}
-      <div class="pl-4 hover:bg-gray-300">
+      <div
+        on:mouseover|stopPropagation={() => (hover = true)}
+        on:mouseout|stopPropagation={() => (hover = false)}
+        class="pl-4 {hover ? 'bg-gray-300' : ''}">
         <svelte:self
           node={n}
           {index}
