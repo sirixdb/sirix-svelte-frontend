@@ -57,7 +57,7 @@
     bind:clientHeight={height}
     style="width: {height}px;"
     class="float-right cursor-pointer rounded-full bg-blue-300 hover:bg-blue-200
-    text-center ml-2 m-auto text-center text-blue-900 select-none">
+    text-center ml-2 m-auto text-blue-900 select-none">
     &plus;
   </span>
 </div>

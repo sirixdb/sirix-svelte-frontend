@@ -65,7 +65,7 @@
 {#if list.length !== 0}
   <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
     <div class="z-20">
-      <Refresh {list} {current} />
+      <Refresh bind:list={history} {current} />
       <Slider bind:checked={reverse} />
       &nbsp;
       {#if reverse}
