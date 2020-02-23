@@ -59,6 +59,10 @@
   const getChildren = () => {
     if (!primitive) {
       childNodes = node.value as MetaNode[];
+      // check if we have an empty object, not encased in an array
+      if (!Array.isArray(childNodes)) {
+        childNodes = [];
+      }
     } else if (nodeType === NodeType.OBJECT_KEY) {
       childNode = node.value as MetaNode;
     }
@@ -161,7 +165,8 @@
     {#if (nodeType === NodeType.OBJECT_KEY && childNode && (childNode.metadata.type === NodeType.OBJECT || childNode.metadata.type === NodeType.ARRAY)) || nodeType === NodeType.OBJECT || nodeType === NodeType.ARRAY}
       <span
         style="transform: rotate({$rotate}deg) translateX({$move}px);"
-        class="inline-block -ml-2 px-2 cursor-pointer">
+        class="inline-block -ml-2 px-2 cursor-pointer hover:shadow-inner
+        rounded-full">
         &#x1f892;
       </span>
     {/if}
