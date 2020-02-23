@@ -3,9 +3,10 @@
   export let dbName: string;
   export let dbType: string;
 
-  import { selected } from "../../store";
+  import { selected, refreshHistory } from "../../store";
   const selectResource = () => {
     selected.set({ dbName, dbType, resourceName, revision: 0 });
+    refreshHistory.refresh();
   };
 
   import DeleteDialog from "./DeleteDialog.svelte";

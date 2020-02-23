@@ -2,7 +2,7 @@
   import { sirix } from "../../sirix";
 
   import { onDestroy } from "svelte";
-  import { selected } from "../../store";
+  import { selected, refreshHistory } from "../../store";
 
   let history = [];
 
@@ -11,36 +11,29 @@
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;
 
-  const loadHistory = (dbName, resourceName): Promise<void> => {
-    return sirix.database(dbName).then(db => {
-      db.resource(resourceName)
-        .history()
-        .then(res => {
-          history = res;
-        });
-    });
-  };
+  let dbName = "",
+    dbType = "",
+    resourceName = "";
 
-  let current = {
-    dbName: "",
-    dbType: "",
-    resourceName: ""
-  };
-  const unsubscribe = selected.subscribe(sel => {
-    let { dbName, dbType, resourceName } = sel;
-    if (
-      dbName && resourceName &&
-      (dbName !== current.dbName || resourceName !== current.resourceName)
-    ) {
-      loadHistory(dbName, resourceName);
-      current = { dbName, dbType, resourceName };
-    }
+  const unsubscribe1 = selected.subscribe(sel => {
+    ({ dbName, dbType, resourceName } = sel);
     if (dbName === null || resourceName === null) {
-      current.resourceName = null; 
       history = [];
     }
   });
-  onDestroy(unsubscribe);
+  const unsubscribe2 = refreshHistory.subscribe(() => {
+    if (dbName && resourceName && dbType) {
+      sirix.database(dbName).then(db => {
+        db.resource(resourceName)
+          .history()
+          .then(res => {
+            history = res;
+          });
+      });
+    }
+  });
+  onDestroy(unsubscribe1);
+  onDestroy(unsubscribe2);
 
   import { blur } from "svelte/transition";
 
@@ -65,7 +58,7 @@
 {#if list.length !== 0}
   <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
     <div class="z-20">
-      <Refresh bind:list={history} {current} />
+      <Refresh bind:list={history} />
       <Slider bind:checked={reverse} />
       &nbsp;
       {#if reverse}

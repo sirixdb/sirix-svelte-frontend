@@ -2,7 +2,7 @@
   import { sirix } from "../../sirix";
 
   import { onDestroy } from "svelte";
-  import { selected } from "../../store";
+  import { selected, refreshResource } from "../../store";
 
   let jsonResource = null;
 
@@ -29,22 +29,19 @@
   let dbType: string;
   let resourceName: string;
   let revision: number;
-  const unsubscribe = selected.subscribe(sel => {
-    if (
-      (dbName !== sel.dbName ||
-      resourceName !== sel.resourceName ||
-      revision !== sel.revision) &&
-      sel.revision
-    ) {
-      ({ dbName, dbType, resourceName, revision } = sel);
-      if (resourceName !== null && revision) {
-        loadRevision(dbName, dbType, resourceName, revision);
-      }
-    }
-    if (resourceName === null || !sel.revision) {
+  const unsubscribe1 = selected.subscribe(sel => {
+    ({ dbName, dbType, resourceName, revision } = sel);
+    if (resourceName === null || !revision) {
       emptyRevision();
     }
   });
+  const unsubscribe2 = refreshResource.subscribe(() => {
+    if (resourceName !== null && revision) {
+      loadRevision(dbName, dbType, resourceName, revision);
+    }
+  });
+  onDestroy(unsubscribe1);
+  onDestroy(unsubscribe2);
 
   import JsonNode from "./JsonNode.svelte";
 </script>

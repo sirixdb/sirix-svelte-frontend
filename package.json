@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@types/express": "^4.17.2",
-    "@types/node": "^13.7.2",
+    "@types/node": "^13.7.4",
     "compression": "^1.7.1",
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client",
@@ -43,10 +43,10 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^4.0.4",
     "sapper": "^0.27.0",
-    "svelte": "^3.18.2",
+    "svelte": "^3.19.0",
     "svelte-preprocess": "^3.4.0",
     "tailwindcss": "^1.2.0",
-    "tauri": "^0.4.1",
-    "typescript": "^3.7.5"
+    "tauri": "^0.4.3",
+    "typescript": "^3.8.2"
   }
 }

@@ -11,11 +11,12 @@
  let date: string, time: string;
   $: [date, time] = commit.revisionTimestamp.split("T");
   
-  import { selected } from "../../store";
+  import { selected, refreshResource } from "../../store";
   const selectRevision = () => {
     selected.update(info => {
       return {...info, revision: commit.revision};
     });
+    refreshResource.refresh();
   };
 
   let showMessage = false;

@@ -1,25 +1,8 @@
 <script lang="ts">
-  import { sirix } from "../../sirix";
-  import { dbInfo } from "../../store";
+  import { dbInfo, refreshHistory } from "../../store";
 
-  export let current;
-  export let list;
+  const refresh = () => refreshHistory.refresh();
 
-  let dbName, dbType, resourceName;
-
-  $: {
-    ({ dbName, dbType, resourceName } = current);
-  }
-
-  const refresh = () => {
-    sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName)
-        .history()
-        .then(history => {
-          list = history;
-        });
-    });
-  };
   let height;
 </script>
 
