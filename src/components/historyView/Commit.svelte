@@ -8,13 +8,13 @@
   }
   export let commit: Commit;
 
- let date: string, time: string;
+  let date: string, time: string;
   $: [date, time] = commit.revisionTimestamp.split("T");
-  
+
   import { selected, refreshResource } from "../../store";
   const selectRevision = () => {
     selected.update(info => {
-      return {...info, revision: commit.revision};
+      return { ...info, revision: commit.revision };
     });
     refreshResource.refresh();
   };
@@ -33,8 +33,11 @@
       class="absolute h-full border-0 border-l-2 border-solid border-gray-200" />
     <div style="left: -1px" class="absolute rounded-full bg-gray-200 w-3 h-3" />
     <!-- end time-line -->
-    <div style="top: -3px" class="ml-4">
-      <span on:click={selectRevision} class="text-gray-600 cursor-pointer">
+    <div
+      on:click={selectRevision}
+      style="top: -3px"
+      class="ml-4 cursor-pointer">
+      <span class="text-gray-600">
         {date}
         <br />
         {time}
@@ -47,9 +50,7 @@
             {commit.commitMessage}
           </span>
         {:else}
-          <span class="text-sm italic">
-            No commit message
-          </span>
+          <span class="text-sm italic">No commit message</span>
         {/if}
         <br />
         <span class="text-sm">{commit.revisionTimestamp}</span>

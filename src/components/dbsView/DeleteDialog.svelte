@@ -20,7 +20,7 @@
     sirix.database(dbName).then(db => {
       if (resourceName !== null) {
         db.resource(resourceName)
-          .delete(null)
+          .deleteById(null)
           .then(() => {
             selected.update(sel => {
               if (sel.dbName === dbName && sel.resourceName === resourceName) {
