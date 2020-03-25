@@ -25,8 +25,6 @@
 
   import { sirix } from "../../sirix";
 
-  import { onDestroy, onMount } from "svelte";
-
   // the current node
   export let node: MetaNode = null;
   // index, assuming we are inside an array
@@ -84,7 +82,6 @@
   // if this is the root node, the path should remain an empty array
   if (key === undefined && parentPath.length === 0) {
     path = parentPath.concat(null);
-    expanded = true;
   } else {
     path = parentPath.concat(key as string);
   }
@@ -174,7 +171,7 @@
   </span>
   {#if childNode}
     <!-- this is an OBJECT_KEY node -->
-    <span transition:expandAndFade>
+    <span transition:expandAndFade|local>
       <svelte:self
         node={childNode}
         bind:hover
@@ -190,14 +187,14 @@
 
 {#if primitive && nodeType.startsWith('OBJECT') && nodeType !== NodeType.OBJECT_KEY}
   <!-- this is an OBJECT VALUE node -->
-  <span class={textColor} transition:expandAndFade>
+  <span class={textColor} transition:expandAndFade|local>
     {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
   </span>
 {/if}
 
 {#if primitive && !nodeType.startsWith('OBJECT')}
   <!-- this is an array VALUE node -->
-  <span class={textColor} transition:expandAndFade>
+  <span class={textColor} transition:expandAndFade|local>
     {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
   </span>
 {/if}
@@ -221,7 +218,7 @@
 {/if}
 
 {#if !primitive && expanded}
-  <div transition:expandAndFade>
+  <div transition:expandAndFade|local>
     {#each childNodes as n, index}
       <div
         on:mouseover|stopPropagation={() => (hover = true)}

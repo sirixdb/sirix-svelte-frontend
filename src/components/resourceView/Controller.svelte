@@ -29,14 +29,26 @@
   let dbType: string;
   let resourceName: string;
   let revision: number;
+  let oldSelection = {
+    dbName: null,
+    dbType: null,
+    resourceName: null,
+    revision: null
+  };
   const unsubscribe1 = selected.subscribe(sel => {
     ({ dbName, dbType, resourceName, revision } = sel);
     if (resourceName === null || !revision) {
       emptyRevision();
     }
+    for (let key in oldSelection) {
+      if (sel[key] !== oldSelection[key]) {
+        emptyRevision()
+      }
+    }
   });
   const unsubscribe2 = refreshResource.subscribe(() => {
     if (resourceName !== null && revision) {
+      emptyRevision();
       loadRevision(dbName, dbType, resourceName, revision);
     }
   });
@@ -47,5 +59,5 @@
 </script>
 
 {#if jsonResource !== null}
-  <JsonNode node={jsonResource} {dbName} {dbType} {resourceName} {revision} />
+  <JsonNode node={jsonResource} {dbName} {dbType} {resourceName} {revision} expanded={true} />
 {/if}
