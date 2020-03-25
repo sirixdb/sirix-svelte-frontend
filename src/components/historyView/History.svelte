@@ -7,6 +7,7 @@
   let history = [];
 
   let reverse = false;
+  let diffMode = false;
   let list;
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;
@@ -39,6 +40,7 @@
 
   import Commit from "./Commit.svelte";
   import Slider from "./Slider.svelte";
+  import DiffOption from "./DiffOption.svelte";
   import Refresh from "./Refresh.svelte";
 
   let width;
@@ -58,14 +60,16 @@
 {#if list.length !== 0}
   <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
     <div class="z-20">
-      <Refresh bind:list={history} />
+      <Refresh />
+      <DiffOption bind:checked={diffMode} />
       <Slider bind:checked={reverse} />
-      &nbsp;
-      {#if reverse}
-        <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Descending</span>
-      {:else}
-        <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Ascending</span>
-      {/if}
+      <span class="float-left m-1">
+        {#if reverse}
+          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Descending</span>
+        {:else}
+          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Ascending</span>
+        {/if}
+      </span>
     </div>
   </div>
 

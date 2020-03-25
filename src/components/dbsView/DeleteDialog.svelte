@@ -25,6 +25,7 @@
             selected.update(sel => {
               if (sel.dbName === dbName && sel.resourceName === resourceName) {
                 sel.resourceName = null;
+                sel.revision = 0;
               }
               return sel;
             });

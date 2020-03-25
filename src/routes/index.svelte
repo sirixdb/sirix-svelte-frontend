@@ -10,7 +10,6 @@
     supports the efficient reconstruction of any revision as well as comparisons
     thereof. A query processor supports sophisticated time travel queries. See
     the
-    <a target="_blank" href="https://github.com/sirixdb/sirix">open source repository</a>
-    .
+    <a target="_blank" href="https://github.com/sirixdb/sirix">open source repository.</a>
   </p>
 </article>
