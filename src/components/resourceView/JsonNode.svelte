@@ -186,7 +186,7 @@
 {/if}
 
 {#if primitive && nodeType !== NodeType.OBJECT_KEY}
-  <!-- this is an OBJECT VALUE node -->
+  <!-- this is an OBJECT VALUE or array VALUE node -->
   <span class={textColor} transition:expandAndFade|local>
     {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
   </span>
