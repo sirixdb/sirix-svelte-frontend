@@ -185,36 +185,22 @@
   {/if}
 {/if}
 
-{#if primitive && nodeType.startsWith('OBJECT') && nodeType !== NodeType.OBJECT_KEY}
+{#if primitive && nodeType !== NodeType.OBJECT_KEY}
   <!-- this is an OBJECT VALUE node -->
   <span class={textColor} transition:expandAndFade|local>
     {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
   </span>
 {/if}
 
-{#if primitive && !nodeType.startsWith('OBJECT')}
-  <!-- this is an array VALUE node -->
-  <span class={textColor} transition:expandAndFade|local>
-    {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
-  </span>
-{/if}
-
 {#if !primitive}
-  {#if nodeType === NodeType.ARRAY}
-    <span
-      on:mouseover={() => (hover = true)}
-      on:mouseout={() => (hover = false)}
-      on:click|stopPropagation={toggleExpansion}>
+  <span
+    on:mouseover={() => (hover = true)}
+    on:mouseout={() => (hover = false)}
+    on:click|stopPropagation={toggleExpansion}>
+    {#if nodeType === NodeType.ARRAY}
       [{node.metadata.childCount}]
-    </span>
-  {:else}
-    <span
-      on:mouseover={() => (hover = true)}
-      on:mouseout={() => (hover = false)}
-      on:click|stopPropagation={toggleExpansion}>
-      {'{' + node.metadata.childCount + '}'}
-    </span>
-  {/if}
+    {:else}{'{' + node.metadata.childCount + '}'}{/if}
+  </span>
 {/if}
 
 {#if !primitive && expanded}
