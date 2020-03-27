@@ -15,7 +15,14 @@
   }
   export let node: MetaNode;
   export let index = undefined;
-  export let treeNode, path, expanded, hover;
+
+  // the following are to silence errors related to
+  // initializing with unrecognized props, and to failing
+  // to initialize with a value
+  export let treeNode = undefined; 
+  export let path = undefined;
+  export let expanded = undefined; 
+  export let hover = undefined;
   // the following line will stop the compiler from
   // complaining that we aren't using these variables
   treeNode, path, expanded, hover;
