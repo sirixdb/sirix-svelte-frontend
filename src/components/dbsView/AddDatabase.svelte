@@ -6,7 +6,6 @@
 
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
-  $: console.log(name)
 
   const formSubmit = () => {
     submitting = true;

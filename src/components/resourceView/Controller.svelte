@@ -55,9 +55,9 @@
   onDestroy(unsubscribe1);
   onDestroy(unsubscribe2);
 
-  import JsonNode from "./JsonNode.svelte";
+  import JsonController from "./JsonController.svelte";
 </script>
 
 {#if jsonResource !== null}
-  <JsonNode node={jsonResource} {dbName} {dbType} {resourceName} {revision} expanded={true} />
+  <JsonController node={jsonResource} {dbName} {dbType} {resourceName} {revision} />
 {/if}
