@@ -91,7 +91,7 @@
     treeNode={treeNode.child}
     node={treeNode.node}
     path={treeNode.path}
-    {expanded}
+    bind:expanded={expanded}
     {hover}
     on:loadDeeper />
 </span>

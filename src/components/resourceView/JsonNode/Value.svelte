@@ -19,7 +19,7 @@
   // the following are to silence errors related to
   // initializing with unrecognized props, and to failing
   // to initialize with a value
-  export let treeNode = undefined; 
+  export let treeNode = undefined;
   export let path = undefined;
   export let expanded = undefined; 
   export let hover = undefined;
