@@ -2,7 +2,7 @@
 
 Unfortunately, this is currently a bit messy, but still rather straightforward.
 
-There are several resources required to run SirixDB, and they can all be found [here](https://github.com/sirixdb/sirix-python-client/tree/master/tests/resources).
+There are several resources required to run SirixDB, and they can all be found in the resource directory of this repository.
 
 SirixDB depends on keycloak for authentication, so we first need to run (in the directory in which you have the above resources):
 
