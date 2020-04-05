@@ -1,28 +1,22 @@
 [package]
-name = "SirixDB_Console"
+name = "app"
 version = "0.1.0"
-description = "SirixDB Console"
-author = [ "you" ]
-license = "Apache 2.0"
-repository = "https://github.com/sirixdb/sirix-svelte-front-end"
-default-run = "SirixDB_Console"
+description = "A Tauri App"
+authors = [ "you" ]
+license = ""
+repository = ""
+default-run = "app"
 edition = "2018"
 build = "src/build.rs"
 
 [package.metadata.bundle]
+name = "SirixDBConsole"
 identifier = "io.sirix"
-icon = [
-  "icons/32x32.png",
-  "icons/128x128.png",
-  "icons/128x128@2x.png",
-  "icons/icon.icns",
-  "icons/icon.ico"
-]
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
-tauri = { version = "0.4", features = [ "all-api", "edge" ] }
+tauri = { version = "0.5", features = [ "all-api", "edge" ] }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"
@@ -33,5 +27,5 @@ embedded-server = [ "tauri/embedded-server" ]
 no-server = [ "tauri/no-server" ]
 
 [[bin]]
-name = "SirixDB_Console"
+name = "app"
 path = "src/main.rs"

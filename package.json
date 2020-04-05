@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "sapper dev",
     "build:sapper": "npm run build-prod:tailwind && sapper build --legacy",
-    "export": "set NODE_ENV=production && sapper export __sapper__/export --entry / /databases",
+    "export": "set NODE_ENV=production && sapper export __sapper__/export --entry /databases",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
@@ -17,8 +17,8 @@
     "build-prod:tailwind": "set NODE_ENV=production && postcss ./tailwind.css -o static/index.css"
   },
   "dependencies": {
-    "@types/express": "^4.17.3",
-    "@types/node": "^13.9.4",
+    "@types/express": "^4.17.4",
+    "@types/node": "^13.11.0",
     "compression": "^1.7.1",
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client",
@@ -35,18 +35,18 @@
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@rollup/plugin-replace": "^2.2.0",
-    "@wessberg/rollup-plugin-ts": "^1.2.21",
+    "@wessberg/rollup-plugin-ts": "^1.2.23",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^7.1.0",
     "rollup": "^1.32.1",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-svelte": "^5.0.1",
+    "rollup-plugin-svelte": "^5.2.1",
     "rollup-plugin-terser": "^4.0.4",
-    "sapper": "^0.27.11",
+    "sapper": "^0.27.12",
     "svelte": "^3.20.1",
-    "svelte-preprocess": "^3.5.0",
+    "svelte-preprocess": "^3.7.1",
     "tailwindcss": "^1.2.0",
-    "tauri": "^0.4.5",
+    "tauri": "^0.5.1",
     "typescript": "^3.8.3"
   }
 }
