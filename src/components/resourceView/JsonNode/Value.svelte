@@ -1,33 +1,15 @@
-<script lang="ts">
+<script>
   import { NodeType } from "sirix/src/info";
-  interface MetaNode {
-    metadata: Metadata;
-    key?: string; // if metadata.type === "OBJECT_KEY"
-    value:
-      | Node[] // if metadata.type === "OBJECT" or "ARRAY" alternatively
-      | {} // if can be an empty object, if metadata.childCount === 0
-      | [] // or an empty array, depending on whether type is "OBJECT" or "ARRAY"
-      | Node // if metadata.type === "OBJECT_KEY"
-      | string // if metadata.type === "OBJECT_STRING_VALUE" or "STRING_VALUE"
-      | number // if metadata.type === "OBJECT_NUMBER_VALUE" or "NUMBER_VALUE"
-      | boolean // if metadata.type === "OBJECT_BOOLEAN_VALUE" or "BOOLEAN_VALUE"
-      | null; // if metadata.type === "OBJECT_NULL_VALUE" or "NULL_VALUE"
-  }
-  export let node: MetaNode;
+
+  export let props;
   export let index = undefined;
-
-  // the following are to silence errors related to
-  // initializing with unrecognized props, and to failing
-  // to initialize with a value
-  export let treeNode = undefined;
-  export let path = undefined;
-  export let expanded = undefined; 
+  
+  // to silence svelte from raising issues with props
+  export let expanded = undefined;
   export let hover = undefined;
-  // the following line will stop the compiler from
-  // complaining that we aren't using these variables
-  treeNode, path, expanded, hover;
+  expanded, hover;
 
-  let nodeType = node.metadata.type;
+  let nodeType = props.node.metadata.type;
   let textColor =
     nodeType === NodeType.STRING_VALUE ||
     nodeType === NodeType.OBJECT_STRING_VALUE ||
@@ -40,7 +22,9 @@
         "text-indigo-600";
 
   // transformations
-  import { expandAndFade } from "../../../utils/transition";
+  import { expandAndFade } from "../../../utils/transition.js";
+
+  $: console.log(props)
 </script>
 
 {#if index !== undefined}
@@ -48,5 +32,9 @@
 {/if}
 
 <span class={textColor} transition:expandAndFade|local>
-  {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
+  {nodeType.endsWith('STRING_VALUE') ? `"${props.node.value}"` : props.node.value}
 </span>
+
+{#if props.diff}
+  <svelte:component this={props.diff.component} props={{diffNode: props.diff.diffNode}} />
+{/if}

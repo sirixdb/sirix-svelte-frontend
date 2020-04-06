@@ -8,6 +8,11 @@
 
   let reverse = false;
   let diffMode = false;
+  $: !diffMode
+    ? selected.update(sel => {
+        return { ...sel, diff: null };
+      })
+    : null;
   let list;
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;
@@ -65,9 +70,13 @@
       <Slider bind:checked={reverse} />
       <span class="float-left m-1">
         {#if reverse}
-          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Descending</span>
+          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
+            Descending
+          </span>
         {:else}
-          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>Ascending</span>
+          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
+            Ascending
+          </span>
         {/if}
       </span>
     </div>
@@ -76,7 +85,7 @@
   <div class="mt-6" bind:clientWidth={width}>
     <ul class="ml-0 my-0 max-h-screen list-none inline">
       {#each list as commit}
-        <Commit {commit} />
+        <Commit {commit} {diffMode} />
       {/each}
     </ul>
   </div>

@@ -1,7 +1,7 @@
-<script lang="ts">
-  export let resources: string[];
-  export let dbName: string;
-  export let dbType: string;
+<script>
+  export let resources;
+  export let dbName;
+  export let dbType;
 
   import Resource from "./Resource.svelte";
 

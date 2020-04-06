@@ -6,14 +6,13 @@
   // whenever logged out, redirect to login
   import { goto } from "@sapper/app";
   import { loggedIn } from "../store";
+  import { onMount } from "svelte";
 
-  $: {
-    (loggedIn => {
-      if (!$loggedIn) {
-        goto("./login");
-      }
-    })(loggedIn);
-  }
+  onMount(() => {
+    if (!$loggedIn) {
+      goto("./login");
+    }
+  });
 </script>
 
 <style>
@@ -22,7 +21,7 @@
     column-gap: 20px;
     grid-auto-columns: 4fr 3fr 10fr;
     grid-auto-rows: calc(100vh - 57px);
-    grid-template-areas: "dbs-view history-view resource-view"
+    grid-template-areas: "dbs-view history-view resource-view";
   }
   #dbs-view {
     max-height: 100%;
@@ -49,21 +48,15 @@
 </style>
 
 <div style="top: 64px" id="grid-container" class="bottom-0">
-  <section
-    id="dbs-view"
-    class="overflow-y-scroll bottom-0 min-h-full">
+  <section id="dbs-view" class="overflow-y-scroll bottom-0 min-h-full">
     <Tree />
   </section>
 
-  <section
-    id="history-view"
-    class="overflow-y-scroll bottom-0 min-h-full">
+  <section id="history-view" class="overflow-y-scroll bottom-0 min-h-full">
     <History />
   </section>
 
-  <section
-    id="resource-view"
-    class="overflow-y-scroll bottom-0 min-h-full">
+  <section id="resource-view" class="overflow-y-scroll bottom-0 min-h-full">
     <Controller />
   </section>
 </div>

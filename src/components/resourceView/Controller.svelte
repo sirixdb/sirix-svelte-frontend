@@ -29,21 +29,23 @@
   let dbType: string;
   let resourceName: string;
   let revision: number;
+  let diff: number;
   let oldSelection = {
     dbName: null,
     dbType: null,
     resourceName: null,
-    revision: null
+    revision: null,
+    diff: null
   };
   const unsubscribe1 = selected.subscribe(sel => {
-    ({ dbName, dbType, resourceName, revision } = sel);
-    if (resourceName === null || !revision) {
-      emptyRevision();
-    }
+    ({ dbName, dbType, resourceName, revision, diff } = sel);
     for (let key in oldSelection) {
       if (sel[key] !== oldSelection[key]) {
-        emptyRevision()
+        if (key !== "diff") {
+          emptyRevision();
+        }
       }
+    oldSelection = sel;
     }
   });
   const unsubscribe2 = refreshResource.subscribe(() => {
@@ -59,5 +61,11 @@
 </script>
 
 {#if jsonResource !== null}
-  <JsonController node={jsonResource} {dbName} {dbType} {resourceName} {revision} />
+  <JsonController
+    node={jsonResource}
+    {dbName}
+    {dbType}
+    {resourceName}
+    {revision}
+    {diff} />
 {/if}

@@ -14,7 +14,7 @@ function refresher() {
     set,
     refresh: () => {
       update((val) => val + 1);
-    },
+    }
   };
 }
 
@@ -25,7 +25,8 @@ interface resourceInfo {
   dbName: string,
   dbType: string,
   resourceName: string,
-  revision: number
+  revision: number,
+  diff: number
 }
 
 export const selected: Writable<resourceInfo> = writable({
@@ -33,5 +34,6 @@ export const selected: Writable<resourceInfo> = writable({
   dbType: null,
   resourceName: null,
   // there is no revision 0, but using 0 instead of null will signify that we are not using xquery view
-  revision: 0
+  revision: 0,
+  diff: null
 })

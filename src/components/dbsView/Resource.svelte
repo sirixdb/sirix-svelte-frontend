@@ -5,7 +5,7 @@
 
   import { selected, refreshHistory } from "../../store";
   const selectResource = () => {
-    selected.set({ dbName, dbType, resourceName, revision: 0 });
+    selected.set({ dbName, dbType, resourceName, revision: 0, diff: null });
     refreshHistory.refresh();
   };
 

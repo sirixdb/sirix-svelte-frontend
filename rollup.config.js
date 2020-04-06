@@ -33,7 +33,7 @@ export default {
       svelte({
         preprocess: sveltePreprocess({
           typescript: {
-            transpileOnly: dev ? true : false,
+            transpileOnly: true ? true : dev ? true : false,
           }
         }),
         dev,
@@ -46,7 +46,7 @@ export default {
       typescript(),
       commonjs(),
 
-      legacy &&
+
       babel({
         extensions: [".js", ".mjs", ".html", ".svelte"],
         runtimeHelpers: true,
@@ -55,7 +55,13 @@ export default {
           [
             "@babel/preset-env",
             {
-              targets: "> 0.25%, not dead"
+              targets: {
+                browsers: [
+                  "> 0.25%",
+                  "not dead",
+                  "edge 17"
+                ]
+              }
             }
           ]
         ],
@@ -91,7 +97,7 @@ export default {
         preprocess: [
           sveltePreprocess({
             typescript: {
-              transpileOnly: dev ? true : false,
+              transpileOnly: true ? true : dev ? true : false,
             }
           })
         ],
