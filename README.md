@@ -31,13 +31,12 @@ Before developing, run `npm run build:tailwind`. This command should also be run
 
 ### Develop with Tauri
 
-You need to follow the [tauri setup guide](https://github.com/tauri-apps/tauri/wiki) first. Note that the NPM tauri package is included in the dependencies of this project. 
+You need to follow the [tauri setup guide](https://github.com/tauri-apps/tauri/wiki) first. Note that the NPM tauri package is included in the dependencies of this project. This is not yet configured to work on all platforms, however.
 
 1. run `npm run dev`.
 2. in another terminal, run `npm run tauri dev`.
 
 #### To build with Tauri
 
-> NOTE: this does not yet work properly.
 1. run `npm run export`.
 2. run `tauri build`.
