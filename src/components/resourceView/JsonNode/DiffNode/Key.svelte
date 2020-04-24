@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   export let child;
   export let data;
 </script>

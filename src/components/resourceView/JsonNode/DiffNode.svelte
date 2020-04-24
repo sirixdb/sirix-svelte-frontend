@@ -31,12 +31,12 @@
   let diffObj;
   let isContainer;
   $: {
+    console.log(props);
     diffType = Object.keys(props.diffNode)[0];
     diffObj = props.diffNode[diffType];
     isContainer = diffObj.type == "jsonFragment";
     if (isContainer) {
       tree = buildTree(JSON.parse(diffObj.data));
-      console.log(tree);
     }
   }
 </script>
@@ -57,4 +57,8 @@
       data={tree.data}
       child={tree.child} />
   </div>
+{/if}
+
+{#if props.nextDiff.diff}
+  <svelte:self props={{ ...props.nextDiff.diff, nextDiff: props.nextDiff.diff.props }} />
 {/if}
