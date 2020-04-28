@@ -1,6 +1,8 @@
 <script>
   export let props;
 
+  import { keyFuncReg } from "./functions";
+
   let hover = false;
 
   let expanded = false;
@@ -12,36 +14,28 @@
   let childNode;
   let childNodes;
 
+  let key, treeNode, path, nodeKey, nodeType, childs;
+
   import { NodeType } from "sirix/src/info";
-  let nodeType = props.node.metadata.type;
-  let textColor =
-    nodeType === NodeType.STRING_VALUE ||
-    nodeType === NodeType.OBJECT_STRING_VALUE ||
-    nodeType === NodeType.OBJECT_KEY
-      ? "text-orange-900"
-      : nodeType === NodeType.NUMBER_VALUE ||
-        nodeType === NodeType.OBJECT_NUMBER_VALUE
-      ? "text-green-600"
-      : // NULL or BOOLEAN
-        "text-indigo-600";
 
   $: {
+    ({ key, treeNode, path, nodeKey, nodeType, childs } = props);
     if (nodeType !== NodeType.OBJECT_KEY) {
-      childNodes = props.node.value;
+      childNodes = childs;
       // check if we have an empty object, not encased in an array
       if (!Array.isArray(childNodes)) {
         childNodes = [];
       }
     } else {
-      childNode = props.node.value;
+      childNode = childs;
     }
   }
 
   // get the key for reaching the current node from the parent node
   // if the current node is an OBJECT_KEY, then the key attribute is the key
-  let key =
+  key =
     nodeType === NodeType.OBJECT_KEY
-      ? props.node.key
+      ? key
       : // we are inside an array, so the index is the key
         index;
 
@@ -51,8 +45,8 @@
 
   $: if (hover && Object.keys(childNode).length === 0) {
     dispatch("loadDeeper", {
-      path: props.path,
-      key: props.node.metadata.nodeKey,
+      path,
+      key: nodeKey,
       insertKey: null
     });
   }
@@ -74,8 +68,8 @@
 
 <span transition:expandAndFade|local>
   <svelte:component
-    this={props.treeNode.component}
-    props={{ treeNode: props.treeNode.child, node: props.treeNode.node, path: props.treeNode.path }}
+    this={treeNode.component}
+    props={treeNode.props}
     bind:expanded
     {hover}
     on:loadDeeper />

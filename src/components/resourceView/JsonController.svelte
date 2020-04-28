@@ -39,7 +39,7 @@
 <div class="p-1">
   <svelte:component
     this={treeNode.component}
-    props={{ node: treeNode.node, treeNode: treeNode.child, path: treeNode.path }}
+    props={treeNode.props}
     expanded={true}
     on:loadDeeper={loadDeeper} />
 </div>
