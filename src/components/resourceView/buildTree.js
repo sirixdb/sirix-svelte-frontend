@@ -118,28 +118,41 @@ export const injectDiffs = (treeNode, diffs, index) => {
     let diff = diffs[0];
     let diffType = Object.keys(diff)[0];
     let key =
-      diffType === "insert" || "replace"
-        ? diff[diffType]["insertPositionNodeKey"]
-        : diffType === "update"
-          ? diff[diffType]["nodeKey"]
-          : diff[diffType];
+      diffType === "insert" || diffType === "replace"
+        ? diff[diffType].insertPositionNodeKey
+        : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
       let newNode = {
         diffNode: diff,
         props: {},
         component: DiffNode,
       };
-      if (diffType === "update" || diffType === "delete" || diffType === "replace") {
-        //TODO
-        //treeNode = treeNode["child"] = newNode;
-        diffs.shift();
-      } else if (diffType === "insert") {
-        newNode.props.nodeKey = diff.insert.nodeKey;
-        treeNode.props = { ...treeNode.props, diff: newNode };
-        diffs.shift();
-        [treeNode, diffs] = injectDiffs(treeNode.props.diff, diffs);
+      switch (diffType) {
+        case "delete":
+          newNode.props.nodeKey = diff.delete.nodeKey;
+          treeNode.props = { ...treeNode.props, diff: newNode };
+          console.log(treeNode.props)
+          diffs.shift();
+          break;
+        case "update":
+          newNode.props.nodeKey = diff.update.nodeKey;
+          treeNode.props = { ...treeNode.props, diff: newNode };
+          diffs.shift();
+          break;
+        case "replace":
+          newNode.props.nodeKey = diff.replace.nodeKey;
+          treeNode.props = { ...treeNode.props, diff: newNode };
+          diffs.shift();
+          break;
+        case "insert":
+          newNode.props.nodeKey = diff.insert.nodeKey;
+          treeNode.props = { ...treeNode.props, diff: newNode };
+          console.log(treeNode)
+          diffs.shift();
+          [treeNode, diffs] = injectDiffs(treeNode.props.diff, diffs);
+          console.log(treeNode)
+          break;
       }
-      // treeNode = inject(treeNode, newNode, [null], null);
     }
     if (treeNode.child) {
       [treeNode.child, diffs] = injectDiffs(treeNode.child, diffs);

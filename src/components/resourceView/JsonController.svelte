@@ -31,6 +31,7 @@
     loadDiffs(revision, diff, dbName, dbType, resourceName, {
       maxLevel: 4
     }).then(diffs => {
+      console.log(diffs)
       treeNode = injectDiffs(treeNode, diffs)[0];
     });
   }

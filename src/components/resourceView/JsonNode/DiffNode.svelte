@@ -1,4 +1,6 @@
 <script>
+  import { onDestroy, onMount } from "svelte";
+
   import Container from "./DiffNode/Container.svelte";
   import Value from "./DiffNode/Value.svelte";
   import Key from "./DiffNode/Key.svelte";
@@ -26,6 +28,8 @@
 
   export let props;
 
+  let element;
+
   let tree;
   let diffType;
   let diffObj;
@@ -34,11 +38,14 @@
     console.log(props);
     diffType = Object.keys(props.diffNode)[0];
     diffObj = props.diffNode[diffType];
-    isContainer = diffObj.type == "jsonFragment";
+    isContainer = diffObj.type === "jsonFragment";
     if (isContainer) {
       tree = buildTree(JSON.parse(diffObj.data));
     }
-    console.log(tree)
+    if (diffType !== "insert") {
+      onMount(() => (element.parentNode.style.background = "rgb(255,0,0,0.4)"));
+      onDestroy(() => (element.parentNode.style.background = ""));
+    }
   }
 </script>
 
@@ -51,17 +58,22 @@
   }
 </style>
 
-{#if (diffType === 'update') || !isContainer}
-  <span>{diffObj.value}</span>
-{:else}
-  <div>
-    <svelte:component
-      this={tree.component}
-      data={tree.data}
-      child={tree.child} />
-  </div>
+<span bind:this={element} />
+
+{#if diffType !== "delete"}
+  {#if !isContainer}
+    <span>{diffObj.value}</span>
+  {:else}
+    <div>
+      <svelte:component
+        this={tree.component}
+        data={tree.data}
+        child={tree.child} />
+    </div>
+  {/if}
 {/if}
 
 {#if props.nextDiff.diff}
-  <svelte:self props={{ ...props.nextDiff.diff, nextDiff: props.nextDiff.diff.props }} />
+  <svelte:self
+    props={{ ...props.nextDiff.diff, nextDiff: props.nextDiff.diff.props }} />
 {/if}
