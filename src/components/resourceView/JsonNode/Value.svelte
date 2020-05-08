@@ -23,7 +23,6 @@
         ? "text-green-600"
         : // NULL or BOOLEAN
           "text-indigo-600";
-    console.log(diff);
   }
 
   // transformations

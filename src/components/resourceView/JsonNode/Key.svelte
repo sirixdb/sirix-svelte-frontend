@@ -1,8 +1,6 @@
 <script>
   export let props;
 
-  import { keyFuncReg } from "./functions";
-
   let hover = false;
 
   let expanded = false;
@@ -10,7 +8,10 @@
     expanded = !expanded;
   };
 
-  export let index;
+  // silence the compiler
+  export let index = undefined;
+  index;
+
   let childNode;
   let childNodes;
 
@@ -20,24 +21,8 @@
 
   $: {
     ({ key, treeNode, path, nodeKey, nodeType, childs } = props);
-    if (nodeType !== NodeType.OBJECT_KEY) {
-      childNodes = childs;
-      // check if we have an empty object, not encased in an array
-      if (!Array.isArray(childNodes)) {
-        childNodes = [];
-      }
-    } else {
-      childNode = childs;
-    }
+    childNode = childs;
   }
-
-  // get the key for reaching the current node from the parent node
-  // if the current node is an OBJECT_KEY, then the key attribute is the key
-  key =
-    nodeType === NodeType.OBJECT_KEY
-      ? key
-      : // we are inside an array, so the index is the key
-        index;
 
   import { createEventDispatcher } from "svelte";
 

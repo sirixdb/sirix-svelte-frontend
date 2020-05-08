@@ -38,6 +38,7 @@
     if (isContainer) {
       tree = buildTree(JSON.parse(diffObj.data));
     }
+    console.log(tree)
   }
 </script>
 
@@ -45,10 +46,12 @@
   span,
   div {
     background-color: rgba(0, 255, 0, 0.4);
+    margin-top: 1px;
+    margin-bottom: 1px;
   }
 </style>
 
-{#if (diffType === 'update') | !isContainer}
+{#if (diffType === 'update') || !isContainer}
   <span>{diffObj.value}</span>
 {:else}
   <div>
