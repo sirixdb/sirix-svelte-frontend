@@ -31,6 +31,12 @@
   import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
+<style>
+  div {
+    contain: content;
+  }
+</style>
+
 <span
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
@@ -45,12 +51,12 @@
 </span>
 
 {#if expanded}
-  <div transition:expandAndFade|local>
+  <div transition:expandAndFade|local class="{hover ? 'bg-gray-300' : ''}">
     {#each treeNode as n, index}
       <div
         on:mouseover|stopPropagation={() => (hover = true)}
         on:mouseout|stopPropagation={() => (hover = false)}
-        class="pl-4 {hover ? 'bg-gray-300' : ''}">
+        class="pl-4">
         <svelte:component
           this={n.component}
           props={n.props}

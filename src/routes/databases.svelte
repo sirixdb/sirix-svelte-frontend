@@ -16,6 +16,9 @@
 </script>
 
 <style>
+  div {
+    contain: strict;
+  }
   #grid-container {
     display: grid;
     column-gap: 20px;
