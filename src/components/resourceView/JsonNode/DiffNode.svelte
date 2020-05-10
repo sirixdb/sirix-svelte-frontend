@@ -43,8 +43,14 @@
       tree = buildTree(JSON.parse(diffObj.data));
     }
     if (diffType !== "insert") {
-      onMount(() => (element.parentNode.style.background = "rgb(255,0,0,0.4)"));
-      onDestroy(() => (element.parentNode.style.background = ""));
+      onMount(() => {
+        const arr = Array.from(element.parentNode.children);
+        arr[arr.length - 2].style.background = "rgb(255,0,0,0.4)";
+      });
+      onDestroy(() => {
+        const arr = Array.from(element.parentNode.children);
+        arr[arr.length - 2].style.background = "";
+      });
     }
   }
 </script>
@@ -60,7 +66,7 @@
 
 <span bind:this={element} />
 
-{#if diffType !== "delete"}
+{#if diffType !== 'delete'}
   {#if !isContainer}
     <span>{diffObj.value}</span>
   {:else}
