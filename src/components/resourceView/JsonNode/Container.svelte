@@ -50,6 +50,12 @@
   {:else}{'{' + childCount + '}'}{/if}
 </span>
 
+{#if diff}
+  <svelte:component
+    this={diff.component}
+    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
+{/if}
+
 {#if expanded}
   <div transition:expandAndFade|local class={hover ? 'bg-gray-300' : ''}>
     {#each treeNode as n, index}
@@ -65,10 +71,4 @@
       </div>
     {/each}
   </div>
-{/if}
-
-{#if diff}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}

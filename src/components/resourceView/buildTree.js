@@ -124,6 +124,7 @@ export const injectDiffs = (treeNode, diffs) => {
         ? diff[diffType].oldNodeKey
         : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
+      console.log(treeNode, diff)
       let newNode = {
         diffNode: diff,
         props: {},

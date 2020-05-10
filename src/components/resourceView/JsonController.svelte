@@ -31,7 +31,7 @@
     loadDiffs(revision, diff, dbName, dbType, resourceName, {
       maxLevel: 4
     }).then(diffs => {
-      console.log(diffs)
+      console.log(JSON.stringify(diffs))
       treeNode = injectDiffs(treeNode, diffs)[0];
       console.log(treeNode)
     });

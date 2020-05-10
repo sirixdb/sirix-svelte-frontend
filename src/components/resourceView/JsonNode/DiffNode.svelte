@@ -78,7 +78,7 @@
 
 {#if diffType !== 'delete'}
   {#if !isContainer}
-    <span>{diffObj.value}</span>
+    <span class="pl-4">{diffType === "update" ? diffObj.value : diffObj.data}</span>
   {:else}
     <div>
       <svelte:component
