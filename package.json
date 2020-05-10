@@ -19,14 +19,15 @@
   "dependencies": {
     "@types/express": "^4.17.6",
     "@types/node": "^13.13.5",
-    "compression": "^1.7.1",
+    "compression": "^1.7.4",
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client",
-    "sirv": "^0.4.0"
+    "sirv": "^0.4.2",
+    "tauri": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/runtime": "^7.9.6",
@@ -45,8 +46,7 @@
     "sapper": "^0.27.12",
     "svelte": "^3.22.2",
     "svelte-preprocess": "^3.7.4",
-    "tailwindcss": "^1.4.5",
-    "tauri": "^0.5.2",
+    "tailwindcss": "^1.4.6",
     "typescript": "^3.8.3"
   }
 }
