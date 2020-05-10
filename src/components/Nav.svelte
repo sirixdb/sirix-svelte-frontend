@@ -4,6 +4,7 @@
   export let segment;
 
   const logout = () => {
+    loggedIn.set(false);
     goto("./login", {
       replaceState: true
     });
@@ -50,6 +51,7 @@
   }
 
   a, span {
+    cursor: pointer;
     text-decoration: none;
     padding: 1em 0.5em;
     display: block;
