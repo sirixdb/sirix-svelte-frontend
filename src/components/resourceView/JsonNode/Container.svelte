@@ -37,6 +37,12 @@
   }
 </style>
 
+{#if diff && diff.position === "before"}
+  <svelte:component
+    this={diff.component}
+    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
+{/if}
+
 <span
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
@@ -50,7 +56,7 @@
   {:else}{'{' + childCount + '}'}{/if}
 </span>
 
-{#if diff}
+{#if diff && diff.position === "child"}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
@@ -71,4 +77,10 @@
       </div>
     {/each}
   </div>
+{/if}
+
+{#if diff && diff.position === "after"}
+  <svelte:component
+    this={diff.component}
+    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}
