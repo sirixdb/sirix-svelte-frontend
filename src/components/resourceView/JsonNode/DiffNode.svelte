@@ -42,7 +42,17 @@
     if (isContainer) {
       tree = buildTree(JSON.parse(diffObj.data));
     }
-    if (diffType !== "insert") {
+    if (diffType === "delete") {
+      onMount(() => {
+        element.parentNode.style.background = "rgb(255,0,0,0.4)";
+        element.parentNode.style.marginBottom = element.parentNode.style.marginTop =
+          "1px";
+      });
+      onDestroy(() => {
+        element.parentNode.style.marginBottom = element.parentNode.style.marginTop = element.parentNode.style.background =
+          "";
+      });
+    } else if (diffType === "replace" || diffType == "update") {
       onMount(() => {
         const arr = Array.from(element.parentNode.children);
         arr[arr.length - 2].style.background = "rgb(255,0,0,0.4)";
