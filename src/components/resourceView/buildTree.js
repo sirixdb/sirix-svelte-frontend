@@ -118,8 +118,10 @@ export const injectDiffs = (treeNode, diffs) => {
     let diff = diffs[0];
     let diffType = Object.keys(diff)[0];
     let key =
-      diffType === "insert" || diffType === "replace"
+      diffType === "insert"
         ? diff[diffType].insertPositionNodeKey
+        : diffType === "replace"
+        ? diff[diffType].oldNodeKey
         : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
       let newNode = {
@@ -140,7 +142,7 @@ export const injectDiffs = (treeNode, diffs) => {
           diffs.shift();
           break;
         case "replace":
-          newNode.props.nodeKey = diff.replace.nodeKey;
+          newNode.props.nodeKey = diff.replace.newNodeKey;
           treeNode.props = { ...treeNode.props, diff: newNode };
           diffs.shift();
           break;
@@ -156,5 +158,6 @@ export const injectDiffs = (treeNode, diffs) => {
       [treeNode.child, diffs] = injectDiffs(treeNode.child, diffs);
     }
   }
+  console.log(treeNode)
   return [treeNode, diffs];
 };

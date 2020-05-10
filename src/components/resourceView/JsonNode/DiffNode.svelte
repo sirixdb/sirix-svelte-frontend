@@ -55,11 +55,11 @@
     } else if (diffType === "replace" || diffType == "update") {
       onMount(() => {
         const arr = Array.from(element.parentNode.children);
-        arr[arr.length - 2].style.background = "rgb(255,0,0,0.4)";
+        arr[1].style.background = "rgb(255,0,0,0.4)";
       });
       onDestroy(() => {
         const arr = Array.from(element.parentNode.children);
-        arr[arr.length - 2].style.background = "";
+        arr[1].style.background = "";
       });
     }
   }
