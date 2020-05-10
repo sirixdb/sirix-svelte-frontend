@@ -35,7 +35,6 @@
   let diffObj;
   let isContainer;
   $: {
-    console.log(props);
     diffType = Object.keys(props.diffNode)[0];
     diffObj = props.diffNode[diffType];
     isContainer = diffObj.type === "jsonFragment";

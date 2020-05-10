@@ -1,7 +1,6 @@
 <script lang="ts">
   import { sirix } from "../../sirix";
 
-  import { onDestroy } from "svelte";
   import { selected, refreshResource } from "../../store";
 
   let jsonResource = null;
@@ -37,7 +36,9 @@
     revision: null,
     diff: null
   };
-  const unsubscribe1 = selected.subscribe(sel => {
+
+  $: {
+    let sel = $selected;
     ({ dbName, dbType, resourceName, revision, diff } = sel);
     for (let key in oldSelection) {
       if (sel[key] !== oldSelection[key]) {
@@ -47,15 +48,15 @@
       }
     oldSelection = sel;
     }
-  });
-  const unsubscribe2 = refreshResource.subscribe(() => {
+  }
+
+  $: {
+    $refreshResource;
     if (resourceName !== null && revision) {
       emptyRevision();
       loadRevision(dbName, dbType, resourceName, revision);
     }
-  });
-  onDestroy(unsubscribe1);
-  onDestroy(unsubscribe2);
+  }
 
   import JsonController from "./JsonController.svelte";
 </script>
