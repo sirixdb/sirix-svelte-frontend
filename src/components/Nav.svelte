@@ -1,6 +1,13 @@
 <script lang="ts">
   import { loggedIn } from "../store";
+  import { goto } from "@sapper/app";
   export let segment;
+
+  const logout = () => {
+    goto("./login", {
+      replaceState: true
+    });
+  }
 </script>
 
 <style>
@@ -42,7 +49,7 @@
     bottom: -1px;
   }
 
-  a {
+  a, span {
     text-decoration: none;
     padding: 1em 0.5em;
     display: block;
@@ -54,15 +61,18 @@
     <li>
       <a class:selected={segment === undefined} href=".">home</a>
     </li>
-    {#if $loggedIn}
+    {#if !$loggedIn}
+      <li>
+        <a class:selected={segment === 'login'} href="login">login</a>
+      </li>
+    {:else}
+      <li>
+        <span on:click={logout}>logout</span>
+      </li>
       <li>
         <a class:selected={segment === 'databases'} href="databases">
           databases
         </a>
-      </li>
-    {:else}
-      <li>
-        <a class:selected={segment === 'login'} href="login">login</a>
       </li>
     {/if}
   </ul>
