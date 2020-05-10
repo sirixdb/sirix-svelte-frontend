@@ -33,6 +33,7 @@
     }).then(diffs => {
       console.log(diffs)
       treeNode = injectDiffs(treeNode, diffs)[0];
+      console.log(treeNode)
     });
   }
 </script>

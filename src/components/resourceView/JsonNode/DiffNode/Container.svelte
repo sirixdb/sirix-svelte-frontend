@@ -20,7 +20,7 @@
 </span>
 
 {#if expanded}
-  <div transition:expandAndFade|local>
+  <div transition:expandAndFade|local class="pl-4">
     {#each child as item, index}
       <div>
         <svelte:component

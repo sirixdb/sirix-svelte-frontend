@@ -15,8 +15,8 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  let treeNode, path, nodeKey, childCount, nodeType;
-  $: ({ treeNode, path, nodeKey, childCount, nodeType } = props);
+  let treeNode, path, nodeKey, childCount, nodeType, diff;
+  $: ({ treeNode, path, nodeKey, childCount, nodeType, diff } = props);
 
   $: if (hover && childCount !== Object.keys(treeNode).length) {
     dispatch("loadDeeper", {
@@ -51,7 +51,7 @@
 </span>
 
 {#if expanded}
-  <div transition:expandAndFade|local class="{hover ? 'bg-gray-300' : ''}">
+  <div transition:expandAndFade|local class={hover ? 'bg-gray-300' : ''}>
     {#each treeNode as n, index}
       <div
         on:mouseover|stopPropagation={() => (hover = true)}
@@ -65,4 +65,10 @@
       </div>
     {/each}
   </div>
+{/if}
+
+{#if diff}
+  <svelte:component
+    this={diff.component}
+    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}

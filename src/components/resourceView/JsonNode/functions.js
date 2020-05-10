@@ -4,7 +4,8 @@ export const containerFuncReg = (props) => {
     path: props.path,
     nodeKey: props.node.metadata.nodeKey,
     childCount: props.node.metadata.childCount,
-    nodeType: props.node.metadata.type
+    nodeType: props.node.metadata.type,
+    diff: props.diff
   }
 }
 

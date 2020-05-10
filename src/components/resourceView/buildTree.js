@@ -102,7 +102,7 @@ export const inject = (treeNode, newNode, path, insertKey) => {
   return treeNode;
 };
 
-export const injectDiffs = (treeNode, diffs, index) => {
+export const injectDiffs = (treeNode, diffs) => {
   if (diffs.length === 0) {
     return [treeNode, diffs];
   }
@@ -147,10 +147,8 @@ export const injectDiffs = (treeNode, diffs, index) => {
         case "insert":
           newNode.props.nodeKey = diff.insert.nodeKey;
           treeNode.props = { ...treeNode.props, diff: newNode };
-          console.log(treeNode)
           diffs.shift();
-          [treeNode, diffs] = injectDiffs(treeNode.props.diff, diffs);
-          console.log(treeNode)
+          [treeNode.props.diff, diffs] = injectDiffs(treeNode.props.diff, diffs);
           break;
       }
     }
