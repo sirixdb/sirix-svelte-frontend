@@ -56,6 +56,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>SirixDB Svelte GUI</title>
+</svelte:head>
+
 <nav>
   <ul>
     <li>

@@ -1,7 +1,3 @@
-<svelte:head>
-  <title>Sapper project template</title>
-</svelte:head>
-
 <article class="text-center shadow-md rounded-md relative max-w-3xl mt-6 m-auto m-0 p-6">
   <img src="./SVGlogo.svg" alt="SirixDB logo" class="max-w-2xl content-center">
   <p class="m-1 m-auto">
