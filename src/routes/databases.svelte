@@ -13,6 +13,16 @@
       goto("./login");
     }
   });
+
+  import { tweened } from "svelte/motion";
+  import { sineInOut } from "svelte/easing";
+
+  const opts = {
+    duration: 300,
+    easing: sineInOut
+  };
+
+  let shift = tweened(0, opts);
 </script>
 
 <style>
@@ -51,11 +61,19 @@
 </style>
 
 <div style="top: 64px" id="grid-container" class="bottom-0">
-  <section id="dbs-view" class="overflow-y-scroll bottom-0 min-h-full">
+  <section
+    id="dbs-view"
+    class="overflow-y-scroll bottom-0 min-h-full"
+    style="margin-right: calc(100vw / 14 * 4 * {$shift}); margin-left:
+    calc(-100vw / 14 * 7 * {$shift});">
     <Tree />
   </section>
 
-  <section id="history-view" class="overflow-y-scroll bottom-0 min-h-full">
+  <section
+    id="history-view"
+    class="overflow-y-scroll bottom-0 min-h-full"
+    style="margin-right: calc(100vw / 14 * 3 * {$shift}); margin-left:
+    calc(-100vw / 14 * 7 * {$shift});">
     <History />
   </section>
 
