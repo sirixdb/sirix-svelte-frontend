@@ -35,7 +35,6 @@
   };
 
   let showMessage = false;
-
   let element, isSelected;
 
   $: {

@@ -9,10 +9,8 @@
     selected.update(old => {
       if (old.dbName === dbName && old.resourceName === resourceName) {
         refresh = false;
-        return old;
-      } else {
-        return { dbName, dbType, resourceName, revision: 0, diff: null };
       }
+      return { dbName, dbType, resourceName, revision: 0, diff: null };
     });
     if (refresh) {
       refreshHistory.refresh();
