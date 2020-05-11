@@ -21,7 +21,7 @@
     "@types/node": "^13.13.5",
     "compression": "^1.7.4",
     "polka": "next",
-    "sirix": "github:sirixdb/sirix-typescript-client",
+    "sirix": "github:sirixdb/sirix-typescript-client#d0b2048d7825c9a11e6561e5a5d7eb28b139e5b6",
     "sirv": "^0.4.2",
     "tauri": "^0.6.0"
   },
