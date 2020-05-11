@@ -8,12 +8,19 @@
 
   import { sirix } from "../../sirix";
 
-  import { dbInfo, selected } from "../../store";
+  import {
+    dbInfo,
+    selected,
+    refreshResource,
+    refreshHistory
+  } from "../../store";
 
   const refresh = () => {
     dbInfo.update(arr => {
       return sirix.sirixInfo.databaseInfo.slice();
     });
+    refreshResource.refresh();
+    refreshHistory.refresh();
   };
 
   const del = () => {
@@ -63,7 +70,8 @@
 </style>
 
 <!-- The Modal -->
-<div class="fixed left-0 top-0 w-full h-full z-10 overflow-auto bg-gray-900 z-30">
+<div
+  class="fixed left-0 top-0 w-full h-full z-10 overflow-auto bg-gray-900 z-30">
 
   <!-- Modal content -->
   <div
