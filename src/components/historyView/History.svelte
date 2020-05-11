@@ -1,18 +1,15 @@
-<script lang="ts">
-  import { sirix } from "../../sirix";
+<script>
+  import { selected } from "../../store";
 
-  import { onDestroy } from "svelte";
-  import { selected, refreshHistory } from "../../store";
+  export let diffColumn = false;
 
-  let history = [];
+  export let history = [];
 
   let reverse = false;
-  let diffMode = false;
-  $: !diffMode
-    ? selected.update(sel => {
-        return { ...sel, diff: null };
-      })
-    : null;
+  $: selected.update(sel => {
+    return { ...sel, diff: null };
+  });
+
   let list;
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;
@@ -21,34 +18,13 @@
     dbType = "",
     resourceName = "";
 
-  const unsubscribe1 = selected.subscribe(sel => {
-    ({ dbName, dbType, resourceName } = sel);
-    if (dbName === null || resourceName === null) {
-      history = [];
-    }
-  });
-  const unsubscribe2 = refreshHistory.subscribe(() => {
-    if (dbName && resourceName && dbType) {
-      sirix.database(dbName).then(db => {
-        db.resource(resourceName)
-          .history()
-          .then(res => {
-            history = res;
-          });
-      });
-    }
-  });
-  onDestroy(unsubscribe1);
-  onDestroy(unsubscribe2);
-
-  import { blur } from "svelte/transition";
-
   import Commit from "./Commit.svelte";
   import Slider from "./Slider.svelte";
   import DiffOption from "./DiffOption.svelte";
   import Refresh from "./Refresh.svelte";
 
   let width;
+  export let offset;
 </script>
 
 <style>
@@ -61,31 +37,25 @@
   }
 </style>
 
-<!-- NOTE we shouldn't need this #if once this tree is not constant -->
+<!-- NOTE we only need this #if because the history tree is constant -->
 {#if list.length !== 0}
-  <div style="width: {width}px" id="fade-screen" class="py-2 fixed z-10">
+  <div
+    style="width: {width}px; top: {offset}px;"
+    id="fade-screen"
+    class="py-2 absolute z-10">
     <div class="z-20">
-      <Refresh />
-      <DiffOption bind:checked={diffMode} />
-      <Slider bind:checked={reverse} />
-      <span class="float-left m-1">
-        {#if reverse}
-          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
-            Descending
-          </span>
-        {:else}
-          <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
-            Ascending
-          </span>
-        {/if}
-      </span>
+      {#if !diffColumn}
+        <Refresh />
+        <DiffOption />
+      {/if}
+      <Slider bind:checked={reverse} id={diffColumn ? 'diff' : 'history'} />
     </div>
   </div>
 
   <div class="mt-6" bind:clientWidth={width}>
     <ul class="ml-0 my-0 max-h-screen list-none inline">
       {#each list as commit}
-        <Commit {commit} {diffMode} />
+        <Commit {commit} {diffColumn} />
       {/each}
     </ul>
   </div>

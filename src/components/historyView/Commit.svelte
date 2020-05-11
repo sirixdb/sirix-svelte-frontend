@@ -7,14 +7,14 @@
     commitMessage: string;
   }
   export let commit: Commit;
-  export let diffMode: boolean;
+  export let diffColumn: boolean;
 
   let date: string, time: string;
   $: [date, time] = commit.revisionTimestamp.split("T");
 
   import { selected, refreshResource } from "../../store";
   const selectRevision = () => {
-    if (!diffMode) {
+    if (!diffColumn) {
       selected.update(info => {
         return { ...info, revision: commit.revision };
       });
@@ -33,8 +33,9 @@
   let showMessage = false;
 
   let isSelected, isDiff;
-  $: isSelected = $selected.revision === commit.revision;
-  $: isDiff = $selected.diff === commit.revision;
+  $: isSelected =
+    ($selected.revision === commit.revision && !diffColumn) ||
+    ($selected.diff === commit.revision && diffColumn);
 </script>
 
 <li
@@ -51,7 +52,7 @@
     <div
       on:click={selectRevision}
       style="top: -3px"
-      class="ml-4 cursor-pointer {isSelected ? 'shadow-2xl bg-gray-200' : isDiff ? 'shadow-2xl bg-blue-100' : ''}">
+      class="ml-4 cursor-pointer {isSelected ? 'shadow-2xl bg-gray-300' : ''}">
       <span class="text-gray-600">
         {date}
         <br />
