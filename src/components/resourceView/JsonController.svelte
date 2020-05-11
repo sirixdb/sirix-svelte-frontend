@@ -7,6 +7,7 @@
 
   import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree.js";
   import { sirix } from "../../sirix";
+  import { selected, refreshResource } from "../../store";
 
   let treeNode = createTree(node, []);
 
@@ -27,7 +28,10 @@
     });
   };
 
-  if (diff !== null) {
+  if (diff && diff !== revision) {
+    if (diff < revision) {
+      selected.update(old => ({ ...old, revision: diff, diff: revision }));
+    }
     loadDiffs(revision, diff, dbName, dbType, resourceName, {
       maxLevel: 4
     }).then(diffs => {

@@ -44,9 +44,10 @@
   import { sirix } from "../sirix";
   let history = [];
 
+  $: ({ dbName, dbType, resourceName } = $selected);
+
   $: {
     $refreshHistory;
-    let { dbName, dbType, resourceName } = $selected;
     if (dbName && resourceName && dbType) {
       sirix.database(dbName).then(db => {
         db.resource(resourceName)

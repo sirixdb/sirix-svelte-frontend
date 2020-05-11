@@ -9,33 +9,43 @@
   export let commit: Commit;
   export let diffColumn: boolean;
 
-  let date: string, time: string;
   $: [date, time] = commit.revisionTimestamp.split("T");
 
   import { selected, refreshResource } from "../../store";
   const selectRevision = () => {
+    let refresh = true;
     if (!diffColumn) {
-      selected.update(info => {
-        return { ...info, revision: commit.revision };
+      selected.update(old => {
+        if (old.revision === commit.revision) {
+          refresh = false;
+        }
+        return { ...old, revision: commit.revision };
       });
     } else {
-      selected.update(info => {
-        // revision and diff should not be the same
-        if (info.revision === commit.revision) {
-          return info;
+      selected.update(old => {
+        if (old.diff === commit.revision) {
+          refresh = false;
         }
-        return { ...info, diff: commit.revision };
+        return { ...old, diff: commit.revision };
       });
     }
-    refreshResource.refresh();
+    if (refresh) {
+      refreshResource.refresh();
+    }
   };
 
   let showMessage = false;
 
-  let isSelected, isDiff;
-  $: isSelected =
-    ($selected.revision === commit.revision && !diffColumn) ||
-    ($selected.diff === commit.revision && diffColumn);
+  let element, isSelected;
+
+  $: {
+    isSelected =
+      ($selected.revision === commit.revision && !diffColumn) ||
+      ($selected.diff === commit.revision && diffColumn);
+    if (isSelected) {
+      element.scrollIntoView();
+    }
+  }
 </script>
 
 <li
@@ -50,6 +60,7 @@
     <div style="left: -1px" class="absolute rounded-full bg-gray-200 w-3 h-3" />
     <!-- end time-line -->
     <div
+      bind:this={element}
       on:click={selectRevision}
       style="top: -3px"
       class="ml-4 cursor-pointer {isSelected ? 'shadow-2xl bg-gray-300' : ''}">

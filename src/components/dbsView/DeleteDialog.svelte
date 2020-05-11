@@ -8,12 +8,13 @@
 
   import { sirix } from "../../sirix";
 
-  import { dbInfo, selected } from "../../store";
+  import { dbInfo, selected, refreshResource } from "../../store";
 
   const refresh = () => {
     dbInfo.update(arr => {
       return sirix.sirixInfo.databaseInfo.slice();
     });
+    refreshResource.refresh();
   };
 
   const del = () => {
