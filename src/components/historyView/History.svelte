@@ -29,18 +29,21 @@
   }
 </style>
 
-<div
-  style="width: {width}px; top: {offset}px;"
-  id="fade-screen"
-  class="py-2 absolute z-10">
-  <div class="z-20">
-    {#if !diffColumn}
-      <Refresh />
-      <DiffOption />
-    {/if}
-    <Slider bind:checked={reverse} id={diffColumn ? 'diff' : 'history'} />
+<!-- NOTE we only need this #if because the history tree is constant -->
+{#if list.length !== 0}
+  <div
+    style="width: {width}px; top: {offset}px;"
+    id="fade-screen"
+    class="py-2 absolute z-10">
+    <div class="z-20">
+      {#if !diffColumn}
+        <Refresh />
+        <DiffOption />
+      {/if}
+      <Slider bind:checked={reverse} id={diffColumn ? 'diff' : 'history'} />
+    </div>
   </div>
-</div>
+{/if}
 
 <div class="mt-6" bind:clientWidth={width}>
   <ul class="ml-0 my-0 max-h-screen list-none inline">
