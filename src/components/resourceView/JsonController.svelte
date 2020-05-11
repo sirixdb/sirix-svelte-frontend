@@ -23,7 +23,18 @@
           const toInsert = newNode.value.map((obj, index) =>
             createTree(obj, detail.path, index)
           );
-          treeNode = inject(treeNode, toInsert, detail.path, detail.insertKey);
+          if (diff) {
+            loadDiffs(revision, diff, dbName, dbType, resourceName, {
+              maxLevel: 4
+            }).then(diffs => {
+              treeNode = injectDiffs(
+                inject(treeNode, toInsert, detail.path, detail.insertKey),
+                diffs
+              );
+            });
+          } else {
+            inject(treeNode, toInsert, detail.path, detail.insertKey);
+          }
         });
     });
   };

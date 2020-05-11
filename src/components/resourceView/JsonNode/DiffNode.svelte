@@ -73,13 +73,13 @@
   }
 </style>
 
-<span bind:this={element} />
+<div bind:this={element} />
 
 {#if diffType !== 'delete'}
   {#if !isContainer}
     <span class="pl-4">{diffType === "update" ? diffObj.value : diffObj.data}</span>
   {:else}
-    <div>
+    <div class="pl-4">
       <svelte:component
         this={tree.component}
         data={tree.data}
