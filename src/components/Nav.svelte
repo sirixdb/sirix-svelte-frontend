@@ -1,13 +1,9 @@
 <script lang="ts">
   import { loggedIn } from "../store";
-  import { goto } from "@sapper/app";
   export let segment;
 
   const logout = () => {
-    loggedIn.set(false);
-    goto("./login", {
-      replaceState: true
-    });
+    window.location = "./login";
   }
 </script>
 

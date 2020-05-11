@@ -169,6 +169,5 @@ export const injectDiffs = (treeNode, diffs) => {
       [treeNode.child, diffs] = injectDiffs(treeNode.child, diffs);
     }
   }
-  console.log(treeNode)
   return [treeNode, diffs];
 };

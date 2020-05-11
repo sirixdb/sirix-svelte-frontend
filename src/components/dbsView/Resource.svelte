@@ -5,8 +5,16 @@
 
   import { selected, refreshHistory } from "../../store";
   const selectResource = () => {
-    selected.set({ dbName, dbType, resourceName, revision: 0, diff: null });
-    refreshHistory.refresh();
+    let refresh = true;
+    selected.update(old => {
+      if (old.dbName === dbName && old.resourceName === resourceName) {
+        refresh = false;
+      }
+      return { dbName, dbType, resourceName, revision: 0, diff: null };
+    });
+    if (refresh) {
+      refreshHistory.refresh();
+    }
   };
 
   import DeleteDialog from "./DeleteDialog.svelte";

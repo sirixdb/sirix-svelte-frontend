@@ -52,8 +52,8 @@
 
   $: {
     $refreshResource;
+    emptyRevision();
     if (resourceName !== null && revision) {
-      emptyRevision();
       loadRevision(dbName, dbType, resourceName, revision);
     }
   }

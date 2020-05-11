@@ -29,6 +29,8 @@ interface resourceInfo {
   diff: number
 }
 
+export const diffView = writable(false);
+
 export const selected: Writable<resourceInfo> = writable({
   dbName: null,
   dbType: null,

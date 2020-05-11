@@ -7,6 +7,7 @@
 </script>
 
 <span
+  title="refresh"
   bind:clientHeight={height}
   on:click={refresh}
   style="width: {height}px"
