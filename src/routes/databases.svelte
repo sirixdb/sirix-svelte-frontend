@@ -48,6 +48,7 @@
 
   $: {
     $refreshHistory;
+    history = [];
     if (dbName && resourceName && dbType) {
       sirix.database(dbName).then(db => {
         db.resource(resourceName)
