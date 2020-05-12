@@ -25,11 +25,13 @@
           "text-indigo-600";
   }
 
+  import { diffView } from "../../../store";
+
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
-{#if index !== undefined}
+{#if index !== undefined && !$diffView}
   <span>{index}:</span>
 {/if}
 

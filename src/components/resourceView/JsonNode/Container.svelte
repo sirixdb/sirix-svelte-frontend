@@ -26,6 +26,8 @@
     });
   }
 
+  import { diffView } from "../../../store";
+
   import Arrow from "./Arrow.svelte";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
@@ -37,7 +39,7 @@
   }
 </style>
 
-{#if diff && diff.position === "before"}
+{#if diff && diff.position === 'before'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
@@ -50,13 +52,13 @@
   {#if path[path.length - 1] !== null}
     <Arrow {expanded} />
   {/if}
-  {#if index !== null}{index}:{/if}
+  {#if index !== null}{$diffView ? ' ' : index}:{/if}
   {#if nodeType === NodeType.ARRAY}
-    [{childCount}]
+    [{$diffView ? ' ' : childCount}]
   {:else}{'{' + childCount + '}'}{/if}
 </span>
 
-{#if diff && diff.position === "child"}
+{#if diff && diff.position === 'child'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
@@ -79,7 +81,7 @@
   </div>
 {/if}
 
-{#if diff && diff.position === "after"}
+{#if diff && diff.position === 'after'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />

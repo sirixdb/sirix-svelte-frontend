@@ -22,6 +22,7 @@
     } else {
       tree["component"] = Value;
       tree["data"] = data;
+      tree["child"] = data;
     }
     return tree;
   };
@@ -33,13 +34,14 @@
   let tree;
   let diffType;
   let diffObj;
-  let isContainer;
   $: {
     diffType = Object.keys(props.diffNode)[0];
     diffObj = props.diffNode[diffType];
-    isContainer = diffObj.type === "jsonFragment";
-    if (isContainer) {
+    console.log(diffObj)
+    if (diffObj.type === "jsonFragment") {
       tree = buildTree(JSON.parse(diffObj.data));
+    } else if (diffType !== "delete") {
+      tree = buildTree(diffType === "update" ? diffObj.value : diffObj.data);
     }
     if (diffType === "delete") {
       onMount(() => {
@@ -51,7 +53,7 @@
         element.parentNode.style.marginBottom = element.parentNode.style.marginTop = element.parentNode.style.background =
           "";
       });
-    } else if (diffType === "replace" || diffType == "update") {
+    } else if (diffType == "update") {
       onMount(() => {
         const arr = Array.from(element.parentNode.children);
         arr[1].style.background = "rgb(255,0,0,0.4)";
@@ -59,6 +61,14 @@
       onDestroy(() => {
         const arr = Array.from(element.parentNode.children);
         arr[1].style.background = "";
+      });
+    } else if (diffType === "replace") {
+      onMount(() => {
+        console.log(element.previousElementSibling)
+        element.previousElementSibling.style.background = "rgb(255,0,0,0.4)";
+      });
+      onDestroy(() => {
+        element.previousElementSibling.style.background = "";
       });
     }
   }
@@ -73,11 +83,14 @@
   }
 </style>
 
-<div bind:this={element} />
+<span bind:this={element} />
 
 {#if diffType !== 'delete'}
-  {#if !isContainer}
-    <span class="pl-4">{diffType === "update" ? diffObj.value : diffObj.data}</span>
+  {#if diffType === "replace"}
+    <!--<span>{diffType === "update" ? diffObj.value : diffObj.data}</span>-->
+    <span>
+      <svelte:component this={tree.component} child={tree.data} />
+    </span>
   {:else}
     <div class="pl-4">
       <svelte:component

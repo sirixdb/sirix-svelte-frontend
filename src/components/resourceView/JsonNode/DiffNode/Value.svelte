@@ -1,6 +1,9 @@
 <script>
-  export let index;
+  //export let index;
   export let child;
+  //silence the compiler
+  export let data = undefined;
+  data;
 
   let textColor;
 
@@ -14,8 +17,9 @@
   }
 </script>
 
+<!--
 {#if index !== undefined}
   <span>{index}:</span>
 {/if}
-
-<span style="color:{textColor}">"{child}"</span>
+-->
+<span class={textColor}>"{child}"</span>

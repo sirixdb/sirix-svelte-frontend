@@ -42,7 +42,7 @@
       ($selected.revision === commit.revision && !diffColumn) ||
       ($selected.diff === commit.revision && diffColumn);
     if (isSelected) {
-      element.scrollIntoView();
+      element && element.scrollIntoView();
     }
   }
 </script>

@@ -26,7 +26,7 @@
       rotate.set(0, {});
       move.set(0, {});
     }
-  };
+  }
 
   import Resources from "./Resources.svelte";
   import Trash from "../icons/Trash.svelte";
@@ -64,7 +64,7 @@
 
 {#if expanded}
   <Resources
-    resources={database.resources}
+    resources={database.resources ? database.resources : []}
     dbName={database.name}
     dbType={database.type} />
 {/if}

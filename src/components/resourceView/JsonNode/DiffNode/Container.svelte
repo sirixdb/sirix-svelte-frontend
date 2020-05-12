@@ -16,18 +16,17 @@
 
 <span on:click|stopPropagation={toggleExpansion}>
   <Arrow {expanded} />
-  {#if isArray}[{items}]{:else}{'{' + items + '}'}{/if}
+  {#if isArray}[ ]{:else}{'{ }'}{/if}
 </span>
 
 {#if expanded}
   <div transition:expandAndFade|local class="pl-4">
-    {#each child as item, index}
+    {#each child as item}
       <div>
         <svelte:component
           this={item.component}
           data={item.data}
-          child={item.child}
-          {index} />
+          child={item.child} />
       </div>
     {/each}
   </div>
