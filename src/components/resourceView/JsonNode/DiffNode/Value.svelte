@@ -1,4 +1,5 @@
 <script>
+  export let child;
   //silence the compiler
   export let data = undefined;
   data;
