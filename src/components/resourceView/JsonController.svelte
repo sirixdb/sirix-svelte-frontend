@@ -33,7 +33,7 @@
               );
             });
           } else {
-            inject(treeNode, toInsert, detail.path, detail.insertKey);
+            treeNode = inject(treeNode, toInsert, detail.path, detail.insertKey);
           }
         });
     });
