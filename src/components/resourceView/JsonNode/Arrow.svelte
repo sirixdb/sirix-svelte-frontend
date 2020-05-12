@@ -23,6 +23,7 @@
 
 <span
   style="transform: rotate({$rotate}deg) translateX({$move}px);"
-  class="inline-block -ml-2 px-2 cursor-pointer hover:shadow-inner rounded-full">
+  class="inline-block -ml-2 px-2 cursor-pointer hover:shadow-inner rounded-full
+  select-none">
   &#x1f892;
 </span>
