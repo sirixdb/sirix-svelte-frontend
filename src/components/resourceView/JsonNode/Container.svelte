@@ -39,7 +39,7 @@
   }
 </style>
 
-{#if diff && diff.position === 'before'}
+{#if expanded && diff && diff.position === 'before'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
@@ -58,7 +58,7 @@
   {:else}{@html $diffView ? '<i>object</i> { }' : `{${childCount}}`}{/if}
 </span>
 
-{#if diff && diff.position === 'child'}
+{#if expanded && diff && diff.position === 'child'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
@@ -81,7 +81,7 @@
   </div>
 {/if}
 
-{#if diff && diff.position === 'after'}
+{#if expanded && diff && diff.position === 'after'}
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
