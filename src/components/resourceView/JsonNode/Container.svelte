@@ -12,7 +12,7 @@
 
   import { NodeType } from "sirix/src/info";
 
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
 
   let treeNode, path, nodeKey, childCount, nodeType, diff;
@@ -31,6 +31,25 @@
   import Arrow from "./Arrow.svelte";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
+
+  let element;
+  let timeout;
+  let firstLine = 0;
+  let lastLine = Infinity;
+  async function redraw() {
+    if (treeNode.length < 125) return;
+    if (element) {
+      const { top, bottom } = element.getBoundingClientRect();
+      if (top - 85 < -24 * 50) {
+        firstLine = firstLine - 50 + (top - 57) / -24;
+      } else {
+        firstLine = 0;
+      }
+      lastLine = firstLine + 100 + (window.innerHeight) / 24;
+    }
+    timeout = setTimeout(redraw, 1000);
+  }
+  onMount(redraw);
 </script>
 
 <style>
@@ -69,18 +88,23 @@
 {/if}
 
 {#if expanded}
-  <div transition:expandAndFade|local class={hover ? 'bg-gray-300' : ''}>
+  <div
+    transition:expandAndFade|local
+    bind:this={element}
+    class={hover ? 'bg-gray-300' : ''}>
     {#each treeNode as n, index}
-      <div
-        on:mouseover|stopPropagation={() => (hover = true)}
-        on:mouseout|stopPropagation={() => (hover = false)}
-        class="pl-4">
-        <svelte:component
-          this={n.component}
-          props={n.props}
-          {index}
-          on:loadDeeper />
-      </div>
+      {#if index >= firstLine && index <= lastLine}
+        <div
+          on:mouseover|stopPropagation={() => (hover = true)}
+          on:mouseout|stopPropagation={() => (hover = false)}
+          class="pl-4">
+          <svelte:component
+            this={n.component}
+            props={n.props}
+            {index}
+            on:loadDeeper />
+        </div>
+      {/if}
     {/each}
   </div>
 {/if}
