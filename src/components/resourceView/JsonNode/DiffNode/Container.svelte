@@ -16,7 +16,7 @@
 
 <span on:click|stopPropagation={toggleExpansion}>
   <Arrow {expanded} />
-  {#if isArray}[ ]{:else}{'{ }'}{/if}
+  {#if isArray}<i>array</i> [ ]{:else}{@html '<i>object</i> { }'}{/if}
 </span>
 
 {#if expanded}
