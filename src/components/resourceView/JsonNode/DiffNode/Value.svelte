@@ -1,6 +1,4 @@
 <script>
-  //export let index;
-  export let child;
   //silence the compiler
   export let data = undefined;
   data;
@@ -17,9 +15,4 @@
   }
 </script>
 
-<!--
-{#if index !== undefined}
-  <span>{index}:</span>
-{/if}
--->
 <span class={textColor}>"{child}"</span>

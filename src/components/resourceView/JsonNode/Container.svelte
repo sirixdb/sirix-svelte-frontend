@@ -54,8 +54,12 @@
   {/if}
   {#if index !== null}{$diffView ? ' ' : index}:{/if}
   {#if nodeType === NodeType.ARRAY}
-    {@html $diffView ? '<i>array</i> [ ]' : `[${childCount}]`}
-  {:else}{@html $diffView ? '<i>object</i> { }' : `{${childCount}}`}{/if}
+    <i>array</i>
+    {$diffView ? '[ ]' : `[${childCount}]`}
+  {:else}
+    <i>object</i>
+    {$diffView ? '{ }' : `{${childCount}}`}
+  {/if}
 </span>
 
 {#if expanded && diff && diff.position === 'child'}
