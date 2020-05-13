@@ -45,7 +45,7 @@
       lastLine = firstLine + 100 + (window.innerHeight) / 24;
     }
     console.log(firstLine, lastLine)
-    timeout = setTimeout(redraw, 1000);
+    timeout = setTimeout(redraw, 700);
   }
   onMount(redraw);
 </script>
@@ -55,6 +55,10 @@
     contain: content;
   }
 </style>
+
+{#if firstLine > 0}
+  <div style="height: {firstLine * 24}px" />
+{/if}
 
 {#if expanded && diff && diff.position === 'before'}
   <svelte:component
@@ -111,4 +115,8 @@
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
+{/if}
+
+{#if lastLine < treeNode.length}
+  <div style="height: {(treeNode.length - lastLine) * 24}px" />
 {/if}
