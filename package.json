@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@types/express": "^4.17.6",
-    "@types/node": "^13.13.5",
+    "@types/node": "^14.0.1",
     "compression": "^1.7.4",
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client#d0b2048d7825c9a11e6561e5a5d7eb28b139e5b6",
