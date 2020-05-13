@@ -23,11 +23,11 @@
   <span class="float-left m-1 cursor-pointer">
     {#if checked}
       <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
-        Descending
+        Ascending
       </span>
     {:else}
       <span class="fixed" transition:blur={{ amount: 3, duration: 200 }}>
-        Ascending
+        Descending
       </span>
     {/if}
   </span>
