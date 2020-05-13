@@ -15,15 +15,19 @@
     const text = event.target.innerText;
     html = hljs.highlight("xquery", text).value;
     await tick();
-    setCurrentCursorPosition(event.target, position > 0 ? position : 1);
+    setCurrentCursorPosition(
+      event.target,
+      event.inputType === "insertParagraph"
+        ? position + 1
+        : position > 0
+        ? position
+        : 1
+    );
   }
 </script>
 
 <pre>
-  <code
-    on:input={render}
-    contenteditable="true"
-    class="block h-32 hljs">
+  <code on:input={render} contenteditable class="block h-32 hljs">
     {@html html}
   </code>
 </pre>
