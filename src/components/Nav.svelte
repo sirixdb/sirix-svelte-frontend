@@ -76,6 +76,11 @@
           databases
         </a>
       </li>
+      <li>
+        <a class:selected={segment === 'xquery'} href="xquery">
+          XQuery/JSONiq
+        </a>
+      </li>
     {/if}
   </ul>
 </nav>
