@@ -8,7 +8,6 @@
   import xquery from "highlight.js/lib/languages/xquery";
   import "highlight.js/styles/tomorrow-night-eighties.css";
   hljs.registerLanguage("xquery", xquery);
-  let textarea;
   let html = "";
 
   async function render(event) {
@@ -16,14 +15,13 @@
     const text = event.target.innerText;
     html = hljs.highlight("xquery", text).value;
     await tick();
-    setCurrentCursorPosition(event.target, position);
+    setCurrentCursorPosition(event.target, position > 0 ? position : 1);
   }
 </script>
 
 <pre>
   <code
     on:input={render}
-    bind:this={textarea}
     contenteditable="true"
     class="block h-32 hljs">
     {@html html}
