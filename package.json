@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "@types/express": "^4.17.6",
-    "@types/node": "^13.13.5",
+    "@types/node": "^14.0.1",
     "compression": "^1.7.4",
     "highlight.js": "^10.0.3",
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client#d0b2048d7825c9a11e6561e5a5d7eb28b139e5b6",
     "sirv": "^0.4.2",
-    "tauri": "^0.6.0"
+    "tauri": "^0.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -48,6 +48,6 @@
     "svelte": "^3.22.2",
     "svelte-preprocess": "^3.7.4",
     "tailwindcss": "^1.4.6",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   }
 }

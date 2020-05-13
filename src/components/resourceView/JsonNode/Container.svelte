@@ -12,7 +12,7 @@
 
   import { NodeType } from "sirix/src/info";
 
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
 
   let treeNode, path, nodeKey, childCount, nodeType, diff;
@@ -31,6 +31,23 @@
   import Arrow from "./Arrow.svelte";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
+
+  let element;
+  let timeout;
+  let firstLine = 0;
+  let lastLine = 125;
+  async function redraw() {
+    if (treeNode.length < 125) return;
+    if (element) {
+      const { top, bottom } = element.getBoundingClientRect();
+      const calculated = firstLine - 50 + (top - 57) / -24;
+      firstLine = calculated >= 0 ? calculated : 0;
+      lastLine = firstLine + 100 + (window.innerHeight) / 24;
+    }
+    console.log(firstLine, lastLine)
+    timeout = setTimeout(redraw, 700);
+  }
+  onMount(redraw);
 </script>
 
 <style>
@@ -38,6 +55,10 @@
     contain: content;
   }
 </style>
+
+{#if firstLine > 0}
+  <div style="height: {firstLine * 24}px" />
+{/if}
 
 {#if expanded && diff && diff.position === 'before'}
   <svelte:component
@@ -69,18 +90,23 @@
 {/if}
 
 {#if expanded}
-  <div transition:expandAndFade|local class={hover ? 'bg-gray-300' : ''}>
+  <div
+    transition:expandAndFade|local
+    bind:this={element}
+    class={hover ? 'bg-gray-300' : ''}>
     {#each treeNode as n, index}
-      <div
-        on:mouseover|stopPropagation={() => (hover = true)}
-        on:mouseout|stopPropagation={() => (hover = false)}
-        class="pl-4">
-        <svelte:component
-          this={n.component}
-          props={n.props}
-          {index}
-          on:loadDeeper />
-      </div>
+      {#if index >= firstLine && index <= lastLine}
+        <div
+          on:mouseover|stopPropagation={() => (hover = true)}
+          on:mouseout|stopPropagation={() => (hover = false)}
+          class="pl-4">
+          <svelte:component
+            this={n.component}
+            props={n.props}
+            {index}
+            on:loadDeeper />
+        </div>
+      {/if}
     {/each}
   </div>
 {/if}
@@ -89,4 +115,8 @@
   <svelte:component
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
+{/if}
+
+{#if lastLine < treeNode.length}
+  <div style="height: {(treeNode.length - lastLine) * 24}px" />
 {/if}
