@@ -5,7 +5,7 @@
 
   export let history = [];
 
-  let reverse = true;
+  let reverse = false;
 
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;

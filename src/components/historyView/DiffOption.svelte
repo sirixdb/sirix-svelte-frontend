@@ -1,5 +1,5 @@
 <script>
-  let checked = true;
+  let checked = false;
   import Compare from "../icons/compare.svelte";
   import { diffView, selected, refreshResource } from "../../store";
 
