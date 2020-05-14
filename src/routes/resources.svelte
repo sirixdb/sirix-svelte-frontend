@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import Tree from "../components/dbsView/Tree.svelte";
   import History from "../components/historyView/History.svelte";
   import Controller from "../components/resourceView/Controller.svelte";

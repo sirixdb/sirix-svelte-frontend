@@ -1,7 +1,7 @@
-<script lang="ts">
-  export let show: boolean;
-  export let dbName: string;
-  export let resourceName: string = null;
+<script>
+  export let show;
+  export let dbName;
+  export let resourceName = null;
   let hideForm = () => (show = false);
 
   import Trash from "../icons/Trash.svelte";

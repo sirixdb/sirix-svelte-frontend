@@ -1,8 +1,8 @@
-<script lang="ts">
+<script>
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
 
-  export let loggingIn: boolean;
+  export let loggingIn;
 
   function getFormData() {
 		dispatch('message', {

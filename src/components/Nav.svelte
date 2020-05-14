@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { loggedIn } from "../store";
   export let segment;
 
@@ -72,13 +72,13 @@
         <span on:click={logout}>logout</span>
       </li>
       <li>
-        <a class:selected={segment === 'databases'} href="databases">
-          databases
+        <a class:selected={segment === 'resources'} href="resources">
+          Resources
         </a>
       </li>
       <li>
-        <a class:selected={segment === 'xquery'} href="xquery">
-          XQuery/JSONiq
+        <a class:selected={segment === 'query'} href="query">
+          Query
         </a>
       </li>
     {/if}

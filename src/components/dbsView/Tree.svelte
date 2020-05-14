@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import Database from "./Database.svelte";
   import Add from "./Add.svelte";
   import Refresh from "./Refresh.svelte";

@@ -5,7 +5,7 @@
   let message = ({ detail }) => {
     if (detail === "redirect") {
       loggedIn.set(true);
-      goto("./databases", { replaceState: false });
+      goto("./resources", { replaceState: false });
     }
   };
 </script>

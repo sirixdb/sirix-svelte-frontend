@@ -1,13 +1,15 @@
-<script lang="ts">
-  // Unfortunately, the preprocessor doesn't allow for importing interaces
-  interface Commit {
-    revisionTimestamp: string;
-    revision: number;
-    author: string;
-    commitMessage: string;
-  }
-  export let commit: Commit;
-  export let diffColumn: boolean;
+<script>
+  /*
+   * // interface of `commit` prop
+   * interface Commit {
+   *   revisionTimestamp: string;
+   *   revision: number;
+   *   author: string;
+   *   commitMessage: string;
+   * }
+   */
+  export let commit;
+  export let diffColumn;
 
   $: [date, time] = commit.revisionTimestamp.split("T");
 

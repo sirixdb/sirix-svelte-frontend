@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { sirix } from "../../sirix";
 
   import { selected, refreshResource } from "../../store";
@@ -9,12 +9,7 @@
     jsonResource = null;
   };
 
-  const loadRevision = (
-    dbName: string,
-    dbType: string,
-    resourceName: string,
-    revision: number
-  ) => {
+  const loadRevision = (dbName, dbType, resourceName, revision) => {
     sirix.database(dbName, dbType).then(db => {
       db.resource(resourceName)
         .readWithMetadata({ revision, maxLevel: 4 })
@@ -24,11 +19,7 @@
     });
   };
 
-  let dbName: string;
-  let dbType: string;
-  let resourceName: string;
-  let revision: number;
-  let diff: number;
+  let dbName, dbType, resourceName, revision, diff;
   let oldSelection = {
     dbName: null,
     dbType: null,
@@ -46,7 +37,7 @@
           emptyRevision();
         }
       }
-    oldSelection = sel;
+      oldSelection = sel;
     }
   }
 

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { dbInfo, refreshHistory } from "../../store";
 
   const refresh = () => refreshHistory.refresh();

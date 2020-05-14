@@ -1,5 +1,5 @@
-<script lang="ts">
-  export let showForm: boolean;
+<script>
+  export let showForm;
   let name = "";
   let dbType = "";
   let submitting = false;

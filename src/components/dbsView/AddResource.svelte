@@ -1,9 +1,9 @@
-<script lang="ts">
-  export let showForm: boolean;
-  export let dbName: string;
-  export let dbType: string;
-  let resourceName: string;
-  let submitting: boolean = false;
+<script>
+  export let showForm;
+  export let dbName;
+  export let dbType;
+  let resourceName;
+  let submitting = false;
   let file = "";
   let fileName = "";
 
@@ -29,7 +29,6 @@
           showForm = false;
         });
     });
-    
   };
   // class style values
   const base = "bg-blue-500 text-white font-bold py-2 px-4 rounded";

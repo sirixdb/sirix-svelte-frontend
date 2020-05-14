@@ -1,8 +1,13 @@
-import { writable, Writable } from "svelte/store";
-import { DatabaseInfo } from "sirix/src/info";
+import { writable } from "svelte/store";
 
-
-export const dbInfo: Writable<DatabaseInfo[]> = writable([]);
+/*  // type of `dbInfo` is Writable<DatabaseInfo[]>
+ *  interface DatabaseInfo {
+ *   name: string
+ *   type: string
+ *   resources: string[]
+ *  }
+ */
+export const dbInfo = writable([]);
 
 export const loggedIn = writable(false);
 
@@ -21,17 +26,19 @@ function refresher() {
 export const refreshHistory = refresher();
 export const refreshResource = refresher();
 
-interface resourceInfo {
-  dbName: string,
-  dbType: string,
-  resourceName: string,
-  revision: number,
-  diff: number
-}
-
+/*
+ *  // type of `selected` is Writable<resourceInfo>
+ *  interface resourceInfo {
+ *    dbName: string,
+ *    dbType: string,
+ *    resourceName: string,
+ *    revision: number,
+ *    diff: number
+ *  }
+*/
 export const diffView = writable(false);
 
-export const selected: Writable<resourceInfo> = writable({
+export const selected = writable({
   dbName: null,
   dbType: null,
   resourceName: null,

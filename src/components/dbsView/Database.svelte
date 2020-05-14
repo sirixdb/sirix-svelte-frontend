@@ -1,12 +1,15 @@
-<script lang="ts">
-  interface Database {
-    name: string;
-    type: string;
-    resources: string[];
-  }
-  export let database: Database;
-  let expanded: boolean = false;
-  let height: number;
+<script>
+  /*
+   *  // interface of `database` prop 
+   *  interface Database {
+   *    name: string;
+   *    type: string;
+   *    resources: string[];
+   *  }
+   */
+  export let database;
+  let expanded = false;
+  let height;
 
   // transformations
   import { tweened } from "svelte/motion";
@@ -32,8 +35,8 @@
   import Trash from "../icons/Trash.svelte";
   import AddDialog from "./AddDialog.svelte";
   import DeleteDialog from "./DeleteDialog.svelte";
-  let showDeleteDialog: boolean = false;
-  let showAddDialog: boolean = false;
+  let showDeleteDialog = false;
+  let showAddDialog = false;
 </script>
 
 <div

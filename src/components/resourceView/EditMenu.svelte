@@ -1,6 +1,6 @@
-<script lang="ts">
-  let show: boolean = false;
-  let height: number;
+<script>
+  let show = false;
+  let height;
   import Trash from "../icons/Trash.svelte";
 
   import { selected } from "../../store";
@@ -11,7 +11,7 @@
   });
   onDestroy(unsubscribe);
 
-  export let nodeId: number;
+  export let nodeId;
 
   import { sirix } from "../../sirix";
   const del = () => {

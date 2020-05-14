@@ -1,6 +1,6 @@
-<script lang="ts">
-  export let color: string = "#000";
-  export let fill: string = "";
+<script>
+  export let color = "#000";
+  export let fill = "";
   export let fillOpacity = 0;
   export let size = 30;
 </script>

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   // component
   import Inner from "./Inner.svelte";
   // store
@@ -10,7 +10,7 @@
   import { sirix } from "../../sirix";
 
   // form control
-  let loggingIn: boolean = false;
+  let loggingIn = false;
 
   let login = ({ detail }) => {
     loggingIn = true;
