@@ -20,7 +20,7 @@
 <QueryBox />
 <div
   id="query-results"
-  style="min-height: calc(100vh - 215px); width: 80vw;"
+  style="min-height: calc(100vh - 215px); width: 70vw;"
   class="mr-0 bg-gray-200 overflow-scroll float-right">
   <QueryResults />
 </div>

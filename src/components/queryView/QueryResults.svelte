@@ -1,16 +1,15 @@
 <script>
   import QueryResult from "./QueryResult.svelte";
   import { dataStore } from "./store";
-  let header, results;
+  let results;
   $: {
-    header = Object.keys($dataStore)[0];
-    results = $dataStore[header];
-    header = header ? header : "";
+    results = $dataStore.rest;
     results = results ? results : [];
   }
 </script>
 
-<div>{header}</div>
 {#each results as result}
-  <QueryResult data={result} />
+  <div class="px-2">
+    <QueryResult data={result} />
+  </div>
 {/each}

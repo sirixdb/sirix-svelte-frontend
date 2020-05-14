@@ -1,6 +1,5 @@
 <script>
   export let props;
-  import { containerFuncReg } from "./functions";
 
   const toggleExpansion = () => {
     expanded = !expanded;

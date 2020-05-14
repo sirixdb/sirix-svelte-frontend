@@ -1,6 +1,6 @@
 <script>
   export let data;
-  let revisionNumber, revisionTimestamp, body;
+  let revisionNumber, revisionTimestamp, body, isContainer;
   $: {
     revisionNumber = data.revisionNumber;
     revisionTimestamp = data.revisionTimestamp;
@@ -9,12 +9,26 @@
     } else {
       body = data;
     }
+    if (typeof body === "object") {
+      isContainer = true;
+    }
   }
+  import { Container, Value } from "./jsonNode/nodes.js";
 </script>
 
 {#if revisionNumber !== undefined && revisionTimestamp !== undefined}
-  <div><i>Revision:</i> {revisionNumber}</div>
-  <div><i>Timestamp:</i> {revisionTimestamp}</div>
+  <div>
+    <i>Revision:</i>
+    {revisionNumber}
+  </div>
+  <div>
+    <i>Timestamp:</i>
+    {revisionTimestamp}
+  </div>
 {/if}
 
-{JSON.stringify(body)}
+{#if isContainer}
+  <Container data={body} />
+{:else}
+  <Value value={body} />
+{/if}
