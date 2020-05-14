@@ -48,7 +48,7 @@
   };
 </script>
 
-<pre>
+<pre class="mb-0">
   <code
     on:input={render}
     on:keydown={handleKeydown}
@@ -56,12 +56,12 @@
     class="block h-32 hljs">
     {@html html}
   </code>
-  <button
-    title="CTRL+ENTER"
-    class={text.length !== 0 ? enabled : disabled}
-    disabled={text.length === 0}
-    on:click={handleClick}
-    type="button">
-    Query
-  </button>
 </pre>
+<button
+  title="CTRL+ENTER"
+  class={text.length !== 0 ? enabled : disabled}
+  disabled={text.length === 0}
+  on:click={handleClick}
+  type="button">
+  Query
+</button>
