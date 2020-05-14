@@ -3,16 +3,7 @@
   import History from "../components/historyView/History.svelte";
   import Controller from "../components/resourceView/Controller.svelte";
 
-  // whenever logged out, redirect to login
-  import { goto } from "@sapper/app";
-  import { loggedIn } from "../store";
-  import { onMount } from "svelte";
-
-  onMount(() => {
-    if (!$loggedIn) {
-      goto("./login");
-    }
-  });
+  import CheckLogin from "../components/login/CheckLogin.svelte";
 
   let historyColumn, diffColumn;
   let historyOffset, diffOffset;
@@ -108,6 +99,8 @@
     outline: 1px solid slategrey;
   }
 </style>
+
+<CheckLogin />
 
 <div style="top: 64px" id="grid-container" class="bottom-0">
   <section
