@@ -28,12 +28,11 @@
     );
   }
 
-  let enabled =
-    "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-default";
-  let disabled =
-    "bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed";
-  let loading =
-    "bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-wait";
+  let baseStyle =
+    "bg-blue-500 text-white font-bold py-2 px-4 my-2 mx-4 rounded fixed";
+  let enabled = `${baseStyle} cursor-default`;
+  let disabled = `${baseStyle} opacity-50 cursor-not-allowed`;
+  let loading = `${baseStyle} opacity-50 cursor-wait`;
 
   const handleClick = () => {
     console.log(text);
@@ -48,7 +47,7 @@
   };
 </script>
 
-<pre class="mb-0">
+<pre class="my-0">
   <code
     on:input={render}
     on:keydown={handleKeydown}
@@ -62,6 +61,7 @@
   class={text.length !== 0 ? enabled : disabled}
   disabled={text.length === 0}
   on:click={handleClick}
+  style="right: 30vw"
   type="button">
   Query
 </button>
