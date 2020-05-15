@@ -18,6 +18,7 @@
   };
 
   import Arrow from "icons/Arrow.svelte";
+  import ArrowRight from "icons/ArrowRight.svelte";
   import { Key, Value } from "./nodes.js";
   // transformations
   import { expandAndFade } from "utils/transition.js";
@@ -31,14 +32,17 @@
     <Arrow {expanded} />
   {/if}
   {#if index !== null}{index}:{/if}
-  <span on:click={handleClick}>
-    {#if isArray}
-      <i>array</i>
-      [ ]
-    {:else}
-      <i>object</i>
-      {'{ }'}
-    {/if}
+  {#if isArray}
+    <i>array</i>
+    [ ]
+  {:else}
+    <i>object</i>
+    {'{ }'}
+  {/if}
+  <span
+    class="hover:bg-teal-100 rounded-full inline-block align-bottom"
+    on:click|stopPropagation={handleClick}>
+    <ArrowRight size={22} />
   </span>
 </span>
 

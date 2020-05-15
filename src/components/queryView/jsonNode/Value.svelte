@@ -26,8 +26,9 @@
   import { subTreeStore } from "../store.js";
   const handleClick = () => {
     subTreeStore.set(value);
-  }
+  };
 
+  import ArrowRight from "icons/ArrowRight.svelte";
   // transformations
   import { expandAndFade } from "utils/transition.js";
 </script>
@@ -39,7 +40,12 @@
 {#if isContainer}
   <Container data={value} />
 {:else}
-  <span on:click|stopPropagation={handleClick} class={textColor} transition:expandAndFade|local>
+  <span class={textColor} transition:expandAndFade|local>
     {isString ? `"${value}"` : value}
+  </span>
+  <span
+    class="hover:bg-teal-100 rounded-full inline-block align-bottom"
+    on:click|stopPropagation={handleClick}>
+    <ArrowRight size={22} />
   </span>
 {/if}
