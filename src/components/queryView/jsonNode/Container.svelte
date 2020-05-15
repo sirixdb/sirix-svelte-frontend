@@ -11,10 +11,16 @@
   $: isArray = Array.isArray(data);
   $: children = isArray ? data : Object.entries(data);
 
+  import { subTreeStore } from "../store.js";
+
+  const handleClick = () => {
+    subTreeStore.set(data);
+  };
+
   import Arrow from "icons/Arrow.svelte";
+  import { Key, Value } from "./nodes.js";
   // transformations
   import { expandAndFade } from "utils/transition.js";
-  import { Key, Value } from "./nodes.js";
 </script>
 
 <span
@@ -25,23 +31,26 @@
     <Arrow {expanded} />
   {/if}
   {#if index !== null}{index}:{/if}
-  {#if isArray}
-    <i>array</i>
-    [ ]
-  {:else}
-    <i>object</i>
-    {'{ }'}
-  {/if}
+  <span on:click={handleClick}>
+    {#if isArray}
+      <i>array</i>
+      [ ]
+    {:else}
+      <i>object</i>
+      {'{ }'}
+    {/if}
+  </span>
 </span>
 
 {#if expanded}
-  <div transition:expandAndFade|local class={hover ? 'bg-gray-300' : ''}>
+  <div
+    transition:expandAndFade|local
+    class={hover ? 'bg-gray-300' : ''}
+    on:mouseover|stopPropagation={() => (hover = true)}
+    on:mouseout|stopPropagation={() => (hover = false)}>
     {#each children as n, index}
       {#if isArray}
-        <div
-          on:mouseover|stopPropagation={() => (hover = true)}
-          on:mouseout|stopPropagation={() => (hover = false)}
-          class="pl-4">
+        <div class="pl-4">
           <Value value={n} />
         </div>
       {:else}

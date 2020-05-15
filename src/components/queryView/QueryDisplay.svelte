@@ -19,7 +19,7 @@
 </style>
 
 <div class="flex">
-  <div class="relative scroll" style="width: 70vw;">
+  <div class="scroll" style="width: 70vw;">
     <QueryBox />
     <div
       style="height: calc(100vh - 199px); width: 70vw;"

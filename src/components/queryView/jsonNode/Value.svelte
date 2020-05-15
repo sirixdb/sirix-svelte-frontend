@@ -23,6 +23,11 @@
           "text-indigo-600";
     }
   }
+  import { subTreeStore } from "../store.js";
+  const handleClick = () => {
+    subTreeStore.set(value);
+  }
+
   // transformations
   import { expandAndFade } from "utils/transition.js";
 </script>
@@ -34,7 +39,7 @@
 {#if isContainer}
   <Container data={value} />
 {:else}
-  <span class={textColor} transition:expandAndFade|local>
+  <span on:click|stopPropagation={handleClick} class={textColor} transition:expandAndFade|local>
     {isString ? `"${value}"` : value}
   </span>
 {/if}
