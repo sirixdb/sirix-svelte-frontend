@@ -5,18 +5,28 @@
   } from "./positionUtils";
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
-  import { dataStore } from "./store";
+  import { dataStore, queryStore } from "./store";
+  import { addToQueries, refreshQueries } from "lib/db.js";
   import hljs from "highlight.js/lib/core";
   import xquery from "highlight.js/lib/languages/xquery";
   import "highlight.js/styles/tomorrow-night-eighties.css";
   hljs.registerLanguage("xquery", xquery);
-  let html = "";
+
   let text = "";
+  let html = "";
+  $: {
+    text = $queryStore;
+    style(text);
+  }
+
+  function style(text) {
+    html = hljs.highlight("xquery", text).value;
+  }
 
   async function render(event) {
     const position = getCaretCharacterOffsetWithin(event.target);
-    text = event.target.innerText;
-    html = hljs.highlight("xquery", text).value;
+    queryStore.set(event.target.innerText);
+    style(event.target.innerText);
     await tick();
     setCurrentCursorPosition(
       event.target,
@@ -34,8 +44,8 @@
   let disabled = `${baseStyle} opacity-50 cursor-not-allowed`;
   let loading = `${baseStyle} opacity-50 cursor-wait`;
 
-  const handleClick = () => {
-    console.log(text);
+  const handleClick = async () => {
+    addToQueries("recents", text, true);
     sirix.query(text).then(data => {
       dataStore.set(data);
     });

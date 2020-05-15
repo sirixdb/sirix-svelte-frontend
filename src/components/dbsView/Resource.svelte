@@ -3,7 +3,7 @@
   export let dbName;
   export let dbType;
 
-  import { selected, refreshHistory } from "../../store";
+  import { selected, refreshHistory } from "store";
   const selectResource = () => {
     let refresh = true;
     selected.update(old => {
@@ -19,7 +19,7 @@
 
   import DeleteDialog from "./DeleteDialog.svelte";
 
-  import Trash from "../icons/Trash.svelte";
+  import Trash from "icons/Trash.svelte";
 
   let showDeleteDialog = false;
 

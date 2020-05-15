@@ -12,7 +12,7 @@
   let textColor;
   let isContainer, isString;
   $: {
-    isContainer = typeof value === "object";
+    isContainer = typeof value === "object" && value !== null;
     isString = typeof value === "string";
     if (!isContainer) {
       textColor = isString
@@ -24,7 +24,7 @@
     }
   }
   // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
+  import { expandAndFade } from "utils/transition.js";
 </script>
 
 {#if index !== undefined}

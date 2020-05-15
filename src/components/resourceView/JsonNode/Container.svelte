@@ -25,11 +25,11 @@
     });
   }
 
-  import { diffView } from "../../../store";
+  import { diffView } from "store";
 
-  import Arrow from "./Arrow.svelte";
+  import Arrow from "icons/Arrow.svelte";
   // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
+  import { expandAndFade } from "utils/transition.js";
 
   let element;
   let timeout;

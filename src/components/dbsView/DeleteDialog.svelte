@@ -4,16 +4,11 @@
   export let resourceName = null;
   let hideForm = () => (show = false);
 
-  import Trash from "../icons/Trash.svelte";
+  import Trash from "icons/Trash.svelte";
 
   import { sirix } from "../../sirix";
 
-  import {
-    dbInfo,
-    selected,
-    refreshResource,
-    refreshHistory
-  } from "../../store";
+  import { dbInfo, selected, refreshResource, refreshHistory } from "store";
 
   const refresh = () => {
     dbInfo.update(arr => {

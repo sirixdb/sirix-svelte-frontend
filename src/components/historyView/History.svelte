@@ -1,5 +1,5 @@
 <script>
-  import { selected } from "../../store";
+  import { selected } from "store";
 
   export let diffColumn = false;
 

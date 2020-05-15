@@ -11,7 +11,7 @@ export const dbInfo = writable([]);
 
 export const loggedIn = writable(false);
 
-function refresher() {
+export function refresher() {
   const { subscribe, set, update } = writable(0);
 
   return {

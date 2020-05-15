@@ -1,5 +1,5 @@
 <script>
-  import { dbInfo, refreshHistory } from "../../store";
+  import { dbInfo, refreshHistory } from "store";
 
   const refresh = () => refreshHistory.refresh();
 

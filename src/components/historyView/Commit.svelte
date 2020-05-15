@@ -13,7 +13,7 @@
 
   $: [date, time] = commit.revisionTimestamp.split("T");
 
-  import { selected, refreshResource } from "../../store";
+  import { selected, refreshResource } from "store";
   const selectRevision = () => {
     let refresh = true;
     if (!diffColumn) {

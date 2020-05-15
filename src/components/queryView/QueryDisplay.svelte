@@ -23,12 +23,12 @@
     <QueryBox />
     <div
       style="height: calc(100vh - 199px); width: 70vw;"
-      class="mr-0 bg-gray-200 overflow-scroll">
+      class="mr-0 bg-gray-100 overflow-scroll">
       <QueryResults />
     </div>
   </div>
 
-  <div class="scroll">
+  <div class="scroll bg-purple-100" style="width: 30vw">
     <ControlPanel />
   </div>
 </div>

@@ -3,7 +3,7 @@
   import Add from "./Add.svelte";
   import Refresh from "./Refresh.svelte";
 
-  import { dbInfo } from "../../store";
+  import { dbInfo } from "store";
 </script>
 
 <nav class="ml-0 my-0 bg-teal-900 min-h-full">

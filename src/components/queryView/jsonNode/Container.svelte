@@ -11,9 +11,9 @@
   $: isArray = Array.isArray(data);
   $: children = isArray ? data : Object.entries(data);
 
-  import Arrow from "../../resourceView/jsonNode/Arrow.svelte";
+  import Arrow from "icons/Arrow.svelte";
   // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
+  import { expandAndFade } from "utils/transition.js";
   import { Key, Value } from "./nodes.js";
 </script>
 

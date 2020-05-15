@@ -16,12 +16,12 @@
   let valueIsArray, valueIsObject;
   $: {
     valueIsArray = Array.isArray(value);
-    valueIsObject = !valueIsArray && typeof value === "object";
+    valueIsObject = !valueIsArray && typeof value === "object" && value !== null;
   }
 
-  import Arrow from "../../resourceView/jsonNode/Arrow.svelte";
+  import Arrow from "icons/Arrow.svelte";
   // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
+  import { expandAndFade } from "utils/transition.js";
 
   import { Value, Container } from "./nodes.js";
 </script>

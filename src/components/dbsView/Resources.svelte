@@ -5,7 +5,7 @@
 
   import Resource from "./Resource.svelte";
 
-  import { expandAndFade } from "../../utils/transition";
+  import { expandAndFade } from "utils/transition.js";
 
 </script>
 

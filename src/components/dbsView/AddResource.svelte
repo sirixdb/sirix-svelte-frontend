@@ -12,7 +12,7 @@
     fileName !== "" && resourceName === undefined ? fileName : resourceName;
 
   import { sirix } from "../../sirix";
-  import { dbInfo } from "../../store";
+  import { dbInfo } from "store";
 
   import Dropzone from "./Dropzone.svelte";
 

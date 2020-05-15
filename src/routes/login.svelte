@@ -1,7 +1,7 @@
 <script>
   import Login from "../components/login/Login.svelte";
   import { goto } from "@sapper/app";
-  import { loggedIn } from "../store";
+  import { loggedIn } from "store";
   let message = ({ detail }) => {
     if (detail === "redirect") {
       loggedIn.set(true);
