@@ -41,7 +41,7 @@
   let isLoading = false;
   let baseStyle =
     "bg-blue-500 text-white font-bold py-2 px-4 my-2 mx-4 rounded fixed";
-  let enabled = `${baseStyle} cursor-default`;
+  let enabled = `${baseStyle} cursor-pointer`;
   let disabled = `${baseStyle} opacity-50 cursor-not-allowed`;
   let loading = `${baseStyle} opacity-50 cursor-wait`;
 

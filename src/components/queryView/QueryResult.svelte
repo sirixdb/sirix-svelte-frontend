@@ -31,11 +31,11 @@
 </script>
 
 {#if revisionNumber !== undefined && revisionTimestamp !== undefined}
-  <div>
+  <div class="font-mono">
     <i>Revision:</i>
     {revisionNumber}
   </div>
-  <div>
+  <div class="font-mono">
     <i>Timestamp:</i>
     {revisionTimestamp}
   </div>

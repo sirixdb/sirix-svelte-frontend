@@ -37,7 +37,7 @@
       {#each list as item, index}
         <div
           on:click={() => queryStore.set(item)}
-          class="py-1 my-1 ml-1 pl-1 hover:bg-gray-200">
+          class="py-1 my-1 ml-1 pl-1 hover:bg-gray-200 cursor-pointer">
           <span class="text-sm inline font-mono">{item}</span>
           <span
             on:click|stopPropagation={() => handleDelete(index)}
