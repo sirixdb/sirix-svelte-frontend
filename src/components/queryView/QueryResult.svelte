@@ -22,7 +22,7 @@
   import { syntaxHighlight } from "lib/json_utils.js";
   $: subTree =
     $subTreeStore && $subTreeStore[index] !== undefined
-      ? syntaxHighlight($subTreeStore)
+      ? syntaxHighlight($subTreeStore[index])
       : "";
 
   setContext("resultIndex", index);

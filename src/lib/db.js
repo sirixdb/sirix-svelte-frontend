@@ -19,14 +19,13 @@ export const refreshQueries = refresher();
 export async function addToQueries(store, text, flush) {
     const db = await openQueryDB();
     let queries = await db.get("unbound_queries", store);
-    if (queries[0] !== text) {
-        queries.unshift(text);
-        if (flush && queries.length > 10) {
-            queries = queries.slice(0, 10);
-        }
-        await db.put("unbound_queries", queries, store);
-        refreshQueries.refresh();
+    queries = queries.filter(query => query !== text);
+    queries.unshift(text);
+    if (flush && queries.length > 10) {
+        queries = queries.slice(0, 10);
     }
+    await db.put("unbound_queries", queries, store);
+    refreshQueries.refresh();
 }
 
 export async function removeFromQueriesByIndex(store, index) {

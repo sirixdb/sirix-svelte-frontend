@@ -38,24 +38,38 @@
     );
   }
 
+  let isLoading = false;
   let baseStyle =
     "bg-blue-500 text-white font-bold py-2 px-4 my-2 mx-4 rounded fixed";
   let enabled = `${baseStyle} cursor-default`;
   let disabled = `${baseStyle} opacity-50 cursor-not-allowed`;
   let loading = `${baseStyle} opacity-50 cursor-wait`;
 
-  const handleClick = async () => {
+  const handleSave = async () => {
+    addToQueries("favorites", text, true);
+  };
+
+  const handleQuery = async () => {
+    isLoading = true;
     addToQueries("recents", text, true);
     sirix
       .query(text)
       .then(data => {
         subTreeStore.set([]);
         dataStore.set(data);
+        isLoading = false;
       })
+      .catch(() => {
+        isLoading = false;
+      });
   };
   const handleKeydown = event => {
-    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-      handleClick();
+    if (event.ctrlKey) {
+      if (event.keyCode == 10 || event.keyCode == 13 || event.metaKey) {
+        handleQuery();
+      } else if (event.keyCode == 83) {
+        handleSave();
+      }
     }
   };
 </script>
@@ -63,7 +77,7 @@
 <pre class="my-0">
   <code
     on:input={render}
-    on:keydown={handleKeydown}
+    on:keydown|stopPropagation={handleKeydown}
     contenteditable
     class="block h-32 hljs">
     {@html html}
@@ -71,10 +85,19 @@
 </pre>
 <button
   title="CTRL+ENTER"
-  class={text.length !== 0 ? enabled : disabled}
+  class={isLoading ? loading : text.length !== 0 ? enabled : disabled}
   disabled={text.length === 0}
-  on:click={handleClick}
+  on:click={handleQuery}
   style="right: 30vw"
   type="button">
   Query
+</button>
+<button
+  title="CTRL+S"
+  class={text.length !== 0 ? enabled : disabled}
+  disabled={text.length === 0}
+  on:click={handleSave}
+  style="right: calc(30vw + 100px);"
+  type="button">
+  Save
 </button>
