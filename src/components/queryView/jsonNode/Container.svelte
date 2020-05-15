@@ -43,10 +43,10 @@
   {#if index !== null}{index}:{/if}
   {#if isArray}
     <i>array</i>
-    [ ]
+    [{children.length}]
   {:else}
     <i>object</i>
-    {'{ }'}
+    {`{${children.length}}`}
   {/if}
   <span
     class="hover:bg-teal-100 rounded-full inline-block align-bottom"

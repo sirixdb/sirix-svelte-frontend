@@ -55,7 +55,7 @@
   <div
     style="height: {height}px;"
     class="w-1/2 border-solid border-gray-500 rounded-sm overflow-y-scroll scroll">
-    <pre class="text-sm">
+    <pre class="text-sm my-0">
       {@html subTree}
     </pre>
   </div>
