@@ -9,8 +9,10 @@
     } else {
       body = data;
     }
-    if (typeof body === "object") {
+    if (typeof body === "object" && body !== null) {
       isContainer = true;
+    } else {
+      isContainer = false;
     }
   }
   import { Container, Value } from "./jsonNode/nodes.js";
