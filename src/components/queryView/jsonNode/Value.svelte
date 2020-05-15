@@ -7,6 +7,7 @@
   export let expanded = undefined;
   export let hover = undefined;
   expanded, hover;
+  export let depth;
 
   export let value;
   let textColor;
@@ -38,7 +39,7 @@
 {/if}
 
 {#if isContainer}
-  <Container data={value} />
+  <Container data={value} {depth} />
 {:else}
   <span class={textColor} transition:expandAndFade|local>
     {isString ? `"${value}"` : value}

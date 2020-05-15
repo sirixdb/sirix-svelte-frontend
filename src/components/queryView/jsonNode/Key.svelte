@@ -4,7 +4,8 @@
 
   let hover = false;
 
-  let expanded = false;
+  export let depth;
+  export let expanded = depth > 1 ? false : true;
   const toggleExpansion = () => {
     expanded = !expanded;
   };
@@ -41,9 +42,10 @@
   <Container
     keyValue={true}
     data={value}
+    depth={depth + 1}
     bind:expanded
     {hover} />
   {:else}
-  <Value {value} />
+  <Value {value} depth={depth} />
   {/if}
 </span>

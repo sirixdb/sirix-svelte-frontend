@@ -4,7 +4,9 @@
   };
 
   export let hover = false;
-  export let expanded = false;
+  export let depth;
+  // automatically open show first 3 levels, including root
+  export let expanded = depth < 2 ? true : false;
   export let index = null;
   export let data;
   export let keyValue = false;
@@ -55,14 +57,14 @@
     {#each children as n, index}
       {#if isArray}
         <div class="pl-4">
-          <Value value={n} />
+          <Value value={n} depth={depth + 1} />
         </div>
       {:else}
         <div
           on:mouseover|stopPropagation={() => (hover = true)}
           on:mouseout|stopPropagation={() => (hover = false)}
           class="pl-4">
-          <Key key={n[0]} value={n[1]} />
+          <Key depth={depth + 1} key={n[0]} value={n[1]} />
         </div>
       {/if}
     {/each}

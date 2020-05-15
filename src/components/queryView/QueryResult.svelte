@@ -30,7 +30,7 @@
 {/if}
 
 {#if isContainer}
-  <Container data={body} />
+  <Container depth={0} data={body} />
 {:else}
-  <Value value={body} />
+  <Value depth={0} value={body} />
 {/if}
