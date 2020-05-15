@@ -46,9 +46,11 @@
 
   const handleClick = async () => {
     addToQueries("recents", text, true);
-    sirix.query(text).then(data => {
-      dataStore.set(data);
-    });
+    sirix
+      .query(text)
+      .then(data => {
+        dataStore.set(data);
+      })
   };
   const handleKeydown = event => {
     if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {

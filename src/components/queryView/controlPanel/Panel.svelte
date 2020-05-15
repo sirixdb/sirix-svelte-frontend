@@ -1,5 +1,9 @@
 <script>
-  import { openQueryDB, removeFromQueriesByIndex, refreshQueries } from "lib/db.js";
+  import {
+    openQueryDB,
+    removeFromQueriesByIndex,
+    refreshQueries
+  } from "lib/db.js";
   import { onMount } from "svelte";
   import QueryList from "./QueryList.svelte";
 
@@ -13,8 +17,9 @@
   };
 
   $: {
-    $refreshQueries;
-    loadQueries();
+    if ($refreshQueries !== 0) {
+      loadQueries();
+    };
   }
 
   const handleDelete = ({ detail }) => {
