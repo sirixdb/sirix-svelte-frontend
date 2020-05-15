@@ -1,4 +1,5 @@
 <script>
+  import { getContext } from "svelte";
   const toggleExpansion = () => {
     expanded = !expanded;
   };
@@ -15,8 +16,14 @@
 
   import { subTreeStore } from "../store.js";
 
+  const resultIndex = getContext("resultIndex");
+
   const handleClick = () => {
-    subTreeStore.set(data);
+    console.log(resultIndex)
+    subTreeStore.update(old => {
+      old[resultIndex] = data
+      return old;
+    });
   };
 
   import Arrow from "icons/Arrow.svelte";

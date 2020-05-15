@@ -1,5 +1,8 @@
 <script>
+  import { onMount, setContext } from "svelte";
   export let data;
+  export let index;
+  let height;
   let revisionNumber, revisionTimestamp, body, isContainer;
   $: {
     revisionNumber = data.revisionNumber;
@@ -15,8 +18,31 @@
       isContainer = false;
     }
   }
+  import { subTreeStore } from "./store.js";
+  import { syntaxHighlight } from "lib/json_utils.js";
+  $: subTree =
+    $subTreeStore && $subTreeStore[index] !== undefined
+      ? syntaxHighlight($subTreeStore)
+      : "";
+
+  setContext("resultIndex", index);
+
   import { Container, Value } from "./jsonNode/nodes.js";
 </script>
+
+<style>
+  .scroll::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  .scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  .scroll::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+</style>
 
 {#if revisionNumber !== undefined && revisionTimestamp !== undefined}
   <div>
@@ -29,8 +55,22 @@
   </div>
 {/if}
 
-{#if isContainer}
-  <Container depth={0} data={body} />
-{:else}
-  <Value depth={0} value={body} />
-{/if}
+<section class="flex">
+  <div class="w-1/2">
+    <div bind:clientHeight={height} class="px-2">
+      {#if isContainer}
+        <Container depth={0} data={body} />
+      {:else}
+        <Value depth={0} value={body} />
+      {/if}
+    </div>
+    <br />
+  </div>
+  <div
+    style="height: {height}px;"
+    class="w-1/2 border-solid border-gray-500 rounded-sm overflow-y-scroll scroll">
+    <pre class="text-sm">
+      {@html subTree}
+    </pre>
+  </div>
+</section>

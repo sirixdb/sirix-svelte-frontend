@@ -5,7 +5,7 @@
   } from "./positionUtils";
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
-  import { dataStore, queryStore } from "./store";
+  import { dataStore, queryStore, subTreeStore } from "./store";
   import { addToQueries, refreshQueries } from "lib/db.js";
   import hljs from "highlight.js/lib/core";
   import xquery from "highlight.js/lib/languages/xquery";
@@ -49,6 +49,7 @@
     sirix
       .query(text)
       .then(data => {
+        subTreeStore.set([]);
         dataStore.set(data);
       })
   };

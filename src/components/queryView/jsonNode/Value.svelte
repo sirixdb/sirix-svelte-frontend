@@ -1,4 +1,5 @@
 <script>
+  import { getContext } from "svelte";
   import { Container } from "./nodes.js";
 
   export let index = undefined;
@@ -25,8 +26,12 @@
     }
   }
   import { subTreeStore } from "../store.js";
+  const resultIndex = getContext("resultIndex")
   const handleClick = () => {
-    subTreeStore.set(value);
+    subTreeStore.update(old => {
+      old[resultIndex] = value;
+      return old;
+    });
   };
 
   import ArrowRight from "icons/ArrowRight.svelte";
