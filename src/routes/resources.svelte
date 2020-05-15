@@ -86,18 +86,6 @@
   #resource-view {
     grid-area: resource-view;
   }
-
-  section::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-  section::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  section::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
-  }
 </style>
 
 <CheckLogin />
@@ -105,7 +93,7 @@
 <div style="top: 64px" id="grid-container" class="bottom-0">
   <section
     id="dbs-view"
-    class="overflow-y-scroll bottom-0 min-h-full"
+    class="overflow-y-scroll bottom-0 min-h-full scroll"
     style="margin-right: calc(100vw / 17 * 4 * {$shift}); margin-left:
     calc(-100vw / 17 * 4 * {$shift});">
     <Tree />
@@ -114,7 +102,7 @@
   <section
     bind:this={historyColumn}
     id="history-view"
-    class="overflow-y-scroll bottom-0 min-h-full"
+    class="overflow-y-scroll bottom-0 min-h-full scroll"
     style="width: max(calc(100vw / 17 * 3.4 * {$shift}), calc(100vw / 17 * 3));
     margin-right: calc(100vw / 17 * 3.6 * {$shift}); margin-left: calc(-100vw /
     17 * 3.6 * {$shift});">
@@ -125,14 +113,14 @@
     <section
       bind:this={diffColumn}
       id="diff-view"
-      class="overflow-y-scroll bottom-0 min-h-full"
+      class="overflow-y-scroll bottom-0 min-h-full scroll"
       style="width: calc(100vw / 17 * 3.4 * {$shift}); margin-right: calc(100vw
       / 17 * 3.6 * {$shift}); margin-left: calc(-100vw / 17 * 3.6 * {$shift});">
       <History {history} diffColumn={true} offset={diffOffset} />
     </section>
   {/if}
 
-  <section id="resource-view" class="overflow-y-scroll bottom-0 min-h-full">
+  <section id="resource-view" class="overflow-y-scroll scroll bottom-0 min-h-full">
     <Controller />
   </section>
 </div>

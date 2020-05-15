@@ -25,17 +25,6 @@
     height: 23px;
     width: 23px;
   }
-  .scroll::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-  .scroll::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  .scroll::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
-  }
 </style>
 
 <div class="px-2">
