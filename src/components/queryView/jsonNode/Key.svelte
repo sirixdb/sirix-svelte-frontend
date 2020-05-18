@@ -20,9 +20,9 @@
     valueIsObject = !valueIsArray && typeof value === "object" && value !== null;
   }
 
-  import Arrow from "icons/Arrow.svelte";
+  import Arrow from "../../icons/Arrow.svelte";
   // transformations
-  import { expandAndFade } from "utils/transition.js";
+  import { expandAndFade } from "../../../utils/transition.js";
 
   import { Value, Container } from "./nodes.js";
 </script>

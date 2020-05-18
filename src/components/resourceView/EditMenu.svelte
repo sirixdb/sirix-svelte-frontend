@@ -1,9 +1,9 @@
 <script>
   let show = false;
   let height;
-  import Trash from "icons/Trash.svelte";
+  import Trash from "../icons/Trash.svelte";
 
-  import { selected } from "store";
+  import { selected } from "../../store";
   import { onDestroy } from "svelte";
   let dbName, dbType, resourceName;
   const unsubscribe = selected.subscribe(sel => {

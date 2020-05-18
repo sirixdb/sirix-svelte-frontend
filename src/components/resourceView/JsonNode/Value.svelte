@@ -25,10 +25,10 @@
           "text-indigo-600";
   }
 
-  import { diffView } from "store";
+  import { diffView } from "../../../store";
 
   // transformations
-  import { expandAndFade } from "utils/transition.js";
+  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 {#if index !== undefined && !$diffView}

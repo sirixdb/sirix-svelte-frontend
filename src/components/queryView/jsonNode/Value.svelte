@@ -34,9 +34,9 @@
     });
   };
 
-  import ArrowRight from "icons/ArrowRight.svelte";
+  import ArrowRight from "../../icons/ArrowRight.svelte";
   // transformations
-  import { expandAndFade } from "utils/transition.js";
+  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 {#if index !== undefined}

@@ -36,9 +36,9 @@
     });
   }
 
-  import Arrow from "icons/Arrow.svelte";
+  import Arrow from "../../icons/Arrow.svelte";
   // transformations
-  import { expandAndFade } from "utils/transition.js";
+  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 <span

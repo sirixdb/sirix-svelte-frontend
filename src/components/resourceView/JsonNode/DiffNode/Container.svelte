@@ -10,8 +10,8 @@
   $: isArray = Array.isArray(data);
   $: items = Object.entries(data).length;
 
-  import Arrow from "icons/Arrow.svelte";
-  import { expandAndFade } from "utils/transition.js";
+  import Arrow from "../../../icons/Arrow.svelte";
+  import { expandAndFade } from "../../../../utils/transition.js";
 </script>
 
 <span on:click|stopPropagation={toggleExpansion}>

@@ -26,11 +26,11 @@
     });
   };
 
-  import Arrow from "icons/Arrow.svelte";
-  import ArrowRight from "icons/ArrowRight.svelte";
+  import Arrow from "../../icons/Arrow.svelte";
+  import ArrowRight from "../../icons/ArrowRight.svelte";
   import { Key, Value } from "./nodes.js";
   // transformations
-  import { expandAndFade } from "utils/transition.js";
+  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 <span

@@ -6,7 +6,6 @@ import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import json from "@rollup/plugin-json";
-import alias from '@rollup/plugin-alias';
 import pkg from './package.json';
 import preprocess from 'svelte-preprocess';
 
@@ -21,15 +20,6 @@ export default {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
-      alias({
-        resolve: ['.svelte', '.js', '.ts'],
-        entries: [
-          { find: 'icons', replacement: './src/components/icons/' },
-          { find: 'utils', replacement: './src/utils/' },
-          { find: 'store', replacement: './src/store.js' },
-          { find: 'lib', replacement: './src/lib' },
-        ]
-      }),
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode)
@@ -76,15 +66,6 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
-      alias({
-        resolve: ['.svelte', '.js'],
-        entries: [
-          { find: 'icons', replacement: './src/components/icons/' },
-          { find: 'utils', replacement: './src/utils/' },
-          { find: 'store', replacement: './src/store.js' },
-          { find: 'lib', replacement: './src/lib' },
-        ]
-      }),
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode)

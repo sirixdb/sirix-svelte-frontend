@@ -6,7 +6,7 @@
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
   import { dataStore, queryStore, subTreeStore } from "./store";
-  import { addToQueries, refreshQueries } from "lib/db.js";
+  import { addToQueries, refreshQueries } from "../../lib/db.js";
   import hljs from "highlight.js/lib/core";
   import xquery from "highlight.js/lib/languages/xquery";
   import "highlight.js/styles/tomorrow-night-eighties.css";

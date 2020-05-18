@@ -19,7 +19,7 @@
     }
   }
   import { subTreeStore } from "./store.js";
-  import { syntaxHighlight } from "lib/json_utils.js";
+  import { syntaxHighlight } from "../../lib/json_utils.js";
   $: subTree =
     $subTreeStore && $subTreeStore[index] !== undefined
       ? syntaxHighlight($subTreeStore[index])

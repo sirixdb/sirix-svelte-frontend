@@ -2,7 +2,7 @@
   // component
   import Inner from "./Inner.svelte";
   // store
-  import { loggedIn, dbInfo } from "store";
+  import { loggedIn, dbInfo } from "../../store";
   // dispacter
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();

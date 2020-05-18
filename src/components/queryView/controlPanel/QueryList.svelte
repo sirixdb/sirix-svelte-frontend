@@ -1,9 +1,9 @@
 <script>
   import { createEventDispatcher } from "svelte";
   const dispatcher = createEventDispatcher();
-  import Arrow from "icons/Arrow.svelte";
-  import Trash from "icons/Trash.svelte";
-  import { expandAndFade } from "utils/transition.js";
+  import Arrow from "../../icons/Arrow.svelte";
+  import Trash from "../../icons/Trash.svelte";
+  import { expandAndFade } from "../../../utils/transition.js";
   import { queryStore } from "../store";
   export let list;
   export let typeOfQueries;

@@ -31,7 +31,7 @@
 
   let shift = tweened(0, opts);
 
-  import { selected, refreshHistory, diffView } from "store";
+  import { selected, refreshHistory, diffView } from "../store";
   import { sirix } from "../sirix";
   let history = [];
 

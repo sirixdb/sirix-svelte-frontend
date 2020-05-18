@@ -1,5 +1,5 @@
 <script>
-  import { loggedIn } from "store";
+  import { loggedIn } from "../store";
   export let segment;
 
   const logout = () => {

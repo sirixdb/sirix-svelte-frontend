@@ -32,7 +32,7 @@
   }
 
   import Resources from "./Resources.svelte";
-  import Trash from "icons/Trash.svelte";
+  import Trash from "../icons/Trash.svelte";
   import AddDialog from "./AddDialog.svelte";
   import DeleteDialog from "./DeleteDialog.svelte";
   let showDeleteDialog = false;

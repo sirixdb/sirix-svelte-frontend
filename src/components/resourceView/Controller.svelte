@@ -1,7 +1,7 @@
 <script>
   import { sirix } from "../../sirix";
 
-  import { selected, refreshResource } from "store";
+  import { selected, refreshResource } from "../../store";
 
   let jsonResource = null;
 

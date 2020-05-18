@@ -19,7 +19,7 @@
 
   import DeleteDialog from "./DeleteDialog.svelte";
 
-  import Trash from "icons/Trash.svelte";
+  import Trash from "../icons/Trash.svelte";
 
   let showDeleteDialog = false;
 

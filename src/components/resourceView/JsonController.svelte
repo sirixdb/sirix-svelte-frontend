@@ -7,7 +7,7 @@
 
   import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree.js";
   import { sirix } from "../../sirix";
-  import { selected, refreshResource } from "store";
+  import { selected, refreshResource } from "../../store";
 
   let treeNode = createTree(node, []);
 
