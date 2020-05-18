@@ -2,8 +2,8 @@
   import AddDatabase from "./AddDatabase.svelte";
   import AddResource from "./AddResource.svelte";
   export let showForm: boolean;
-  export let dbName = null;
-  export let dbType = null;
+  export let dbName: string;
+  export let dbType: string;
   let hideForm = () => (showForm = false);
 </script>
 

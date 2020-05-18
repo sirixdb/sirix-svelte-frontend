@@ -1,14 +1,14 @@
-<script>
-  export let show;
-  export let dbName;
-  export let resourceName = null;
+<script lang="typescript">
+  export let show: boolean;
+  export let dbName: string;
+  export let resourceName: string = undefined;
   let hideForm = () => (show = false);
 
-  import Trash from "icons/Trash.svelte";
+  import Trash from "../icons/Trash.svelte";
 
   import { sirix } from "../../sirix";
 
-  import { dbInfo, selected, refreshResource, refreshHistory } from "store";
+  import { dbInfo, selected, refreshResource, refreshHistory } from "../../store";
 
   const refresh = () => {
     dbInfo.update(arr => {
@@ -20,7 +20,7 @@
 
   const del = () => {
     sirix.database(dbName).then(db => {
-      if (resourceName !== null) {
+      if (resourceName !== undefined) {
         db.resource(resourceName)
           .deleteById(null)
           .then(() => {
@@ -96,9 +96,8 @@
         on:click={del}
         class="bg-red-600 rounded-lg text-gray-200 m-2">
         <span class="uppercase">Delete</span>
-        <Trash color="#FFF" size="16" />
+        <Trash color="#FFF" size={16} />
       </button>
     </div>
   </div>
-
 </div>

@@ -1,9 +1,9 @@
-<script>
-  export let resourceName;
-  export let dbName;
-  export let dbType;
+<script lang="typescript">
+  export let resourceName: string;
+  export let dbName: string;
+  export let dbType: string;
 
-  import { selected, refreshHistory } from "store";
+  import { selected, refreshHistory } from "../../store";
   const selectResource = () => {
     let refresh = true;
     selected.update(old => {
@@ -23,7 +23,7 @@
 
   let showDeleteDialog = false;
 
-  let height;
+  let height: number;
 </script>
 
 <div

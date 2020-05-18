@@ -5,7 +5,7 @@
   let submitting = false;
 
   import { sirix } from "../../sirix";
-  import { dbInfo } from "store";
+  import { dbInfo } from "../../store";
 
   const formSubmit = () => {
     submitting = true;

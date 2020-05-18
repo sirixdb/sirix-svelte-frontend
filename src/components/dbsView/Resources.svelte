@@ -1,12 +1,11 @@
-<script>
-  export let resources;
-  export let dbName;
-  export let dbType;
+<script lang="typescript">
+  export let resources: string[];
+  export let dbName: string;
+  export let dbType: string;
 
   import Resource from "./Resource.svelte";
 
-  import { expandAndFade } from "utils/transition.js";
-
+  import { expandAndFade } from "../../utils/transition.js";
 </script>
 
 <div transition:expandAndFade>

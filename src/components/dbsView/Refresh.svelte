@@ -1,13 +1,13 @@
-<script>
+<script lang="typescript">
   import { sirix } from "../../sirix";
-  import { dbInfo } from "store";
+  import { dbInfo } from "../../store";
 
   const refresh = () => {
     sirix.getInfo().then(res => {
       dbInfo.set(res.slice());
     });
   }
-  let height;
+  let height: number;
 </script>
 
 <span

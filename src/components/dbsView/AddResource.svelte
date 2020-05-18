@@ -2,14 +2,14 @@
   export let showForm: boolean;
   export let dbName: string;
   export let dbType: string;
-  let resourceName: string;
+  let resourceName = "";
   let submitting = false;
   let file = "";
   let fileName = "";
 
   // use file name as default resourceName, if no name has been provided
   $: resourceName =
-    fileName !== "" && resourceName === undefined ? fileName : resourceName;
+    fileName !== "" && resourceName === "" ? fileName : resourceName;
 
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
@@ -18,11 +18,11 @@
 
   const formSubmit = () => {
     submitting = true;
-    sirix.database(dbName, dbType).then(db => {
+    sirix.database(dbName, dbType).then((db) => {
       db.resource(resourceName)
         .create(file)
         .then(() => {
-          dbInfo.update(arr => {
+          dbInfo.update((arr) => {
             return Object.assign(arr, sirix.sirixInfo.databaseInfo);
           });
           submitting = false;
@@ -52,9 +52,9 @@
   </div>
   <div>
     <button
-      class={submitting ? loading : resourceName === '' || resourceName === undefined || file === '' ? disabled : enabled}
+      class={submitting ? loading : resourceName === '' || file === '' ? disabled : enabled}
       type="button"
-      disabled={submitting || resourceName === '' || resourceName === undefined || file === ''}
+      disabled={submitting || resourceName === '' === undefined || file === ''}
       on:click={formSubmit}>
       Create
     </button>

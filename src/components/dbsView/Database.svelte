@@ -1,5 +1,5 @@
-<script>
-  /*
+<script lang="typescript">
+  /**
    *  // interface of `database` prop 
    *  interface Database {
    *    name: string;
@@ -9,7 +9,7 @@
    */
   export let database;
   let expanded = false;
-  let height;
+  let height: number;
 
   // transformations
   import { tweened } from "svelte/motion";

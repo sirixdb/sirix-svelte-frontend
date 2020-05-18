@@ -5,8 +5,8 @@
   let fileType;
   $: fileType = dbType === "json" ? "application/json" : "application/xml";
 
-  let fileInput;
-  const read = f => {
+  let fileInput: HTMLInputElement;
+  const read = (f: File) => {
     const fr = new FileReader();
     fileName = f.name;
     fr.onload = () => {
@@ -24,7 +24,7 @@
   };
 
   // for drag and drop
-  const onDrop = ev => {
+  const onDrop = (ev: DragEvent) => {
     if (ev.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
       // If dropped items aren't files, reject them
