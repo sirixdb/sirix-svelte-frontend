@@ -1,4 +1,4 @@
-<script>
+<script lang="typescript">
   import AddDialog from "./AddDialog.svelte";
 
   let form = false;

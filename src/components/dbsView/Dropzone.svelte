@@ -1,7 +1,7 @@
-<script>
+<script lang="typescript">
   export let dbType;
-  export let file;
-  export let fileName;
+  export let file: string | ArrayBuffer;
+  export let fileName: string;
   let fileType;
   $: fileType = dbType === "json" ? "application/json" : "application/xml";
 

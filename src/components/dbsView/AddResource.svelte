@@ -1,8 +1,8 @@
-<script>
-  export let showForm;
-  export let dbName;
-  export let dbType;
-  let resourceName;
+<script lang="typescript">
+  export let showForm: boolean;
+  export let dbName: string;
+  export let dbType: string;
+  let resourceName: string;
   let submitting = false;
   let file = "";
   let fileName = "";
@@ -12,7 +12,7 @@
     fileName !== "" && resourceName === undefined ? fileName : resourceName;
 
   import { sirix } from "../../sirix";
-  import { dbInfo } from "store";
+  import { dbInfo } from "../../store";
 
   import Dropzone from "./Dropzone.svelte";
 

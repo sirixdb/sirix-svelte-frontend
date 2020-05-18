@@ -8,6 +8,7 @@ import config from 'sapper/config/rollup.js';
 import json from "@rollup/plugin-json";
 import alias from '@rollup/plugin-alias';
 import pkg from './package.json';
+const preprocess = require('svelte-preprocess');
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -21,7 +22,7 @@ export default {
     output: config.client.output(),
     plugins: [
       alias({
-        resolve: ['.svelte', '.js'],
+        resolve: ['.svelte', '.js', '.ts'],
         entries: [
           { find: 'icons', replacement: './src/components/icons/' },
           { find: 'utils', replacement: './src/utils/' },
@@ -34,6 +35,7 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode)
       }),
       svelte({
+        preprocess,
         dev,
         hydratable: true,
         emitCss: true
@@ -88,6 +90,7 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode)
       }),
       svelte({
+        preprocess,
         generate: 'ssr',
         dev
       }),
