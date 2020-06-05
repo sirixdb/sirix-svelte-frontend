@@ -49,6 +49,6 @@
     "svelte": "^3.23.0",
     "svelte-preprocess": "^3.7.4",
     "tailwindcss": "^1.4.6",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   }
 }
