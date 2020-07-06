@@ -1,5 +1,8 @@
 <script>
+  import VirtualList from "../../VirtualList.svelte";
+
   export let props;
+  export let firstLevel = false;
 
   const toggleExpansion = () => {
     expanded = !expanded;
@@ -21,7 +24,7 @@
     dispatch("loadDeeper", {
       path,
       key: nodeKey,
-      insertKey: null
+      insertKey: null,
     });
   }
 
@@ -32,6 +35,7 @@
   import { expandAndFade } from "../../../utils/transition.js";
 
   let element;
+  /*
   let timeout;
   let firstLine = 0;
   let lastLine = 125;
@@ -47,6 +51,7 @@
     timeout = setTimeout(redraw, 700);
   }
   onMount(redraw);
+  */
 </script>
 
 <style>
@@ -55,9 +60,11 @@
   }
 </style>
 
+<!--
 {#if firstLine > 0}
   <div style="height: {firstLine * 24}px" />
 {/if}
+-->
 
 {#if expanded && diff && diff.position === 'before'}
   <svelte:component
@@ -92,8 +99,21 @@
   <div
     transition:expandAndFade|local
     bind:this={element}
-    class={hover ? 'bg-gray-300' : ''}>
-    {#each treeNode as n, index}
+    style="height: min({treeNode.length * 24}px, calc(100vh - 89px));"
+    class="{hover ? 'bg-gray-300' : ''}">
+    <VirtualList items={treeNode} let:index let:item scroll={firstLevel}>
+      <div
+        on:mouseover|stopPropagation={() => (hover = true)}
+        on:mouseout|stopPropagation={() => (hover = false)}
+        class="pl-4">
+        <svelte:component
+          this={item.component}
+          props={item.props}
+          {index}
+          on:loadDeeper />
+      </div>
+    </VirtualList>
+    <!--{#each treeNode as n, index}
       {#if index >= firstLine && index <= lastLine}
         <div
           on:mouseover|stopPropagation={() => (hover = true)}
@@ -106,7 +126,7 @@
             on:loadDeeper />
         </div>
       {/if}
-    {/each}
+    {/each}-->
   </div>
 {/if}
 
@@ -116,6 +136,7 @@
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}
 
+<!--
 {#if lastLine < treeNode.length}
   <div style="height: {(treeNode.length - lastLine) * 24}px" />
-{/if}
+{/if}-->

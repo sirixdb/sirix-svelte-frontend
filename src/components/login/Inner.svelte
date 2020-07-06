@@ -17,7 +17,7 @@
   let username = "admin";
   let password = "admin";
   let sirixUri;
-  $: sirixUri = uri ? uri : "https://localhost:9443";
+  $: sirixUri = uri ? uri : "http://localhost:9443";
 
   // class style values
   let enabled =
@@ -50,7 +50,7 @@
       <label class="block" for="sirixUri">SirixUri</label>
       <input
         class="rounded text-2xl p-2"
-        placeholder="https://localhost:9443"
+        placeholder="http://localhost:9443"
         bind:value={uri}
         type="url"
         name="sirixUri" />

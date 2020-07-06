@@ -120,7 +120,7 @@
     </section>
   {/if}
 
-  <section id="resource-view" class="overflow-y-scroll scroll bottom-0 min-h-full">
+  <section id="resource-view" class="bottom-0 min-h-full">
     <Controller />
   </section>
 </div>
