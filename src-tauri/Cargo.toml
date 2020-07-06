@@ -9,6 +9,8 @@ default-run = "app"
 edition = "2018"
 build = "src/build.rs"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [package.metadata.bundle]
 name = "SirixDBConsole"
 identifier = "io.sirix"
@@ -16,7 +18,7 @@ identifier = "io.sirix"
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
-tauri = { version = "0.5", features = [ "all-api", "edge" ] }
+tauri = { version = "0.5" }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

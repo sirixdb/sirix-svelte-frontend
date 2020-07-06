@@ -12,6 +12,7 @@
     },
     "bundle": {
       "active": true,
+      "targets": "all",
       "identifier": "com.tauri.dev",
       "icon": [
         "icons/32x32.png",
@@ -27,11 +28,13 @@
       "shortDescription": "",
       "longDescription": "",
       "deb": {
-        "depends": []
+        "depends": [],
+        "useBootstrapper": false
       },
       "osx": {
         "frameworks": [],
-        "minimumSystemVersion": ""
+        "minimumSystemVersion": "",
+        "useBootstrapper": false
       },
       "exceptionDomain": ""
     },
