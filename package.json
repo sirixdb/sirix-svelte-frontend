@@ -25,7 +25,7 @@
     "polka": "next",
     "sirix": "github:sirixdb/sirix-typescript-client#5cfa0e2f9ac3b57e2bd8840d8a8b163c24a19796",
     "sirv": "^1.0.1",
-    "tauri": "^0.7.1"
+    "tauri": "^0.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
