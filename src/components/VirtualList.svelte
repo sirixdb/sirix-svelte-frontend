@@ -10,7 +10,6 @@
   export let items;
   export let height = "100%";
   export let itemHeight = undefined;
-  export let scroll = true;
 
   let foo;
 
@@ -142,6 +141,7 @@
 <style>
   svelte-virtual-list-viewport {
     position: relative;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     display: block;
   }
@@ -161,7 +161,7 @@
   bind:offsetHeight={viewport_height}
   on:scroll={handle_scroll}
   class="scroll"
-  style="height: {height}; {scroll && 'overflow-y: auto;'}">
+  style="height: {height};">
   <svelte-virtual-list-contents
     bind:this={contents}
     style="padding-top: {top}px; padding-bottom: {bottom}px;">

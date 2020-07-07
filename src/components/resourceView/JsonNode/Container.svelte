@@ -99,9 +99,12 @@
   <div
     transition:expandAndFade|local
     bind:this={element}
-    style="height: min({treeNode.length * 24}px, calc(100vh - 89px));"
-    class="{hover ? 'bg-gray-300' : ''}">
-    <VirtualList items={treeNode} let:index let:item scroll={firstLevel}>
+    style="height: {firstLevel ? 'calc(100vh - 89px)' : `${treeNode.length * 24}px`}"
+    class={hover ? 'bg-gray-300' : ''}>
+    <VirtualList
+      items={treeNode}
+      let:index
+      let:item>
       <div
         on:mouseover|stopPropagation={() => (hover = true)}
         on:mouseout|stopPropagation={() => (hover = false)}
