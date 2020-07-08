@@ -7,14 +7,15 @@
   import { queryStore } from "../store";
   export let list;
   export let typeOfQueries;
-  $: header = typeOfQueries === "recents" ? "Recent" : "Favorites"
+  $: header = typeOfQueries === "recents" ? "Recent" : "Favorites";
   let expanded = true;
   const toggle = () => {
     expanded = !expanded;
   };
   const handleDelete = (index) => {
-    dispatcher("delete", {type: typeOfQueries, index});
-  }
+    dispatcher("delete", { type: typeOfQueries, index });
+  };
+  let showFullQuery = null;
 </script>
 
 <style>
@@ -36,9 +37,19 @@
     <div class="list overflow-y-scroll scroll ml-1" transition:expandAndFade>
       {#each list as item, index}
         <div
+          on:mouseenter={() => {
+            showFullQuery = index;
+          }}
+          on:mouseleave={() => {
+            showFullQuery = null;
+          }}
           on:click={() => queryStore.set(item)}
           class="py-1 my-1 ml-1 pl-1 hover:bg-gray-200 cursor-pointer">
-          <span class="text-sm inline font-mono">{item}</span>
+          <span
+            class="text-sm font-mono inline-block{showFullQuery === index ? '' : ' truncate'}"
+            style="width: calc(100% - 30px);">
+            {item}
+          </span>
           <span
             on:click|stopPropagation={() => handleDelete(index)}
             class="trash inline-block cursor-pointer bg-red-600 rounded-full
