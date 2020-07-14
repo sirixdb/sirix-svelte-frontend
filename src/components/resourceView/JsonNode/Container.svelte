@@ -101,10 +101,7 @@
     bind:this={element}
     style="height: {firstLevel ? 'calc(100vh - 89px)' : `${treeNode.length * 24}px`}"
     class={hover ? 'bg-gray-300' : ''}>
-    <VirtualList
-      items={treeNode}
-      let:index
-      let:item>
+    <VirtualList items={treeNode} let:index let:item>
       <div
         on:mouseover|stopPropagation={() => (hover = true)}
         on:mouseout|stopPropagation={() => (hover = false)}
