@@ -9,6 +9,8 @@ import json from "@rollup/plugin-json";
 import pkg from './package.json';
 import preprocess from 'svelte-preprocess';
 
+import configFile from "./sirix-config";
+
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
@@ -22,7 +24,10 @@ export default {
     plugins: [
       replace({
         'process.browser': true,
-        'process.env.NODE_ENV': JSON.stringify(mode)
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
+        'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
+        'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
       }),
       svelte({
         preprocess: preprocess(),
@@ -68,7 +73,11 @@ export default {
     plugins: [
       replace({
         'process.browser': false,
-        'process.env.NODE_ENV': JSON.stringify(mode)
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
+        'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
+        'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
+
       }),
       svelte({
         preprocess: preprocess(),

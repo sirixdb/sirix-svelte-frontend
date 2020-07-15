@@ -11,13 +11,13 @@
       sirixUri
 		});
   }
-  
+
   // form values
   let uri = "";
-  let username = "admin";
-  let password = "admin";
+  let username = process.config.username;
+  let password = process.config.password;
   let sirixUri;
-  $: sirixUri = uri ? uri : "http://localhost:9443";
+  $: sirixUri = uri ? uri : process.config.sirixUri;
 
   // class style values
   let enabled =
@@ -50,7 +50,7 @@
       <label class="block" for="sirixUri">SirixUri</label>
       <input
         class="rounded text-2xl p-2"
-        placeholder="http://localhost:9443"
+        placeholder={process.config.sirixUri}
         bind:value={uri}
         type="url"
         name="sirixUri" />
