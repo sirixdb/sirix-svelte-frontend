@@ -9,8 +9,8 @@
 
   const formSubmit = () => {
     submitting = true;
-    sirix.database(name, dbType).then(db => {
-      dbInfo.update(arr => {
+    sirix.database(name, dbType).then((db) => {
+      dbInfo.update((arr) => {
         return Object.assign(arr, sirix.sirixInfo.databaseInfo);
       });
       submitting = false;
@@ -23,6 +23,8 @@
   const enabled = base + " hover:bg-blue-700";
   const disabled = base + " opacity-50 cursor-not-allowed";
   const loading = base + " opacity-50 cursor-wait";
+
+  import Radio from "./Radio.svelte";
 </script>
 
 <form class="text-center">
@@ -35,26 +37,14 @@
       name="name"
       class="text-lg p-2 rounded-sm" />
   </div>
-  <div class="p-2 m-2">
-    <label for="type">Database Type</label>
-    <label>
-      <input
-        type="radio"
-        name="type"
-        value="xml"
-        bind:group={dbType}
-        required />
-      XML
+  <div class="p-2 m-2 text-center">
+    <label for="type">
+      <h2>Database Type</h2>
     </label>
-    <label>
-      <input
-        type="radio"
-        name="type"
-        value="json"
-        bind:group={dbType}
-        required />
-      JSON
-    </label>
+    <Radio
+      options={[{ text: 'XML', value: 'xml' }, { text: 'JSON', value: 'json' }]}
+      name={'type'}
+      bind:selected={dbType} />
   </div>
   <div>
     <button
