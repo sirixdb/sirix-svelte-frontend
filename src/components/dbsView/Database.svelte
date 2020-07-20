@@ -80,5 +80,5 @@
 {/if}
 
 {#if showDeleteDialog}
-  <DeleteDialog bind:show={showDeleteDialog} dbName={database.name} />
+  <DeleteDialog bind:show={showDeleteDialog} dbType={database.type} dbName={database.name} />
 {/if}

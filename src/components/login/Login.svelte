@@ -14,28 +14,22 @@
 
   let login = ({ detail }) => {
     loggingIn = true;
-    sirix.authenticate(
-      detail.username,
-      detail.password,
-      detail.sirixUri,
-      () => {
-        loggedIn.set(false);
-      }
-    );
-    sirix.auth
-      .authenticate()
-      .then(ready => {
-        if (ready) {
-          loggedIn.set(true);
-          sirix.getInfo().then(dbs => {
-            dbInfo.set(dbs);
-            dispatch("message", "redirect");
-          });
-        } else {
-          loggedIn.set(false);
-        }
+    sirix
+      .init(
+        {
+          username: detail.username,
+          password: detail.password,
+        },
+        detail.sirixUri
+      )
+      .then(() => {
+        loggedIn.set(true);
+        sirix.getInfo().then((dbs) => {
+          dbInfo.set(dbs);
+          dispatch("message", "redirect");
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         loggedIn.set(false);
       })

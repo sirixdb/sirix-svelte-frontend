@@ -1,5 +1,6 @@
 <script>
   import { sirix } from "../../sirix";
+  import { DBType } from "sirixdb";
 
   import { selected, refreshResource } from "../../store";
 
@@ -10,12 +11,11 @@
   };
 
   const loadRevision = (dbName, dbType, resourceName, revision) => {
-    sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName)
-        .readWithMetadata({ revision, maxLevel: 4 })
-        .then(nodes => {
-          jsonResource = nodes;
-        });
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource.readWithMetadata({ revision, maxLevel: 4 }).then((nodes) => {
+      jsonResource = nodes;
     });
   };
 
@@ -25,7 +25,7 @@
     dbType: null,
     resourceName: null,
     revision: null,
-    diff: null
+    diff: null,
   };
 
   $: {

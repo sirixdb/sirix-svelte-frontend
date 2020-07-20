@@ -6,7 +6,7 @@
   import { selected, refreshHistory } from "../../store";
   const selectResource = () => {
     let refresh = true;
-    selected.update(old => {
+    selected.update((old) => {
       if (old.dbName === dbName && old.resourceName === resourceName) {
         refresh = false;
       }
@@ -40,5 +40,5 @@
 </div>
 
 {#if showDeleteDialog}
-  <DeleteDialog bind:show={showDeleteDialog} {resourceName} {dbName} />
+  <DeleteDialog bind:show={showDeleteDialog} {dbType} {resourceName} {dbName} />
 {/if}

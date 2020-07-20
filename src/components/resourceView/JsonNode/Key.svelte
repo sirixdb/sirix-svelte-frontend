@@ -17,7 +17,7 @@
 
   let key, treeNode, path, nodeKey, nodeType, childs;
 
-  import { NodeType } from "sirix/src/info";
+  import { NodeType } from "sirixdb";
 
   $: {
     ({ key, treeNode, path, nodeKey, nodeType, childs } = props);

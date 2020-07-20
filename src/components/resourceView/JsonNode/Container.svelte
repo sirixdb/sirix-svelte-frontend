@@ -12,7 +12,7 @@
   export let expanded = false;
   export let index = null;
 
-  import { NodeType } from "sirix/src/info";
+  import { NodeType } from "sirixdb";
 
   import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();

@@ -1,3 +1,3 @@
-import Sirix from "sirix/src/client";
+import { Sirix } from "sirixdb";
 
-export const sirix = new Sirix.default();
+export const sirix = new Sirix();

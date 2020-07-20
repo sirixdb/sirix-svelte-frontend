@@ -6,7 +6,7 @@
   import { selected } from "../../store";
   import { onDestroy } from "svelte";
   let dbName, dbType, resourceName;
-  const unsubscribe = selected.subscribe(sel => {
+  const unsubscribe = selected.subscribe((sel) => {
     ({ dbName, dbType, resourceName } = sel);
   });
   onDestroy(unsubscribe);
@@ -14,14 +14,14 @@
   export let nodeId;
 
   import { sirix } from "../../sirix";
+  import { DBType } from "sirixdb";
   const del = () => {
-    sirix.database(dbName, dbType).then(db => {
-      db.resource(resourceName)
-        .deleteById(nodeId)
-        .then(success => {
-          //TODO
-          console.log(success);
-        });
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource.delete(nodeId, null).then((resp) => {
+      //TODO
+      console.log(resp);
     });
   };
 </script>
@@ -33,8 +33,8 @@
 <!-- dropdown menu button -->
 <span
   on:click|stopPropagation={() => (show = !show)}
-  class="inline-block cursor-pointer px-1 text-center inline-block text-sm
-  hover:shadow-inner rounded-full">
+  class="inline-block cursor-pointer px-1 text-center text-sm hover:shadow-inner
+  rounded-full">
   &#10247;
 </span>
 

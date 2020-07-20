@@ -15,19 +15,19 @@
   import { dbInfo } from "../../store";
 
   import Dropzone from "./Dropzone.svelte";
+  import { DBType } from "sirixdb";
 
   const formSubmit = () => {
     submitting = true;
-    sirix.database(dbName, dbType).then((db) => {
-      db.resource(resourceName)
-        .create(file)
-        .then(() => {
-          dbInfo.update((arr) => {
-            return Object.assign(arr, sirix.sirixInfo.databaseInfo);
-          });
-          submitting = false;
-          showForm = false;
-        });
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource.create(file).then((resp) => {
+      sirix.getInfo().then((data) => {
+        dbInfo.set(data);
+      });
+      submitting = false;
+      showForm = false;
     });
   };
   // class style values
@@ -54,7 +54,7 @@
     <button
       class={submitting ? loading : resourceName === '' || file === '' ? disabled : enabled}
       type="button"
-      disabled={submitting || resourceName === '' === undefined || file === ''}
+      disabled={submitting || (resourceName === '') === undefined || file === ''}
       on:click={formSubmit}>
       Create
     </button>

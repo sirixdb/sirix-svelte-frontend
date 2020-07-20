@@ -7,41 +7,34 @@
 
   import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree.js";
   import { sirix } from "../../sirix";
+  import { DBType } from "sirixdb";
   import { selected, refreshResource } from "../../store";
 
   let treeNode = createTree(node, []);
 
   const loadDeeper = ({ detail }) => {
-    sirix.database(dbName, dbType).then((db) => {
-      db.resource(resourceName)
-        .readWithMetadata({
-          nodeId: detail.key,
-          revision,
-          maxLevel: 3,
-        })
-        .then((newNode) => {
-          const toInsert = newNode.value.map((obj, index) =>
-            createTree(obj, detail.path, index)
-          );
-          if (diff) {
-            loadDiffs(revision, diff, dbName, dbType, resourceName, {
-              maxLevel: 4,
-            }).then((diffs) => {
-              treeNode = injectDiffs(
-                inject(treeNode, toInsert, detail.path, detail.insertKey),
-                diffs
-              );
-            });
-          } else {
-            treeNode = inject(
-              treeNode,
-              toInsert,
-              detail.path,
-              detail.insertKey
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource
+      .readWithMetadata({ nodeId: detail.key, revision, maxLevel: 3 })
+      .then((newNode) => {
+        const toInsert = newNode.value.map((obj, index) =>
+          createTree(obj, detail.path, index)
+        );
+        if (diff) {
+          loadDiffs(revision, diff, dbName, dbType, resourceName, {
+            maxLevel: 4,
+          }).then((diffs) => {
+            treeNode = injectDiffs(
+              inject(treeNode, toInsert, detail.path, detail.insertKey),
+              diffs
             );
-          }
-        });
-    });
+          });
+        } else {
+          treeNode = inject(treeNode, toInsert, detail.path, detail.insertKey);
+        }
+      });
   };
 
   if (diff && diff !== revision) {

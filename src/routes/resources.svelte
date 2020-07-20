@@ -1,9 +1,11 @@
-<script>
+<script lang="typescript">
   import Tree from "../components/dbsView/Tree.svelte";
   import History from "../components/historyView/History.svelte";
   import Controller from "../components/resourceView/Controller.svelte";
 
   import CheckLogin from "../components/login/CheckLogin.svelte";
+
+  import { DBType } from "sirixdb";
 
   let historyColumn, diffColumn;
   let historyOffset, diffOffset;
@@ -26,7 +28,7 @@
 
   const opts = {
     duration: 750,
-    easing: sineInOut
+    easing: sineInOut,
   };
 
   let shift = tweened(0, opts);
@@ -35,18 +37,18 @@
   import { sirix } from "../sirix";
   let history = [];
 
+  let dbName, dbType, resourceName;
   $: ({ dbName, dbType, resourceName } = $selected);
 
   $: {
     $refreshHistory;
     history = [];
     if (dbName && resourceName && dbType) {
-      sirix.database(dbName).then(db => {
-        db.resource(resourceName)
-          .history()
-          .then(res => {
-            history = res;
-          });
+      const resource = sirix
+        .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+        .resource(resourceName);
+      resource.history().then((res) => {
+        history = res;
       });
     }
   }

@@ -53,13 +53,14 @@
     isLoading = true;
     addToQueries("recents", text, true);
     sirix
-      .query(text)
+      .query({ query: text })
       .then(data => {
         subTreeStore.set([]);
         dataStore.set(data);
         isLoading = false;
       })
-      .catch(() => {
+      .catch(error => {
+        console.error(error);
         isLoading = false;
       });
   };

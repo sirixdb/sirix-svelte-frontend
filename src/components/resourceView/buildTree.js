@@ -1,11 +1,12 @@
 import { sirix } from "../../sirix";
-import { NodeType } from "sirix/src/info";
+import { NodeType } from "sirixdb";
 import Container from "./JsonNode/Container.svelte";
 import Key from "./JsonNode/Key.svelte";
 import Value from "./JsonNode/Value.svelte";
 import DiffNode from "./JsonNode/DiffNode.svelte";
 
 import { containerFuncReg, keyFuncReg, valueFuncReg } from "./JsonNode/functions";
+import { DBType } from "sirixdb";
 
 export const createTree = (
   node,
@@ -61,13 +62,11 @@ export const loadDiffs = (
   } else {
     (first = otherRevision), (second = revision);
   }
-  return sirix.database(dbName, dbType).then(db => {
-    return db
-      .resource(resourceName)
-      .diff(first, second, { nodeId, maxLevel })
-      .then(diffObj => {
-        return diffObj["diffs"];
-      });
+  const resource = sirix
+    .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+    .resource(resourceName);
+  return resource.diff(first, second, { nodeId, maxLevel }).then(diffObj => {
+    return diffObj["diffs"];
   });
 };
 
@@ -121,8 +120,8 @@ export const injectDiffs = (treeNode, diffs) => {
       diffType === "insert"
         ? diff[diffType].insertPositionNodeKey
         : diffType === "replace"
-        ? diff[diffType].oldNodeKey
-        : diff[diffType].nodeKey;
+          ? diff[diffType].oldNodeKey
+          : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
       let newNode = {
         diffNode: diff,

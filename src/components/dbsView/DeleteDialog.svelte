@@ -1,60 +1,69 @@
 <script lang="typescript">
   export let show: boolean;
   export let dbName: string;
+  export let dbType: string;
   export let resourceName: string = undefined;
   let hideForm = () => (show = false);
 
   import Trash from "../icons/Trash.svelte";
 
   import { sirix } from "../../sirix";
+  import { DBType } from "sirixdb";
 
-  import { dbInfo, selected, refreshResource, refreshHistory } from "../../store";
+  import {
+    dbInfo,
+    selected,
+    refreshResource,
+    refreshHistory,
+  } from "../../store";
 
   const refresh = () => {
-    dbInfo.update(arr => {
-      return sirix.sirixInfo.databaseInfo.slice();
+    sirix.getInfo().then((res) => {
+      dbInfo.set(res);
     });
     refreshResource.refresh();
     refreshHistory.refresh();
   };
 
   const del = () => {
-    sirix.database(dbName).then(db => {
-      if (resourceName !== undefined) {
-        db.resource(resourceName)
-          .deleteById(null)
-          .then(() => {
-            selected.update(sel => {
-              if (sel.dbName === dbName && sel.resourceName === resourceName) {
-                sel.resourceName = null;
-                sel.revision = 0;
-              }
-              return sel;
-            });
-            hideForm();
-            refresh();
-          })
-          .catch(err => {
-            console.log(err);
+    const db = sirix.database(
+      dbName,
+      dbType === "json" ? DBType.JSON : DBType.XML
+    );
+    if (resourceName !== undefined) {
+      db.resource(resourceName)
+        .delete(null, null)
+        .then(() => {
+          selected.update((sel) => {
+            if (sel.dbName === dbName && sel.resourceName === resourceName) {
+              sel.resourceName = null;
+              sel.revision = 0;
+            }
+            return sel;
           });
-      } else {
-        db.delete()
-          .then(() => {
-            selected.update(sel => {
-              if (sel.dbName === dbName) {
-                sel.dbName = null;
-                sel.resourceName = null;
-              }
-              return sel;
-            });
-            hideForm();
-            refresh();
-          })
-          .catch(err => {
-            console.error(err);
+          hideForm();
+          refresh();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      db.delete()
+        .then(() => {
+          selected.update((sel) => {
+            if (sel.dbName === dbName) {
+              sel.dbName = null;
+              sel.resourceName = null;
+            }
+            return sel;
           });
-      }
-    });
+          hideForm();
+          refresh();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 </script>
 
@@ -66,7 +75,7 @@
 
 <!-- The Modal -->
 <div
-  class="fixed left-0 top-0 w-full h-full z-10 overflow-auto bg-gray-900 z-30">
+  class="fixed left-0 top-0 w-full h-full overflow-auto bg-gray-900 z-30">
 
   <!-- Modal content -->
   <div

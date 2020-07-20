@@ -4,7 +4,7 @@
 
   const refresh = () => {
     sirix.getInfo().then(res => {
-      dbInfo.set(res.slice());
+      dbInfo.set(res);
     });
   }
   let height: number;

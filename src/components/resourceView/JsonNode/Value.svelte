@@ -1,5 +1,5 @@
 <script>
-  import { NodeType } from "sirix/src/info";
+  import { NodeType } from "sirixdb"; 
   import { valueFuncReg } from "./functions";
 
   export let props;
