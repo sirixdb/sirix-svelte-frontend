@@ -55,6 +55,7 @@
     sirix
       .query({ query: text })
       .then(data => {
+        data = JSON.parse(data)
         subTreeStore.set([]);
         dataStore.set(data);
         isLoading = false;
