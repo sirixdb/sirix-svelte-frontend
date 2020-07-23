@@ -54,9 +54,11 @@
 
 <!--
   @component
+  example usage:
+
   ```svelte
   <script>
-    import Radio from "componentLibrary/Radio.svelte";
+    import Radio from "@componentLibrary/Radio.svelte";
     const options = [
       {text: "text to display for this option",
       value: "the value to be bound to the selected prop when this option is selected"}

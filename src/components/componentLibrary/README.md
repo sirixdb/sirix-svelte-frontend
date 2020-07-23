@@ -7,4 +7,5 @@ Some generic components that are *not* in this directory:
 + `login/CheckLogin.svelte`
 + the `icons` directory
 
-I am unsure if these (particularly the first) should be moved to this directory.
+I am unsure if the first should be moved to this directory.
+Moving the icons folder is planned.

@@ -8,6 +8,7 @@ import config from 'sapper/config/rollup.js';
 import json from "@rollup/plugin-json";
 import pkg from './package.json';
 import preprocess from 'svelte-preprocess';
+import alias from '@rollup/plugin-alias';
 
 import configFile from "./sirix-config";
 
@@ -28,6 +29,11 @@ export default {
         'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
         'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
         'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
+      }),
+      alias({
+        entries: [
+          { find: '@componentLibrary', replacement: 'src/components/componentLibrary' }
+        ]
       }),
       svelte({
         preprocess: preprocess(),
@@ -77,6 +83,11 @@ export default {
         'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
         'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
         'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
+      }),
+      alias({
+        entries: [
+          { find: '@componentLibrary', replacement: 'src/components/componentLibrary' }
+        ]
       }),
       svelte({
         preprocess: preprocess(),

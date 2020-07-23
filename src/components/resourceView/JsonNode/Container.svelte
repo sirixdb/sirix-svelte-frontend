@@ -1,5 +1,5 @@
 <script>
-  import VirtualList from "../../componentLibrary/VirtualList.svelte";
+  import VirtualList from "@componentLibrary/VirtualList.svelte";
 
   export let props;
   export let firstLevel = false;
