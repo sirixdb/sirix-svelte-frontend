@@ -1,8 +1,3 @@
-<!--
-    Based on https://github.com/sveltejs/svelte-virtual-list
-    Modified to include index as a slot
--->
-
 <script>
   import { onMount, tick } from "svelte";
 
@@ -156,6 +151,21 @@
   }
 </style>
 
+<!--
+    @component
+
+    ```svelte
+    <VirtualList {items} let:index let:item>
+      <div>
+        item index: {index}
+        item value: {item}
+      </div>
+    </VirtualList>
+    ```
+
+    Based on https://github.com/sveltejs/svelte-virtual-list
+    Modified to include index as a slot
+-->
 <svelte-virtual-list-viewport
   bind:this={viewport}
   bind:offsetHeight={viewport_height}
