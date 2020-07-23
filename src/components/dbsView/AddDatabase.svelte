@@ -29,7 +29,7 @@
   const disabled = base + " opacity-50 cursor-not-allowed";
   const loading = base + " opacity-50 cursor-wait";
 
-  import Radio from "./Radio.svelte";
+  import Radio from "../componentLibrary/Radio.svelte";
 </script>
 
 <form class="text-center">
