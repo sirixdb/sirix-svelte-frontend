@@ -77,7 +77,6 @@ export default {
         'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
         'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
         'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
-
       }),
       svelte({
         preprocess: preprocess(),

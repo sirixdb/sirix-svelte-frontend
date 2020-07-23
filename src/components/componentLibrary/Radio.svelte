@@ -52,6 +52,21 @@
   }
 </style>
 
+<!--
+  @component
+  ```svelte
+  <script>
+    import Radio from "componentLibrary/Radio.svelte";
+    const options = [
+      {text: "text to display for this option",
+      value: "the value to be bound to the selected prop when this option is selected"}
+    ];
+    let name = "name to use as name attribute for the radio";
+    let selected: string;
+  </script>
+  <Radio {name} {selected} {options} />
+  ```
+-->
 <div class="options">
   {#each options as option}
     <label class:selected={selected === option.value}>

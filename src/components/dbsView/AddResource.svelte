@@ -14,7 +14,7 @@
   import { sirix } from "../../sirix";
   import { dbInfo } from "../../store";
 
-  import Dropzone from "./Dropzone.svelte";
+  import Dropzone from "../componentLibrary/Dropzone.svelte";
   import { DBType } from "sirixdb";
 
   const formSubmit = () => {
