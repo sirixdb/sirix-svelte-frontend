@@ -22,6 +22,10 @@ The Sirix database is now ready for use.
 
 ## Developing
 
+## Code documentation
+
+A lot of documentation is missing. However you can find general descriptions of the files in a directory in the `README.md` file in that directory. Currently, only some directories these READMEs, they are in the process of being added.
+
 Before developing, run `npm run build:tailwind`. This command should also be run after running the build or export NPM scripts.
 
 ### Developing in the browser
