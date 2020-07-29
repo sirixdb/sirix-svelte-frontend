@@ -22,7 +22,7 @@ The Sirix database is now ready for use.
 
 ## Developing
 
-## Code documentation
+### Code documentation
 
 A lot of documentation is missing. However you can find general descriptions of the files in a directory in the `README.md` file in that directory. Currently, only some directories these READMEs, they are in the process of being added.
 
