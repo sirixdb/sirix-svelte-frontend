@@ -24,7 +24,7 @@
     "idb": "^5.0.4",
     "polka": "next",
     "sirixdb": "^0.1.4",
-    "sirv": "^1.0.1",
+    "sirv": "^1.0.5",
     "tauri": "^0.11.0"
   },
   "devDependencies": {
