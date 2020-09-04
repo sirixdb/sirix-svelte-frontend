@@ -3,7 +3,7 @@
     openQueryDB,
     removeFromQueriesByIndex,
     refreshQueries
-  } from "../../../lib/db.js";
+  } from "../../../lib/db.ts";
   import { onMount } from "svelte";
   import QueryList from "./QueryList.svelte";
 
