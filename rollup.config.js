@@ -13,7 +13,7 @@ import alias from '@rollup/plugin-alias';
 
 import configFile from "./sirix-config";
 
-const tauriMode = !!process.env["TAURI"]
+const tauriMode = !!process.env["TAURI"];
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -59,8 +59,8 @@ export default {
       json(),
       commonjs(),
 
-      legacy && babel({
-        extensions: ['.js', '.mjs', '.html', '.svelte'],
+      (legacy || tauriMode) && babel({
+        extensions: ['.js', '.ts', '.mjs', '.html', '.svelte'],
         runtimeHelpers: true,
         exclude: ['node_modules/@babel/**'],
         presets: [
@@ -70,6 +70,7 @@ export default {
         ],
         plugins: [
           '@babel/plugin-syntax-dynamic-import',
+          "@babel/plugin-proposal-object-rest-spread",
           ['@babel/plugin-transform-runtime', {
             useESModules: true
           }]
@@ -90,6 +91,7 @@ export default {
     plugins: [
       replace({
         'process.browser': false,
+        'process.tauri': tauriMode,
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
         'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,

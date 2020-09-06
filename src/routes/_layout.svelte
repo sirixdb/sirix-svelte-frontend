@@ -2,8 +2,9 @@
   import Nav from '../components/Nav.svelte';
 
   if (process.tauri) {
-    const { init } = require("../lib/tauri_db.ts");
-    init();
+    import("../lib/tauri_db.ts").then(mod => {
+      mod.init();
+    });
   }
 
   export let segment;

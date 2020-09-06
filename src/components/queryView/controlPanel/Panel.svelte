@@ -1,17 +1,11 @@
 <script>
-  if (process.tauri) {
-    const {
-      getQueries,
-      removeFromQueriesByIndex,
-      refreshQueries,
-    } = require("../../../lib/tauri_db.ts");
-  } else {
-    const {
-      getQueries,
-      removeFromQueriesByIndex,
-      refreshQueries,
-    } = require("../../../lib/browser_db.ts");
-  }
+  import * as tauri_db from "../../../lib/tauri_db.ts";
+  import * as browser_db from "../../../lib/browser_db.ts";
+  const {
+    getQueries,
+    removeFromQueriesByIndex,
+    refreshQueries,
+  } = process.tauri ? tauri_db : browser_db;
   import { onMount } from "svelte";
   import QueryList from "./QueryList.svelte";
 
@@ -19,7 +13,6 @@
   let favorites = [];
 
   const loadQueries = async () => {
-    const db = await openQueryDB();
     recents = (await getQueries("recents")) || [];
     favorites = (await getQueries("favorites")) || [];
   };
