@@ -6,7 +6,11 @@
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
   import { dataStore, queryStore, subTreeStore } from "./store";
-  import { addToQueries, refreshQueries } from "../../lib/db.ts";
+  if (process.tauri) {
+    const { addToQueries } = require("../../lib/tauri_db.ts");
+  } else {
+    const { addToQueries } = require("../../lib/browser_db.ts");
+  }
   import hljs from "highlight.js/lib/core";
   import xquery from "highlight.js/lib/languages/xquery";
   import "highlight.js/styles/tomorrow-night-eighties.css";

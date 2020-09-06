@@ -13,6 +13,8 @@ import alias from '@rollup/plugin-alias';
 
 import configFile from "./sirix-config";
 
+const tauriMode = !!process.env["TAURI"]
+
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const sourcemap = dev ? "inline" : false;
@@ -29,6 +31,7 @@ export default {
     plugins: [
       replace({
         'process.browser': true,
+        'process.tauri': tauriMode,
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
         'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,

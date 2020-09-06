@@ -1,9 +1,17 @@
 <script>
-  import {
-    openQueryDB,
-    removeFromQueriesByIndex,
-    refreshQueries
-  } from "../../../lib/db.ts";
+  if (process.tauri) {
+    const {
+      getQueries,
+      removeFromQueriesByIndex,
+      refreshQueries,
+    } = require("../../../lib/tauri_db.ts");
+  } else {
+    const {
+      getQueries,
+      removeFromQueriesByIndex,
+      refreshQueries,
+    } = require("../../../lib/browser_db.ts");
+  }
   import { onMount } from "svelte";
   import QueryList from "./QueryList.svelte";
 
@@ -12,14 +20,14 @@
 
   const loadQueries = async () => {
     const db = await openQueryDB();
-    recents = (await db.get("unbound_queries", "recents")) || [];
-    favorites = (await db.get("unbound_queries", "favorites")) || [];
+    recents = (await getQueries("recents")) || [];
+    favorites = (await getQueries("favorites")) || [];
   };
 
   $: {
     if ($refreshQueries !== 0) {
       loadQueries();
-    };
+    }
   }
 
   const handleDelete = ({ detail }) => {

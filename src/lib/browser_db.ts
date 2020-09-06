@@ -1,5 +1,6 @@
 import { openDB, DBSchema } from "idb";
 import { refresher } from "../store";
+import { addToQueriesImpl, setInstanceSettingImpl } from "./db_utils";
 
 interface dataLoadSettings {
     initialDepth: number;
@@ -22,7 +23,7 @@ interface Schema extends DBSchema {
     }
 }
 
-export async function openQueryDB() {
+async function openQueryDB() {
     return await openDB<Schema>("SirixDBEnquirer", 2, {
         upgrade(db, oldVersion, newVersion, transaction) {
             // this is a migration method, called on creating
@@ -47,27 +48,28 @@ export async function openQueryDB() {
 export const refreshQueries = refresher();
 export const refreshSettings = refresher();
 
-export async function addToQueries(store, text, flush) {
+export async function getQueries(key: string) {
     const db = await openQueryDB();
-    let queries = await db.get("unbound_queries", store);
-    queries = queries.filter(query => query !== text);
-    queries.unshift(text);
-    if (flush && queries.length > 10) {
-        queries = queries.slice(0, 10);
-    }
-    await db.put("unbound_queries", queries, store);
+    return await db.get("unbound_queries", key);
+}
+
+export async function addToQueries(key: string, text: string, flush: boolean): Promise<void> {
+    const db = await openQueryDB();
+    let queries = await db.get("unbound_queries", key);
+    queries = addToQueriesImpl(queries, text, flush);
+    await db.put("unbound_queries", queries, key);
     refreshQueries.refresh();
 }
 
-export async function removeFromQueriesByIndex(store, index) {
+export async function removeFromQueriesByIndex(key: string, index: number): Promise<void> {
     const db = await openQueryDB();
-    let queries = await db.get("unbound_queries", store);
+    let queries = await db.get("unbound_queries", key);
     queries.splice(index, 1);
-    await db.put("unbound_queries", queries, store);
+    await db.put("unbound_queries", queries, key);
     refreshQueries.refresh();
 }
 
-export async function getSetting(setting, instanceUri) {
+export async function getSetting(setting: string, instanceUri: string) {
     const db = await openQueryDB();
     const globalSetting = await db.get("global-settings", setting);
     const instance = await db.get("instance-settings", instanceUri);
@@ -78,21 +80,21 @@ export async function getSetting(setting, instanceUri) {
     return ret;
 }
 
-export async function setSetting(setting, value, instanceUri = undefined, database = undefined, resource = undefined) {
+export async function setSetting(
+    setting: string,
+    value,
+    instanceUri = undefined,
+    database = undefined,
+    resource = undefined
+): Promise<void> {
     const db = await openQueryDB();
     if (instanceUri === undefined) {
         db.put("global-settings", value, setting);
     } else {
         const current = await db.get("instance-settings", instanceUri);
-        let toModify = current;
-        if (database !== undefined) {
-            toModify = toModify["databases"][database];
-            if (resource !== undefined) {
-                toModify = toModify["resources"][resource];
-            }
-        }
-        toModify[setting] = value;
-        db.put("instance-settings", toModify, instanceUri);
+        const toModify = setInstanceSettingImpl(database, resource, current, setting, value);
+        // TODO once typings are completed, remove `as dataLoadSettings`
+        db.put("instance-settings", toModify as dataLoadSettings, instanceUri);
     }
     refreshSettings.refresh();
 }
