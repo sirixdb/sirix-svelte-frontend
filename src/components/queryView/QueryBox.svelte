@@ -1,7 +1,8 @@
 <script lang="typescript">
+  import { tooltip, Tooltip } from "renderless-svelte";
   import {
     getCaretCharacterOffsetWithin,
-    setCurrentCursorPosition
+    setCurrentCursorPosition,
   } from "./positionUtils";
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
@@ -57,18 +58,18 @@
     addToQueries("recents", text, true);
     sirix
       .query({ query: text })
-      .then(data => {
-        const parsedData = JSON.parse(data)
+      .then((data) => {
+        const parsedData = JSON.parse(data);
         subTreeStore.set([]);
         dataStore.set(parsedData);
         isLoading = false;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
         isLoading = false;
       });
   };
-  const handleKeydown = event => {
+  const handleKeydown = (event) => {
     if (event.ctrlKey) {
       if (event.keyCode == 10 || event.keyCode == 13 || event.metaKey) {
         handleQuery();
@@ -78,6 +79,21 @@
     }
   };
 </script>
+
+<style>
+  .tooltip {
+    transform: translateX(-50%);
+  }
+  .tooltip:before {
+    border-style: solid;
+    border-width: 6px 6px 0 6px;
+    border-color: black transparent transparent transparent;
+    content: "";
+    position: absolute;
+    left: calc(50% - 5px);
+    bottom: -5px;
+  }
+</style>
 
 <pre class="my-0">
   <code
@@ -89,7 +105,7 @@
   </code>
 </pre>
 <button
-  title="CTRL+ENTER"
+  use:tooltip={{ text: 'CTRL+ENTER' }}
   class={isLoading ? loading : text.length !== 0 ? enabled : disabled}
   disabled={text.length === 0}
   on:click={handleQuery}
@@ -98,7 +114,7 @@
   Query
 </button>
 <button
-  title="CTRL+S"
+  use:tooltip={{ text: 'CTRL+S' }}
   class={text.length !== 0 ? enabled : disabled}
   disabled={text.length === 0}
   on:click={handleSave}
@@ -106,3 +122,12 @@
   type="button">
   Save
 </button>
+<Tooltip let:options let:dimensions>
+  {#if options}
+    <div
+      class="tooltip bg-gray-900 rounded text-white fixed py-1 px-2"
+      style="left: {dimensions.x + dimensions.width / 2}px; top: calc({dimensions.y}px - 2.75rem - 5px);">
+      <span>{options.text}</span>
+    </div>
+  {/if}
+</Tooltip>
