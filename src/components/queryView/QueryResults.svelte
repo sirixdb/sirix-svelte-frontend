@@ -1,6 +1,6 @@
 <script>
   import QueryResult from "./QueryResult.svelte";
-  import { dataStore, subTreeStore } from "./store.js";
+  import { dataStore } from "./store.js";
   let results;
   $: {
     results = $dataStore.rest;

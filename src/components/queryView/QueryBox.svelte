@@ -1,4 +1,4 @@
-<script>
+<script lang="typescript">
   import {
     getCaretCharacterOffsetWithin,
     setCurrentCursorPosition
@@ -6,8 +6,9 @@
   import { tick } from "svelte";
   import { sirix } from "../../sirix";
   import { dataStore, queryStore, subTreeStore } from "./store";
-  import * as tauri_db from "../../lib/tauri_db.ts";
-  import * as browser_db from "../../lib/browser_db.ts";
+  import * as tauri_db from "../../lib/tauri_db";
+  import * as browser_db from "../../lib/browser_db";
+  //@ts-ignore
   const { addToQueries } = process.tauri ? tauri_db : browser_db;
   import hljs from "highlight.js/lib/core";
   import xquery from "highlight.js/lib/languages/xquery";
@@ -57,9 +58,9 @@
     sirix
       .query({ query: text })
       .then(data => {
-        data = JSON.parse(data)
+        const parsedData = JSON.parse(data)
         subTreeStore.set([]);
-        dataStore.set(data);
+        dataStore.set(parsedData);
         isLoading = false;
       })
       .catch(error => {

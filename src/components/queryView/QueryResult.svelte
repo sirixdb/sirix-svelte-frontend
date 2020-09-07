@@ -1,9 +1,9 @@
-<script>
-  import { onMount, setContext } from "svelte";
+<script lang="typescript">
+  import { setContext } from "svelte";
   export let data;
-  export let index;
-  let height;
-  let revisionNumber, revisionTimestamp, body, isContainer;
+  export let index: number;
+  let height: number;
+  let revisionNumber: number, revisionTimestamp: string, body, isContainer: boolean;
   $: {
     revisionNumber = data.revisionNumber;
     revisionTimestamp = data.revisionTimestamp;

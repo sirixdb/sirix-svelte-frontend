@@ -1,4 +1,4 @@
-<script>
+<script lang="typescript">
   import { getContext } from "svelte";
   import { Container } from "./nodes.js";
 
@@ -7,8 +7,9 @@
   // to silence svelte from raising issues with props
   export let expanded = undefined;
   export let hover = undefined;
+  //@ts-ignore
   expanded, hover;
-  export let depth;
+  export let depth: number;
 
   export let value;
   let textColor;
@@ -26,7 +27,7 @@
     }
   }
   import { subTreeStore } from "../store.js";
-  const resultIndex = getContext("resultIndex")
+  const resultIndex = getContext("resultIndex") as number;
   const handleClick = () => {
     subTreeStore.update(old => {
       old[resultIndex] = value;

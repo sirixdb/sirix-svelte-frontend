@@ -1,22 +1,22 @@
-<script>
+<script lang="typescript">
   import { getContext } from "svelte";
   const toggleExpansion = () => {
     expanded = !expanded;
   };
 
-  export let hover = false;
-  export let depth;
+  export let hover: boolean = false;
+  export let depth: number;
   // automatically open show first 3 levels, including root
   export let expanded = depth < 2 ? true : false;
   export let index = null;
   export let data;
-  export let keyValue = false;
+  export let keyValue: boolean = false;
   $: isArray = Array.isArray(data);
   $: children = isArray ? data : Object.entries(data);
 
   import { subTreeStore } from "../store.js";
 
-  const resultIndex = getContext("resultIndex");
+  const resultIndex = getContext("resultIndex") as number;
 
   const handleClick = () => {
     console.log(resultIndex)

@@ -1,10 +1,10 @@
-<script>
+<script lang="typescript">
   export let key;
   export let value;
 
   let hover = false;
 
-  export let depth;
+  export let depth: number;
   export let expanded = depth > 1 ? false : true;
   const toggleExpansion = () => {
     expanded = !expanded;
