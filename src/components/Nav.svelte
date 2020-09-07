@@ -1,9 +1,11 @@
-<script>
+<script lang="typescript">
   import { loggedIn } from "../store";
-  export let segment;
+  import { goto } from "@sapper/app";
+  export let segment: string;
 
   const logout = () => {
-    window.location = "./login";
+    loggedIn.set(false);
+    goto("./login", { replaceState: true });
   }
 </script>
 

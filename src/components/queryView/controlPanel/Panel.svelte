@@ -1,16 +1,17 @@
-<script>
-  import * as tauri_db from "../../../lib/tauri_db.ts";
-  import * as browser_db from "../../../lib/browser_db.ts";
+<script lang="typescript">
+  import * as tauri_db from "../../../lib/tauri_db";
+  import * as browser_db from "../../../lib/browser_db";
   const {
     getQueries,
     removeFromQueriesByIndex,
     refreshQueries,
+  //@ts-ignore
   } = process.tauri ? tauri_db : browser_db;
   import { onMount } from "svelte";
   import QueryList from "./QueryList.svelte";
 
-  let recents = [];
-  let favorites = [];
+  let recents: string[] = [];
+  let favorites: string[] = [];
 
   const loadQueries = async () => {
     recents = (await getQueries("recents")) || [];

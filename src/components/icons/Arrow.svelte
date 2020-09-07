@@ -1,4 +1,4 @@
-<script>
+<script lang="typescript">
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
 
@@ -9,7 +9,7 @@
   const rotate = tweened(0, opts);
   const move = tweened(0, opts);
 
-  export let expanded;
+  export let expanded: boolean;
   $: {
     if (expanded) {
       rotate.set(90, {});

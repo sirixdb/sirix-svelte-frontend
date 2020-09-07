@@ -1,21 +1,23 @@
-<script>
+<script lang="typescript">
   import { createEventDispatcher } from "svelte";
   const dispatcher = createEventDispatcher();
   import Arrow from "../../icons/Arrow.svelte";
   import Trash from "../../icons/Trash.svelte";
   import { expandAndFade } from "../../../utils/transition.js";
   import { queryStore } from "../store";
-  export let list;
-  export let typeOfQueries;
+
+  export let list: string[];
+  export let typeOfQueries: "recents" | "favorites";
   $: header = typeOfQueries === "recents" ? "Recent" : "Favorites";
+
   let expanded = true;
-  const toggle = () => {
+  const toggle = function() {
     expanded = !expanded;
   };
-  const handleDelete = (index) => {
+  const handleDelete = function(index: number) {
     dispatcher("delete", { type: typeOfQueries, index });
   };
-  let showFullQuery = null;
+  let showFullQuery: number = null;
 </script>
 
 <style>

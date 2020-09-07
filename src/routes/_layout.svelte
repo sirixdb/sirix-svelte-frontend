@@ -1,10 +1,9 @@
-<script>
+<script lang="typescript">
   import Nav from '../components/Nav.svelte';
-
+  import { init } from "../lib/tauri_db";
+  //@ts-ignore
   if (process.tauri) {
-    import("../lib/tauri_db.ts").then(mod => {
-      mod.init();
-    });
+    init();
   }
 
   export let segment;
