@@ -29,7 +29,7 @@
 </script>
 
 <div class="inline-block mt-8">
-  <form class="text-2xl">
+  <form class="text-2xl" on:submit={getFormData}>
     <div>
       <label class="block" for="username">Username</label>
       <input
@@ -57,7 +57,7 @@
     </div>
     <button
       class={loggingIn ? loading : username.length !== 0 && password.length !== 0 ? enabled : disabled}
-      type="button"
+      type="submit"
       disabled={loggingIn || username.length === 0 || password.length === 0}
       on:click={getFormData}>
       Login
