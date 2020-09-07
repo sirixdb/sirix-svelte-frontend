@@ -3,7 +3,8 @@
     "distDir": "../__sapper__/export",
     "devPath": "http://localhost:3000",
     "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "beforeBuildCommand": "",
+    "withGlobalTauri": false
   },
   "ctx": {},
   "tauri": {
@@ -39,7 +40,8 @@
       "exceptionDomain": ""
     },
     "allowlist": {
-      "all": true
+      "readTextFile": true,
+      "writeFile": true
     },
     "window": {
       "title": "Tauri App",
