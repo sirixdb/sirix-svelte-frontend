@@ -19,24 +19,28 @@ const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const sourcemap = dev ? "inline" : false;
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
+const demoDeploy = !!process.env["DEMO"];
 
 const onwarn = (warning, onwarn) =>
   (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
   (warning.code === 'CIRCULAR_DEPENDENCY') || onwarn(warning);
+
+
+const replaceObj = {
+  'process.browser': true,
+  'process.tauri': tauriMode,
+  'process.env.NODE_ENV': JSON.stringify(mode),
+  'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : demoDeploy ? `'${configFile.demo.sirixUri}'` : `''`,
+  'process.config.username': dev ? `'${configFile.dev.username}'` : demoDeploy ? `'${configFile.demo.password}'` : `''`,
+  'process.config.password': dev ? `'${configFile.dev.password}'` : demoDeploy ? `'${configFile.demo.password}'` : `''`,
+};
 
 export default {
   client: {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
-      replace({
-        'process.browser': true,
-        'process.tauri': tauriMode,
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
-        'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
-        'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
-      }),
+      replace(replaceObj),
       alias({
         entries: [
           { find: '@componentLibrary', replacement: 'src/components/componentLibrary' }
@@ -53,9 +57,9 @@ export default {
         dedupe: ['svelte']
       }),
       typescript({
-				noEmitOnError: !dev,
-				sourceMap: !!sourcemap,
-			}),
+        noEmitOnError: !dev,
+        sourceMap: !!sourcemap,
+      }),
       json(),
       commonjs(),
 
@@ -89,14 +93,7 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
-      replace({
-        'process.browser': false,
-        'process.tauri': tauriMode,
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.config.sirixUri': dev ? `'${configFile.dev.sirixUri}'` : `'${configFile.demo.sirixUri}'`,
-        'process.config.username': dev ? `'${configFile.dev.username}'` : `'${configFile.demo.password}'`,
-        'process.config.password': dev ? `'${configFile.dev.password}'` : `'${configFile.demo.password}'`
-      }),
+      replace(replaceObj),
       alias({
         entries: [
           { find: '@componentLibrary', replacement: 'src/components/componentLibrary' }
@@ -111,9 +108,9 @@ export default {
         dedupe: ['svelte']
       }),
       typescript({
-				noEmitOnError: !dev,
-				sourceMap: !!sourcemap,
-			}),
+        noEmitOnError: !dev,
+        sourceMap: !!sourcemap,
+      }),
       json(),
       commonjs()
     ],
