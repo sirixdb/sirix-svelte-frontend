@@ -11,10 +11,10 @@
   $: header = typeOfQueries === "recents" ? "Recent" : "Favorites";
 
   let expanded = true;
-  const toggle = function() {
+  const toggle = function () {
     expanded = !expanded;
   };
-  const handleDelete = function(index: number) {
+  const handleDelete = function (index: number) {
     dispatcher("delete", { type: typeOfQueries, index });
   };
   let showFullQuery: number = null;
@@ -47,15 +47,15 @@
           }}
           on:click={() => queryStore.set(item)}
           class="py-1 my-1 ml-1 pl-1 hover:bg-gray-200 cursor-pointer">
-          <span
-            class="text-sm font-mono inline-block{showFullQuery === index ? '' : ' truncate'}"
+          <pre
+            class="my-0 text-sm font-mono inline-block{showFullQuery === index ? '' : ' truncate'}"
             style="width: calc(100% - 30px);">
             {item}
-          </span>
+          </pre>
           <span
             on:click|stopPropagation={() => handleDelete(index)}
             class="trash inline-block cursor-pointer bg-red-600 rounded-full
-            text-center float-right">
+              text-center float-right">
             <Trash color="#FFF" size={14} />
           </span>
         </div>
