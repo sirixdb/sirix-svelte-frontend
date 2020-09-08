@@ -101,10 +101,11 @@
   }
 </style>
 
-<pre class="my-0">
+<pre
+  class="my-0"
+  on:keydown|preventDefault={handleKeydown}>
   <code
     on:input={render}
-    on:keydown|stopPropagation={handleKeydown}
     contenteditable
     class="block h-32 hljs">
     {@html html}
