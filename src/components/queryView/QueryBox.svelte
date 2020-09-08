@@ -1,5 +1,5 @@
 <script lang="typescript">
-  import { tooltip, Tooltip } from "renderless-svelte";
+  import { tooltip, Tooltip, notifications } from "renderless-svelte";
   import {
     getCaretCharacterOffsetWithin,
     setCurrentCursorPosition,
@@ -59,13 +59,19 @@
     sirix
       .query({ query: text })
       .then((data) => {
-        const parsedData = JSON.parse(data);
-        subTreeStore.set([]);
-        dataStore.set(parsedData);
-        isLoading = false;
+        try {
+          const parsedData = JSON.parse(data);
+          subTreeStore.set([]);
+          dataStore.set(parsedData);
+        } catch (e) {
+          notifications.push(e);
+        }
       })
       .catch((error) => {
+        notifications.push(error);
         console.error(error);
+      })
+      .finally(() => {
         isLoading = false;
       });
   };
