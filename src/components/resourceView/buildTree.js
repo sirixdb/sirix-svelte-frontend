@@ -65,9 +65,7 @@ export const loadDiffs = (
   const resource = sirix
     .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
     .resource(resourceName);
-  return resource.diff(first, second, { nodeId, maxLevel }).then(diffObj => {
-    return diffObj["diffs"];
-  });
+  return resource.diff(first, second, { nodeId, maxLevel });
 };
 
 export const inject = (treeNode, newNode, path, insertKey) => {

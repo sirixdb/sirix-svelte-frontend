@@ -8,7 +8,7 @@
   import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree.js";
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
-  import { selected, refreshResource } from "../../store";
+  import { selected } from "../../store";
 
   let treeNode = createTree(node, []);
 
@@ -45,6 +45,7 @@
       maxLevel: 4,
     }).then((diffs) => {
       treeNode = injectDiffs(treeNode, diffs)[0];
+      console.log(treeNode)
     });
   }
 </script>

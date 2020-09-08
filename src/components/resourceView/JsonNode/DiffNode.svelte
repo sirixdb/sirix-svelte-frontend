@@ -9,11 +9,11 @@
     let tree = {};
     if (Array.isArray(data)) {
       tree["component"] = Container;
-      tree["child"] = data.map(obj => buildTree(obj));
+      tree["child"] = data.map((obj) => buildTree(obj));
       tree["data"] = data;
     } else if (typeof data === "object") {
       tree["component"] = Container;
-      tree["child"] = Object.keys(data).map(key => buildTree(data[key], key));
+      tree["child"] = Object.keys(data).map((key) => buildTree(data[key], key));
       tree["data"] = data;
     } else if (key !== undefined) {
       tree["component"] = Key;
@@ -32,45 +32,41 @@
   let element;
 
   let tree;
-  let diffType;
-  let diffObj;
-  $: {
-    diffType = Object.keys(props.diffNode)[0];
-    diffObj = props.diffNode[diffType];
-    console.log(diffObj)
-    if (diffObj.type === "jsonFragment") {
-      tree = buildTree(JSON.parse(diffObj.data));
-    } else if (diffType !== "delete") {
-      tree = buildTree(diffType === "update" ? diffObj.value : diffObj.data);
-    }
-    if (diffType === "delete") {
-      onMount(() => {
-        element.parentNode.style.background = "rgb(255,0,0,0.4)";
-        element.parentNode.style.marginBottom = element.parentNode.style.marginTop =
-          "1px";
-      });
-      onDestroy(() => {
-        element.parentNode.style.marginBottom = element.parentNode.style.marginTop = element.parentNode.style.background =
-          "";
-      });
-    } else if (diffType == "update") {
-      onMount(() => {
-        const arr = Array.from(element.parentNode.children);
-        arr[1].style.background = "rgb(255,0,0,0.4)";
-      });
-      onDestroy(() => {
-        const arr = Array.from(element.parentNode.children);
-        arr[1].style.background = "";
-      });
-    } else if (diffType === "replace") {
-      onMount(() => {
-        console.log(element.previousElementSibling)
-        element.previousElementSibling.style.background = "rgb(255,0,0,0.4)";
-      });
-      onDestroy(() => {
-        element.previousElementSibling.style.background = "";
-      });
-    }
+
+  let diffType = Object.keys(props.diffNode)[0];
+  let diffObj = props.diffNode[diffType];
+  if (diffObj.type === "jsonFragment") {
+    tree = buildTree(JSON.parse(diffObj.data));
+  } else if (diffType !== "delete") {
+    tree = buildTree(diffType === "update" ? diffObj.value : diffObj.data);
+  }
+  if (diffType === "delete") {
+    onMount(() => {
+      element.parentNode.style.background = "rgb(255,0,0,0.4)";
+      element.parentNode.style.marginBottom = element.parentNode.style.marginTop =
+        "1px";
+    });
+    onDestroy(() => {
+      element.parentNode.style.marginBottom = element.parentNode.style.marginTop = element.parentNode.style.background =
+        "";
+    });
+  } else if (diffType == "update") {
+    onMount(() => {
+      const arr = Array.from(element.parentNode.children);
+      arr[1].style.background = "rgb(255,0,0,0.4)";
+    });
+    onDestroy(() => {
+      const arr = Array.from(element.parentNode.children);
+      arr[1].style.background = "";
+    });
+  } else if (diffType === "replace") {
+    onMount(() => {
+      console.log(element.previousElementSibling);
+      element.previousElementSibling.style.background = "rgb(255,0,0,0.4)";
+    });
+    onDestroy(() => {
+      element.previousElementSibling.style.background = "";
+    });
   }
 </script>
 
@@ -86,7 +82,7 @@
 <span bind:this={element} />
 
 {#if diffType !== 'delete'}
-  {#if diffType === "replace"}
+  {#if diffType === 'replace'}
     <!--<span>{diffType === "update" ? diffObj.value : diffObj.data}</span>-->
     <span>
       <svelte:component this={tree.component} child={tree.data} />
