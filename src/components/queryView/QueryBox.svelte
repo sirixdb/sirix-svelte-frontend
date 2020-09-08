@@ -79,8 +79,10 @@
     if (event.ctrlKey) {
       if (event.keyCode == 10 || event.keyCode == 13 || event.metaKey) {
         handleQuery();
+        event.preventDefault();
       } else if (event.keyCode == 83) {
         handleSave();
+        event.preventDefault();
       }
     }
   };
@@ -101,11 +103,10 @@
   }
 </style>
 
-<pre
-  class="my-0"
-  on:keydown|preventDefault={handleKeydown}>
+<pre class="my-0">
   <code
     on:input={render}
+    on:keydown={handleKeydown}
     contenteditable
     class="block h-32 hljs">
     {@html html}
