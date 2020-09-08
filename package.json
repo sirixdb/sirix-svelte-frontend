@@ -51,5 +51,9 @@
     "svelte-preprocess": "^4.2.1",
     "tailwindcss": "^1.8.5",
     "typescript": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sirixdb/sirix-svelte-front-end"
   }
 }
