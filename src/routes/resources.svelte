@@ -8,19 +8,6 @@
   import { DBType } from "sirixdb";
 
   let historyColumn, diffColumn;
-  let historyOffset, diffOffset;
-  $: {
-    if (historyColumn) {
-      historyColumn.onscroll = () => {
-        historyOffset = historyColumn.scrollTop;
-      };
-    }
-    if (diffColumn) {
-      diffColumn.onscroll = () => {
-        diffOffset = diffColumn.scrollTop;
-      };
-    }
-  }
 
   // store (`shift`) to control hiding the db-view, and to show the diff selection view
   import { tweened } from "svelte/motion";
@@ -92,7 +79,7 @@
 
 <CheckLogin />
 
-<div style="top: 64px" id="grid-container" class="bottom-0">
+<div id="grid-container" class="bottom-0">
   <section
     id="dbs-view"
     class="overflow-y-scroll bottom-0 min-h-full scroll"
@@ -108,7 +95,7 @@
     style="width: max(calc(100vw / 17 * 3.4 * {$shift}), calc(100vw / 17 * 3));
     margin-right: calc(100vw / 17 * 3.6 * {$shift}); margin-left: calc(-100vw /
     17 * 3.6 * {$shift});">
-    <History {history} offset={historyOffset} />
+    <History {history} />
   </section>
 
   {#if $shift}
@@ -118,7 +105,7 @@
       class="overflow-y-scroll bottom-0 min-h-full scroll"
       style="width: calc(100vw / 17 * 3.4 * {$shift}); margin-right: calc(100vw
       / 17 * 3.6 * {$shift}); margin-left: calc(-100vw / 17 * 3.6 * {$shift});">
-      <History {history} diffColumn={true} offset={diffOffset} />
+      <History {history} diffColumn={true} />
     </section>
   {/if}
 

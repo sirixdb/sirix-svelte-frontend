@@ -16,7 +16,6 @@
   import Refresh from "./Refresh.svelte";
 
   let width;
-  export let offset;
 </script>
 
 <style>
@@ -32,9 +31,9 @@
 <!-- NOTE we only need this #if because the history tree is constant -->
 {#if list.length !== 0}
   <div
-    style="width: {width}px; top: {offset}px;"
+    style="width: {width}px;"
     id="fade-screen"
-    class="py-2 absolute z-10">
+    class="py-2 z-10 sticky top-0">
     <div class="z-20">
       {#if !diffColumn}
         <Refresh />
