@@ -16,7 +16,7 @@ export interface KeyProps {
   nodeKey: number;
   nodeType: NodeType;
   childs: any;
-  diff: any;
+  diff?: any;
 }
 
 export interface ValueProps {
@@ -24,10 +24,6 @@ export interface ValueProps {
   diff: any;
   nodeType: NodeType;
   nodeKey: number;
-}
-
-interface DiffProp {
-  diff: any;
 }
 
 export const containerFuncReg = (props): ContainerProps => {

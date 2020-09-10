@@ -11,7 +11,7 @@ import { DBType } from "sirixdb";
 
 interface TreeNode {
   node: any;
-  component?: Container | Key | Value;
+  component?: typeof Container | typeof Key | typeof Value;
   path?: Array<string | number | null>;
   child?: TreeNode | TreeNode[];
   props?: ContainerProps | KeyProps | ValueProps;
@@ -132,7 +132,7 @@ export const injectDiffs = (treeNode: TreeNode | TreeNode[], diffs) => {
       let newNode: {
         diffNode: any;
         props: typeof treeNode.props;
-        component: DiffNode;
+        component: typeof DiffNode;
         position?: any;
       } = {
         diffNode: diff,
