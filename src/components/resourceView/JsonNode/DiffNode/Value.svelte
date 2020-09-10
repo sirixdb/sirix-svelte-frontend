@@ -1,10 +1,10 @@
-<script>
-  export let child;
+<script lang="ts">
+  export let child: string;
   //silence the compiler
   export let data = undefined;
   data;
 
-  let textColor;
+  let textColor: string;
 
   $: {
     textColor =

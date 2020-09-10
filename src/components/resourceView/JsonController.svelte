@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
   export let node;
   export let dbName, dbType;
   export let resourceName;
   export let revision;
   export let diff;
 
-  import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree.js";
+  import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree";
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
   import { selected } from "../../store";
@@ -45,7 +45,6 @@
       maxLevel: 4,
     }).then((diffs) => {
       treeNode = injectDiffs(treeNode, diffs)[0];
-      console.log(treeNode)
     });
   }
 </script>

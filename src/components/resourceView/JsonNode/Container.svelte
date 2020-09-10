@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import VirtualList from "@componentLibrary/VirtualList.svelte";
 
   export let props;
@@ -33,6 +33,8 @@
   import Arrow from "../../icons/Arrow.svelte";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
+
+  $: console.log(diff)
 </script>
 
 <style>
@@ -40,6 +42,12 @@
     contain: content;
   }
 </style>
+
+{#if diff && diff.diffNode.delete !== undefined}
+  <svelte:component
+    this={diff.component}
+    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
+{/if}
 
 {#if expanded && diff && diff.position === 'before'}
   <svelte:component
@@ -95,8 +103,3 @@
     this={diff.component}
     props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}
-
-<!--
-{#if lastLine < treeNode.length}
-  <div style="height: {(treeNode.length - lastLine) * 24}px" />
-{/if}-->

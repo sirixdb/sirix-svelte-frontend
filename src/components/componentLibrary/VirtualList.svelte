@@ -1,12 +1,10 @@
-<script>
+<script lang="ts">
   import { onMount, tick } from "svelte";
 
   // props
-  export let items;
+  export let items: any[];
   export let height = "100%";
-  export let itemHeight = undefined;
-
-  let foo;
+  export let itemHeight: number = undefined;
 
   // read-only, but visible to consumers via bind:start
   export let start = 0;
@@ -18,7 +16,10 @@
   let viewport;
   let contents;
   let viewport_height = 0;
-  let visible;
+  let visible: {
+    index: number;
+    data: any;
+  }[];
   let mounted;
 
   let top = 0;
@@ -134,7 +135,7 @@
 </script>
 
 <style>
-  svelte-virtual-list-viewport {
+  .svelte-virtual-list-viewport {
     position: relative;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -166,11 +167,11 @@
     Based on https://github.com/sveltejs/svelte-virtual-list
     Modified to include index as a slot
 -->
-<svelte-virtual-list-viewport
+<span
   bind:this={viewport}
   bind:offsetHeight={viewport_height}
   on:scroll={handle_scroll}
-  class="scroll"
+  class="scroll svelte-virtual-list-viewport"
   style="height: {height};">
   <svelte-virtual-list-contents
     bind:this={contents}
@@ -181,4 +182,4 @@
       </svelte-virtual-list-row>
     {/each}
   </svelte-virtual-list-contents>
-</svelte-virtual-list-viewport>
+</span>

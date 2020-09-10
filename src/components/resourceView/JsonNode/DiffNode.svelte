@@ -5,7 +5,7 @@
   import Value from "./DiffNode/Value.svelte";
   import Key from "./DiffNode/Key.svelte";
 
-  const buildTree = (data, key) => {
+  const buildTree = (data, key = undefined) => {
     let tree = {};
     if (Array.isArray(data)) {
       tree["component"] = Container;
@@ -79,25 +79,25 @@
   }
 </style>
 
-<span bind:this={element} />
-
-{#if diffType !== 'delete'}
-  {#if diffType === 'replace'}
-    <!--<span>{diffType === "update" ? diffObj.value : diffObj.data}</span>-->
-    <span>
-      <svelte:component this={tree.component} child={tree.data} />
-    </span>
-  {:else}
-    <div class="pl-4">
-      <svelte:component
-        this={tree.component}
-        data={tree.data}
-        child={tree.child} />
-    </div>
+<span bind:this={element}>
+  {#if diffType !== 'delete'}
+    {#if diffType === 'replace'}
+      <!--<span>{diffType === "update" ? diffObj.value : diffObj.data}</span>-->
+      <span>
+        <svelte:component this={tree.component} child={tree.data} />
+      </span>
+    {:else}
+      <div class="pl-4">
+        <svelte:component
+          this={tree.component}
+          data={tree.data}
+          child={tree.child} />
+      </div>
+    {/if}
   {/if}
-{/if}
 
-{#if props.nextDiff.diff}
-  <svelte:self
-    props={{ ...props.nextDiff.diff, nextDiff: props.nextDiff.diff.props }} />
-{/if}
+  {#if props.nextDiff.diff}
+    <svelte:self
+      props={{ ...props.nextDiff.diff, nextDiff: props.nextDiff.diff.props }} />
+  {/if}
+</span>

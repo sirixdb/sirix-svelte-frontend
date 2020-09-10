@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { NodeType } from "sirixdb"; 
   import { valueFuncReg } from "./functions";
 
@@ -8,6 +8,7 @@
   // to silence svelte from raising issues with props
   export let expanded = undefined;
   export let hover = undefined;
+  //@ts-ignore
   expanded, hover;
 
   let nodeType, value, diff, textColor;

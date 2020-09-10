@@ -6,16 +6,24 @@ import Value from "./JsonNode/Value.svelte";
 import DiffNode from "./JsonNode/DiffNode.svelte";
 
 import { containerFuncReg, keyFuncReg, valueFuncReg } from "./JsonNode/functions";
+import type { ContainerProps, KeyProps, ValueProps } from "./JsonNode/functions";
 import { DBType } from "sirixdb";
+
+interface TreeNode {
+  node: any;
+  component?: Container | Key | Value;
+  path?: Array<string | number | null>;
+  child?: TreeNode | TreeNode[];
+  props?: ContainerProps | KeyProps | ValueProps;
+}
 
 export const createTree = (
   node,
   path,
-  index
-) => {
-  let treeNode = {};
+  index = undefined
+): TreeNode => {
+  let treeNode: TreeNode = { node };
   const nodeType = node.metadata.type;
-  treeNode["node"] = node;
   if (nodeType === NodeType.ARRAY || nodeType === NodeType.OBJECT) {
     treeNode["component"] = Container;
     treeNode["path"] =
@@ -49,14 +57,14 @@ export const createTree = (
 };
 
 export const loadDiffs = (
-  revision,
-  otherRevision,
-  dbName,
+  revision: number,
+  otherRevision: number,
+  dbName: string,
   dbType,
-  resourceName,
+  resourceName: string,
   { nodeId = null, maxLevel = 3 }
 ) => {
-  let first, second;
+  let first: number, second: number;
   if (otherRevision > revision) {
     (first = revision), (second = otherRevision);
   } else {
@@ -99,14 +107,14 @@ export const inject = (treeNode, newNode, path, insertKey) => {
   return treeNode;
 };
 
-export const injectDiffs = (treeNode, diffs) => {
+export const injectDiffs = (treeNode: TreeNode | TreeNode[], diffs) => {
   if (diffs.length === 0) {
     return [treeNode, diffs];
   }
   if (Array.isArray(treeNode)) {
     let arr = [];
     for (let [i, obj] of treeNode.entries()) {
-      let [node, diffsShifted] = injectDiffs(obj, diffs, i);
+      let [node, diffsShifted] = injectDiffs(obj, diffs);
       arr.push(node);
       diffs = diffsShifted;
     }
@@ -121,25 +129,30 @@ export const injectDiffs = (treeNode, diffs) => {
           ? diff[diffType].oldNodeKey
           : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
-      let newNode = {
+      let newNode: {
+        diffNode: any;
+        props: typeof treeNode.props;
+        component: DiffNode;
+        position?: any;
+      } = {
         diffNode: diff,
-        props: {},
+        props: { ...treeNode.props, diff: undefined },
         component: DiffNode,
       };
       switch (diffType) {
         case "delete":
           newNode.props.nodeKey = diff.delete.nodeKey;
-          treeNode.props = { ...treeNode.props, diff: newNode };
+          treeNode.props.diff = newNode;
           diffs.shift();
           break;
         case "update":
           newNode.props.nodeKey = diff.update.nodeKey;
-          treeNode.props = { ...treeNode.props, diff: newNode };
+          treeNode.props.diff = newNode;
           diffs.shift();
           break;
         case "replace":
           newNode.props.nodeKey = diff.replace.newNodeKey;
-          treeNode.props = { ...treeNode.props, diff: newNode };
+          treeNode.props.diff = newNode;
           diffs.shift();
           break;
         case "insert":
@@ -156,7 +169,7 @@ export const injectDiffs = (treeNode, diffs) => {
             default:
               break;
           }
-          treeNode.props = { ...treeNode.props, position: "after", diff: newNode };
+          treeNode.props = { ...treeNode.props, diff: newNode };
           diffs.shift();
           [treeNode.props.diff, diffs] = injectDiffs(treeNode.props.diff, diffs);
           break;
