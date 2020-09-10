@@ -1,7 +1,9 @@
 <script lang="ts">
   import VirtualList from "@componentLibrary/VirtualList.svelte";
+  import type { ContainerProps } from "./functions";
+  import type { Diff } from "../buildTree";
 
-  export let props;
+  export let props: ContainerProps;
   export let firstLevel = false;
 
   const toggleExpansion = () => {
@@ -17,7 +19,12 @@
   import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
 
-  let treeNode, path, nodeKey, childCount, nodeType, diff;
+  let treeNode: any,
+    path: Array<string | number | null>,
+    nodeKey: number,
+    childCount: number,
+    nodeType: NodeType,
+    diff: Diff?;
   $: ({ treeNode, path, nodeKey, childCount, nodeType, diff } = props);
 
   $: if (hover && childCount !== Object.keys(treeNode).length) {
@@ -33,8 +40,6 @@
   import Arrow from "../../icons/Arrow.svelte";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
-
-  $: console.log(diff)
 </script>
 
 <style>
@@ -66,10 +71,7 @@
   {#if nodeType === NodeType.ARRAY}
     <i>array</i>
     {$diffView ? '[ ]' : `[${childCount}]`}
-  {:else}
-    <i>object</i>
-    {$diffView ? '{ }' : `{${childCount}}`}
-  {/if}
+  {:else}<i>object</i> {$diffView ? '{ }' : `{${childCount}}`}{/if}
 </span>
 
 {#if expanded && diff && diff.position === 'child'}

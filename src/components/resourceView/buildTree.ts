@@ -6,20 +6,20 @@ import Value from "./JsonNode/Value.svelte";
 import DiffNode from "./JsonNode/DiffNode.svelte";
 
 import { containerFuncReg, keyFuncReg, valueFuncReg } from "./JsonNode/functions";
-import type { ContainerProps, KeyProps, ValueProps } from "./JsonNode/functions";
+import type { ContainerProps, KeyProps, ValueProps, Props, Path } from "./JsonNode/functions";
 import { DBType } from "sirixdb";
 
-interface TreeNode {
+export interface TreeNode {
   node: any;
   component?: typeof Container | typeof Key | typeof Value;
-  path?: Array<string | number | null>;
+  path?: Path;
   child?: TreeNode | TreeNode[];
-  props?: ContainerProps | KeyProps | ValueProps;
+  props?: Props;
 }
 
 export const createTree = (
   node,
-  path,
+  path: Path,
   index = undefined
 ): TreeNode => {
   let treeNode: TreeNode = { node };
@@ -107,6 +107,13 @@ export const inject = (treeNode, newNode, path, insertKey) => {
   return treeNode;
 };
 
+export interface Diff {
+  diffNode: any;
+  props: Props;
+  component: typeof DiffNode;
+  position?: string;
+}
+
 export const injectDiffs = (treeNode: TreeNode | TreeNode[], diffs) => {
   if (diffs.length === 0) {
     return [treeNode, diffs];
@@ -129,12 +136,7 @@ export const injectDiffs = (treeNode: TreeNode | TreeNode[], diffs) => {
           ? diff[diffType].oldNodeKey
           : diff[diffType].nodeKey;
     if (treeNode.props.nodeKey === key) {
-      let newNode: {
-        diffNode: any;
-        props: typeof treeNode.props;
-        component: typeof DiffNode;
-        position?: any;
-      } = {
+      let newNode: Diff = {
         diffNode: diff,
         props: { ...treeNode.props, diff: undefined },
         component: DiffNode,

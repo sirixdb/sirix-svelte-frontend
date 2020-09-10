@@ -1,8 +1,10 @@
 import type { NodeType } from "sirixdb";
 
+export type Path = Array<string | number | null>;
+
 export interface ContainerProps {
   treeNode: any;
-  path: Array<string | number | null>;
+  path: Path;
   nodeKey: number;
   childCount: number;
   nodeType: NodeType;
@@ -12,7 +14,7 @@ export interface ContainerProps {
 export interface KeyProps {
   key: string;
   treeNode: any;
-  path: Array<string | number | null>;
+  path: Path;
   nodeKey: number;
   nodeType: NodeType;
   childs: any;
@@ -25,6 +27,8 @@ export interface ValueProps {
   nodeType: NodeType;
   nodeKey: number;
 }
+
+export type Props = ContainerProps | KeyProps | ValueProps;
 
 export const containerFuncReg = (props): ContainerProps => {
   return {

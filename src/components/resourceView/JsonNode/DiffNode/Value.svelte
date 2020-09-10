@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let child: string;
+  export let child: string | number | boolean | null;
   //silence the compiler
-  export let data = undefined;
+  export let data: any = undefined;
   data;
 
   let textColor: string;
