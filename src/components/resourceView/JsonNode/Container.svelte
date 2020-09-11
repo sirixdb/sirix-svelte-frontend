@@ -3,11 +3,11 @@
   import type { ContainerProps } from "./functions";
   import type { Diff } from "../buildTree";
 
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   export let props: ContainerProps;
 
-  const toggleExpansion = () => {
-    expanded = !expanded;
-  };
   //@ts-ignore
   let maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 
@@ -15,10 +15,13 @@
   export let expanded = false;
   export let index = null;
 
-  import { NodeType } from "sirixdb";
+  let childrenExpanded = [];
+  let transition = 0;
+  const toggleExpansion = () => {
+    expanded = !expanded;
+  };
 
-  import { createEventDispatcher, onMount } from "svelte";
-  const dispatch = createEventDispatcher();
+  import { NodeType } from "sirixdb";
 
   let treeNode: any,
     path: Array<string | number | null>,
@@ -84,13 +87,13 @@
 {#if expanded}
   <VirtualList {maxHeight} items={treeNode} let:index let:item>
     <div
-      transition:expandAndFade
       on:mouseover|stopPropagation={() => (hover = true)}
       on:mouseout|stopPropagation={() => (hover = false)}
       class="pl-4">
       <svelte:component
         this={item.component}
         props={item.props}
+        bind:expanded={childrenExpanded[index]}
         {index}
         on:loadDeeper />
     </div>

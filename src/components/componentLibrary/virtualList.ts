@@ -1,15 +1,19 @@
 import { tick } from "svelte";
 
-export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHeight = 24 }: {
-  itemsCount: number, maxHeight: number, averageHeight: number
-}) {
+interface Props {
+  itemsCount: number;
+  maxHeight: number;
+  averageHeight: number;
+}
+
+export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHeight = 24 }: Props) {
   let startIndex = 0;
   let endIndex = 0;
   let topOffset = 0;
   let bottomOffset = 0;
   let heightMap: number[] = Array(itemsCount);
   node.style.maxHeight = `${maxHeight}px`;
-  async function handleScroll(event: Event) {
+  async function handleScroll() {
     const { scrollTop } = node;
     let rows = Array.from(node.firstElementChild.children) as HTMLElement[];
 
@@ -57,15 +61,12 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
     node.firstElementChild.style.paddingTop = `${topOffset}px`;
     //@ts-ignore
     node.firstElementChild.style.paddingBottom = `${bottomOffset}px`;
-
-    event && event.stopPropagation();
-    event && event.preventDefault();
   }
 
   // init
   (async () => {
     await tick();
-    handleScroll(undefined);
+    handleScroll();
   })();
 
   node.addEventListener("scroll", handleScroll);
@@ -73,7 +74,7 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
     destroy: () => {
       node.removeEventListener("scroll", handleScroll);
     },
-    update: (props) => {
+    update: (props: Props) => {
       maxHeight = props.maxHeight;
       node.style.maxHeight = `${maxHeight}px`;
       itemsCount = props.itemsCount;

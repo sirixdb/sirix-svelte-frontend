@@ -36,7 +36,7 @@
   <span>{index}:</span>
 {/if}
 
-<span class={textColor} transition:expandAndFade|local>
+<span class={textColor}>
   {nodeType.endsWith('STRING_VALUE') ? `"${value}"` : value}
 </span>
 

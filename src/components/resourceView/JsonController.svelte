@@ -53,5 +53,4 @@
   this={treeNode.component}
   props={treeNode.props}
   expanded={true}
-  on:loadDeeper={loadDeeper}
-  firstLevel={true} />
+  on:loadDeeper={loadDeeper} />

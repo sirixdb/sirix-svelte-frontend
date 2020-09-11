@@ -3,12 +3,12 @@
 
   let hover = false;
 
-  let expanded = false;
+  export let expanded = false;
   const toggleExpansion = () => {
     expanded = !expanded;
   };
 
-  // silence the compiler
+  // silence the compiler and runtime warnings
   export let index = undefined;
   index;
 
