@@ -1,14 +1,15 @@
 <script lang="ts">
-  import VirtualList from "@componentLibrary/VirtualList.svelte";
+  import VirtualList from "../../componentLibrary/VirtualList.svelte";
   import type { ContainerProps } from "./functions";
   import type { Diff } from "../buildTree";
 
   export let props: ContainerProps;
-  export let firstLevel = false;
 
   const toggleExpansion = () => {
     expanded = !expanded;
   };
+  //@ts-ignore
+  let maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 
   export let hover = false;
   export let expanded = false;
@@ -24,7 +25,7 @@
     nodeKey: number,
     childCount: number,
     nodeType: NodeType,
-    diff: Diff?;
+    diff: ?Diff;
   $: ({ treeNode, path, nodeKey, childCount, nodeType, diff } = props);
 
   $: if (hover && childCount !== Object.keys(treeNode).length) {
@@ -81,23 +82,19 @@
 {/if}
 
 {#if expanded}
-  <div
-    transition:expandAndFade|local
-    style="height: {firstLevel ? 'calc(100vh - 89px)' : `${treeNode.length * 24}px`}"
-    class={hover ? 'bg-gray-300' : ''}>
-    <VirtualList items={treeNode} let:index let:item>
-      <div
-        on:mouseover|stopPropagation={() => (hover = true)}
-        on:mouseout|stopPropagation={() => (hover = false)}
-        class="pl-4">
-        <svelte:component
-          this={item.component}
-          props={item.props}
-          {index}
-          on:loadDeeper />
-      </div>
-    </VirtualList>
-  </div>
+  <VirtualList {maxHeight} items={treeNode} let:index let:item>
+    <div
+      transition:expandAndFade
+      on:mouseover|stopPropagation={() => (hover = true)}
+      on:mouseout|stopPropagation={() => (hover = false)}
+      class="pl-4">
+      <svelte:component
+        this={item.component}
+        props={item.props}
+        {index}
+        on:loadDeeper />
+    </div>
+  </VirtualList>
 {/if}
 
 {#if expanded && diff && diff.position === 'after'}
