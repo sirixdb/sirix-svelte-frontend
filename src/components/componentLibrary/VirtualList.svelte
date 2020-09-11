@@ -165,6 +165,7 @@
     ```
 
     Based on https://github.com/sveltejs/svelte-virtual-list
+    License here: https://github.com/sveltejs/svelte-virtual-list/blob/master/LICENSE
     Modified to include index as a slot
 -->
 <span

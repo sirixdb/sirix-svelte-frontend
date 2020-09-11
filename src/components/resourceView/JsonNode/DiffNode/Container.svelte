@@ -8,7 +8,6 @@
   };
 
   $: isArray = Array.isArray(data);
-  $: items = Object.entries(data).length;
 
   import Arrow from "../../../icons/Arrow.svelte";
   import { expandAndFade } from "../../../../utils/transition.js";
