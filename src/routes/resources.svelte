@@ -109,7 +109,10 @@
     </section>
   {/if}
 
-  <section id="resource-view" class="bottom-0 min-h-full">
+  <section
+    id="resource-view"
+    class="bottom-0 min-h-full"
+    on:scroll|stopPropagation={() => {}}>
     <Controller />
   </section>
 </div>
