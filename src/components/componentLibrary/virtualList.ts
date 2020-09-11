@@ -14,6 +14,7 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
   let heightMap: number[] = Array(itemsCount);
   node.style.maxHeight = `${maxHeight}px`;
   async function handleScroll() {
+    const oldStartIndex = startIndex;
     const { scrollTop } = node;
     let rows = Array.from(node.firstElementChild.children) as HTMLElement[];
 
@@ -61,6 +62,24 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
     node.firstElementChild.style.paddingTop = `${topOffset}px`;
     //@ts-ignore
     node.firstElementChild.style.paddingBottom = `${bottomOffset}px`;
+
+    // need this block for scrolling up into expanded elements
+    if (startIndex < oldStartIndex) {
+      await tick();
+
+      let expected_height = 0;
+      let actualHeight = 0;
+
+      for (let i = startIndex; i < oldStartIndex; i += 1) {
+        if (rows[i - startIndex]) {
+          expected_height += heightMap[i];
+          actualHeight += rows[i - startIndex].offsetHeight;
+        }
+      }
+
+      const d = actualHeight - expected_height;
+      node.scrollTo(0, scrollTop + d);
+    }
   }
 
   // init
