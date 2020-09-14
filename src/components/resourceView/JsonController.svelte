@@ -56,7 +56,7 @@
       });
   };
 
-  if (diff && diff !== revision) {
+/*  if (diff && diff !== revision) {
     if (diff < revision) {
       selected.update((old) => ({ ...old, revision: diff, diff: revision }));
     }
@@ -65,7 +65,7 @@
     }).then((diffs) => {
       treeNode = injectDiffs(treeNode, diffs)[0];
     });
-  }
+  }*/
 </script>
 
 <Wrapper {jsonResource} path={[]} let:component let:node>
