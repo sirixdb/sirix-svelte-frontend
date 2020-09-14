@@ -1,19 +1,22 @@
 <script lang="ts">
-  import { NodeType } from "sirixdb"; 
-  import { valueFuncReg } from "./functions";
+  import { NodeType } from "sirixdb";
+  import type { JSONResource, ExtendedMetaNode } from "./tree";
 
-  export let props;
-  export let index = undefined;
+  export let node: ExtendedMetaNode;
+
+  export let index: number = undefined;
 
   // to silence svelte from raising issues with props
   export let expanded = undefined;
   export let hover = undefined;
+  export let jsonResource: JSONResource;
+  export let path: (string | number | null)[];
   //@ts-ignore
-  expanded, hover;
+  jsonResource, path, expanded, hover;
 
-  let nodeType, value, diff, textColor;
+  let nodeType: NodeType, textColor: string;
   $: {
-    ({ nodeType, value, diff } = props);
+    nodeType = node.metadata.type;
     textColor =
       nodeType === NodeType.STRING_VALUE ||
       nodeType === NodeType.OBJECT_STRING_VALUE ||
@@ -25,23 +28,10 @@
         : // NULL or BOOLEAN
           "text-indigo-600";
   }
-
-  import { diffView } from "../../../store";
-
-  // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
-{#if index !== undefined && !$diffView}
-  <span>{index}:</span>
-{/if}
+{#if index !== undefined}<span>{index}:</span>{/if}
 
 <span class={textColor}>
-  {nodeType.endsWith('STRING_VALUE') ? `"${value}"` : value}
+  {nodeType.endsWith('STRING_VALUE') ? `"${node.value}"` : node.value}
 </span>
-
-{#if diff}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
-{/if}

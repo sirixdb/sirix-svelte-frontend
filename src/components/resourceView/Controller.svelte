@@ -1,8 +1,8 @@
 <script>
-  import { sirix } from "../../sirix";
+  import { sirix } from "../../../../sirix";
   import { DBType } from "sirixdb";
 
-  import { selected, refreshResource } from "../../store";
+  import { selected, refreshResource } from "../../../../store";
 
   let jsonResource = null;
 

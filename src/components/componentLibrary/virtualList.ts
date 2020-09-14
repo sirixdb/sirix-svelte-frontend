@@ -89,9 +89,11 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
   })();
 
   node.addEventListener("scroll", handleScroll);
+  node.addEventListener("revirtualize", handleScroll);
   return {
     destroy: () => {
       node.removeEventListener("scroll", handleScroll);
+      node.removeEventListener("revirtualize", handleScroll);
     },
     update: (props: Props) => {
       maxHeight = props.maxHeight;

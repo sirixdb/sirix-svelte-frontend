@@ -1,107 +1,96 @@
 <script lang="ts">
   import VirtualList from "../../componentLibrary/VirtualList.svelte";
-  import type { ContainerProps } from "./functions";
-  import type { Diff } from "../buildTree";
+  import Wrapper from "./Wrapper.svelte";
+  import Arrow from "../../icons/Arrow.svelte";
+  import { NodeType } from "sirixdb";
+  import { createEventDispatcher, tick } from "svelte";
+  import { refreshDisplay } from "./store.js";
+  import type { JSONResource, ExtendedMetaNode } from "./tree";
+  // transformations
+  import { expandAndFade } from "../../../utils/transition.js";
 
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
-
-  export let props: ContainerProps;
+  export let jsonResource: JSONResource;
+  export let path: (string | number | null)[];
+  export let node: ExtendedMetaNode;
 
   //@ts-ignore
   let maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 
   export let hover = false;
-  export let expanded = false;
   export let index = null;
 
-  let childrenExpanded = [];
-  let transition = 0;
-  const toggleExpansion = () => {
-    expanded = !expanded;
+  $: $refreshDisplay, (node.expanded = node.expanded);
+
+  let self: HTMLElement;
+  export const toggleExpansion = async () => {
+    node.transition = true;
+    node.expanded = !node.expanded;
+    await tick();
+    refreshDisplay.refresh();
+    setTimeout(
+      () =>
+        self.dispatchEvent(new CustomEvent("revirtualize", { bubbles: true })),
+      250
+    );
+    await tick();
+    node.transition = false;
   };
 
-  import { NodeType } from "sirixdb";
+  let items: ExtendedMetaNode[];
+  $: items = node.value as ExtendedMetaNode[];
 
-  let treeNode: any,
-    path: Array<string | number | null>,
-    nodeKey: number,
-    childCount: number,
-    nodeType: NodeType,
-    diff: ?Diff;
-  $: ({ treeNode, path, nodeKey, childCount, nodeType, diff } = props);
-
-  $: if (hover && childCount !== Object.keys(treeNode).length) {
+  const dispatch = createEventDispatcher();
+  $: if (hover && node.metadata.childCount !== Object.keys(items).length) {
     dispatch("loadDeeper", {
       path,
-      key: nodeKey,
+      nodeKey: node.metadata.nodeKey,
       insertKey: null,
     });
   }
-
-  import { diffView } from "../../../store";
-
-  import Arrow from "../../icons/Arrow.svelte";
-  // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 <style>
-  div {
-    contain: content;
+  * {
+    contain: style;
   }
 </style>
 
-{#if diff && diff.diffNode.delete !== undefined}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
-{/if}
-
-{#if expanded && diff && diff.position === 'before'}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
-{/if}
-
 <span
+  bind:this={self}
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
   on:click|stopPropagation={toggleExpansion}>
   {#if path[path.length - 1] !== null}
-    <Arrow {expanded} />
+    <Arrow expanded={node.expanded} />
   {/if}
-  {#if index !== null}{$diffView ? ' ' : index}:{/if}
-  {#if nodeType === NodeType.ARRAY}
+  {#if index !== null}{index}:{/if}
+  {#if node.metadata.type === NodeType.ARRAY}
     <i>array</i>
-    {$diffView ? '[ ]' : `[${childCount}]`}
-  {:else}<i>object</i> {$diffView ? '{ }' : `{${childCount}}`}{/if}
+    {`[${node.metadata.childCount}]`}
+  {:else}<i>object</i> {`{${node.metadata.childCount}}`}{/if}
 </span>
 
-{#if expanded && diff && diff.position === 'child'}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
-{/if}
-
-{#if expanded}
-  <VirtualList {maxHeight} items={treeNode} let:index let:item>
+{#if node.expanded && node.metadata.childCount !== 0}
+  <VirtualList {maxHeight} {items} let:index>
     <div
+      transition:expandAndFade={{ duration: node.transition ? 300 : 0 }}
       on:mouseover|stopPropagation={() => (hover = true)}
       on:mouseout|stopPropagation={() => (hover = false)}
       class="pl-4">
-      <svelte:component
-        this={item.component}
-        props={item.props}
-        bind:expanded={childrenExpanded[index]}
-        {index}
-        on:loadDeeper />
+      <Wrapper
+        {jsonResource}
+        let:component
+        let:node={childNode}
+        let:path
+        path={path.concat(node.metadata.type === NodeType.ARRAY ? index : node.value[index].key)}>
+        <svelte:component
+          this={component}
+          on:loadDeeper
+          node={childNode}
+          {path}
+          {index}
+          {jsonResource} />
+      </Wrapper>
     </div>
   </VirtualList>
-{/if}
-
-{#if expanded && diff && diff.position === 'after'}
-  <svelte:component
-    this={diff.component}
-    props={{ diffNode: diff.diffNode, nextDiff: diff.props }} />
 {/if}

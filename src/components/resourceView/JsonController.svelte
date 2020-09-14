@@ -5,14 +5,22 @@
   export let revision;
   export let diff;
 
-  import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree";
+  import Wrapper from "./JsonNode/Wrapper.svelte";
+
+//  import { createTree, loadDiffs, inject, injectDiffs } from "./buildTree";
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
+  import type { MetaNode } from "sirixdb";
   import { selected } from "../../store";
+  import { JSONResource } from "./JsonNode/tree";
 
-  let treeNode = createTree(node, []);
-
-  const loadDeeper = ({ detail }) => {
+//  let treeNode = createTree(node, []);
+  let jsonResource: JSONResource;
+  $: {
+    jsonResource = new JSONResource(node);
+    jsonResource.setProperty([], "expanded", true);
+  }
+  /*const loadDeeper = ({ detail }) => {
     const resource = sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName);
@@ -35,6 +43,17 @@
           treeNode = inject(treeNode, toInsert, detail.path, detail.insertKey);
         }
       });
+  };*/
+
+  const loadDeeper = ({ detail }) => {
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource
+      .readWithMetadata({ nodeId: detail.nodeKey, revision, maxLevel: 3 })
+      .then((newNode) => {
+        jsonResource.inject(detail.path, newNode.value as MetaNode | MetaNode[], detail.insertKey);
+      });
   };
 
   if (diff && diff !== revision) {
@@ -49,8 +68,19 @@
   }
 </script>
 
+<Wrapper {jsonResource} path={[]} let:component let:node>
+  <svelte:component
+    this={component}
+    path={[]}
+    {node}
+    on:loadDeeper={loadDeeper}
+    {jsonResource} />
+</Wrapper>
+
+<!--
 <svelte:component
   this={treeNode.component}
   props={treeNode.props}
   expanded={true}
   on:loadDeeper={loadDeeper} />
+-->

@@ -1,6 +1,6 @@
-import { sirix } from "../../sirix";
+/*import { sirix } from "../../sirix";
 import { NodeType } from "sirixdb";
-import Container from "./JsonNode/Container.svelte";
+import Container from "./JsonNode/Container-old.svelte";
 import Key from "./JsonNode/Key.svelte";
 import Value from "./JsonNode/Value.svelte";
 import DiffNode from "./JsonNode/DiffNode.svelte";
@@ -182,4 +182,4 @@ export const injectDiffs = (treeNode: TreeNode | TreeNode[], diffs) => {
     }
   }
   return [treeNode, diffs];
-};
+};*/
