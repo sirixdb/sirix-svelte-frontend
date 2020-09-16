@@ -63,7 +63,7 @@ export default {
       json(),
       commonjs(),
 
-      (legacy || tauriMode) && babel({
+      (legacy) && babel({
         extensions: ['.js', '.ts', '.mjs', '.html', '.svelte'],
         runtimeHelpers: true,
         exclude: ['node_modules/@babel/**'],
