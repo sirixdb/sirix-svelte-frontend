@@ -1,19 +1,20 @@
 <script lang="ts">
-  export let child: string | number | boolean | null;
-  //silence the compiler
-  export let data: any = undefined;
-  data;
+  export let props;
 
   let textColor: string;
+  let dataType: string;
 
   $: {
+    dataType = typeof props.child;
     textColor =
-      typeof child === "number"
+      dataType === "number"
         ? "text-green-600"
-        : typeof child === "string"
+        : dataType === "string"
         ? "text-orange-900"
         : "text-indigo-600";
   }
 </script>
 
-<span class={textColor}>"{child}"</span>
+<span class={textColor}>
+  {#if dataType === 'string'}"{props.data}"{:else}{props.data}{/if}
+</span>

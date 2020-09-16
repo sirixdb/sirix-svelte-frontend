@@ -1,20 +1,22 @@
 <script>
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
+  import { selected, refreshResource } from "../../store.js";
 
-  import { selected, refreshResource } from "../../store";
+  import { tick } from "svelte";
 
   let jsonResource = null;
 
-  const emptyRevision = () => {
+  const emptyRevision = async () => {
     jsonResource = null;
+    await tick();
   };
 
   const loadRevision = (dbName, dbType, resourceName, revision) => {
-    const resource = sirix
+    sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
-      .resource(resourceName);
-    resource.readWithMetadata({ revision, maxLevel: 4 }).then((nodes) => {
+      .resource(resourceName)
+      .readWithMetadata({ revision, maxLevel: 4 }).then((nodes) => {
       jsonResource = nodes;
     });
   };
@@ -28,26 +30,30 @@
     diff: null,
   };
 
-  $: {
-    let sel = $selected;
+  const newSelection = async (sel) => {
     ({ dbName, dbType, resourceName, revision, diff } = sel);
     for (let key in oldSelection) {
       if (sel[key] !== oldSelection[key]) {
         if (key !== "diff") {
-          emptyRevision();
+          await emptyRevision();
         }
       }
-      oldSelection = sel;
     }
-  }
-
-  $: {
-    $refreshResource;
-    emptyRevision();
+    oldSelection = sel;
+    await emptyRevision();
     if (resourceName !== null && revision) {
       loadRevision(dbName, dbType, resourceName, revision);
     }
-  }
+  };
+  const refresh = async () => {
+    await emptyRevision();
+    if (resourceName !== null && revision) {
+      loadRevision(dbName, dbType, resourceName, revision);
+    }
+  };
+
+  $: newSelection($selected);
+  $: $refreshResource, refresh();
 
   import JsonController from "./JsonController.svelte";
 </script>

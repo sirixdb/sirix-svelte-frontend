@@ -7,12 +7,13 @@
   export let index: number = undefined;
 
   // to silence svelte from raising issues with props
-  export let expanded = undefined;
+  export let diff = undefined;
   export let hover = undefined;
   export let jsonResource: JSONResource;
+  export let jsonDiffs;
   export let path: (string | number | null)[];
   //@ts-ignore
-  jsonResource, path, expanded, hover;
+  jsonResource, jsonDiffs, path, hover, diff;
 
   let nodeType: NodeType, textColor: string;
   $: {

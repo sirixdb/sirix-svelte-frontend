@@ -82,7 +82,6 @@
 <span bind:this={element}>
   {#if diffType !== 'delete'}
     {#if diffType === 'replace'}
-      <!--<span>{diffType === "update" ? diffObj.value : diffObj.data}</span>-->
       <span>
         <svelte:component this={tree.component} child={tree.data} />
       </span>

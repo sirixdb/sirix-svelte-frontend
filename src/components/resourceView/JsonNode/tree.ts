@@ -1,4 +1,4 @@
-import type { MetaNode } from "sirixdb";
+import type { MetaNode, DiffResponse, Diff } from "sirixdb";
 
 export interface ExtendedMetaNode extends MetaNode {
   transition?: boolean;
@@ -65,5 +65,43 @@ export class JSONResource {
       return false;
     }
     return false;
+  }
+}
+
+export class JSONDiffs {
+  database: string;
+  resource: string;
+  diffsMap: { [key: number]: Diff };
+  oldRevision: number;
+  newRevision: number;
+  constructor(diffResponse: DiffResponse) { this.reset(diffResponse) }
+  reset = (diffResponse: DiffResponse) => {
+    this.diffsMap = [];
+    this.database = diffResponse.database;
+    this.resource = diffResponse.resource;
+    this.oldRevision = diffResponse["old-revision"];
+    this.newRevision = diffResponse["new-revision"];
+    this.add(diffResponse.diffs);
+  }
+  add = (diffs: Diff[]) => {
+    diffs.forEach(diff => {
+      switch (Object.keys(diff)[0]) {
+        case "replace":
+          this.diffsMap[diff.replace.oldNodeKey] = diff;
+          break;
+        case "insert":
+          this.diffsMap[diff.insert.insertPositionNodeKey] = diff;
+          break;
+        case "delete":
+          this.diffsMap[diff.delete.nodeKey] = diff;
+          break;
+        case "update":
+          this.diffsMap[diff.update.nodeKey] = diff;
+          break;
+      }
+    })
+  }
+  get = (nodeKey: number) => {
+    return this.diffsMap[nodeKey];
   }
 }

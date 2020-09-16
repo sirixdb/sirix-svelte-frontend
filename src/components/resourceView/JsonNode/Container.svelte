@@ -5,19 +5,18 @@
   import { NodeType } from "sirixdb";
   import { createEventDispatcher, tick } from "svelte";
   import { refreshDisplay } from "./store.js";
-  import type { JSONResource, ExtendedMetaNode } from "./tree";
+  import type { JSONResource, ExtendedMetaNode, JSONDiffs } from "./tree";
   // transformations
   import { expandAndFade } from "../../../utils/transition.js";
 
   export let jsonResource: JSONResource;
+  export let jsonDiffs: JSONDiffs;
   export let path: (string | number | null)[];
   export let node: ExtendedMetaNode;
 
-  //@ts-ignore
-  let maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
-
   export let hover = false;
   export let index = null;
+  export let diff = undefined;
 
   $: $refreshDisplay, (node.expanded = node.expanded);
 
@@ -36,17 +35,17 @@
     node.transition = false;
   };
 
-  let items: ExtendedMetaNode[];
-  $: items = node.value as ExtendedMetaNode[];
-
   const dispatch = createEventDispatcher();
-  $: if (hover && node.metadata.childCount !== Object.keys(items).length) {
+  $: if (hover && node.metadata.childCount !== Object.keys(node.value).length) {
     dispatch("loadDeeper", {
       path,
       nodeKey: node.metadata.nodeKey,
       insertKey: null,
     });
   }
+
+  //@ts-ignore
+  let maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 </script>
 
 <style>
@@ -70,24 +69,36 @@
   {:else}<i>object</i> {`{${node.metadata.childCount}}`}{/if}
 </span>
 
+{#if diff && diff.type === 'insertAsFirstChild'}
+  <json-diff-wrapper
+    class="pl-4 block"
+    style="background-color: rgba(0, 255, 0, 0.4);">
+    <svelte:component this={diff.component} props={diff.data} />
+  </json-diff-wrapper>
+{/if}
+
 {#if node.expanded && node.metadata.childCount !== 0}
-  <VirtualList {maxHeight} {items} let:index>
+  <VirtualList {maxHeight} items={node.value} let:index>
     <div
-      transition:expandAndFade={{ duration: node.transition ? 300 : 0 }}
+      transition:expandAndFade|local={{ duration: node.transition ? 300 : 0 }}
       on:mouseover|stopPropagation={() => (hover = true)}
       on:mouseout|stopPropagation={() => (hover = false)}
       class="pl-4">
       <Wrapper
+        {jsonDiffs}
         {jsonResource}
+        path={path.concat(node.metadata.type === NodeType.ARRAY ? index : node.value[index].key)}
         let:component
         let:node={childNode}
-        let:path
-        path={path.concat(node.metadata.type === NodeType.ARRAY ? index : node.value[index].key)}>
+        let:diff
+        let:path>
         <svelte:component
           this={component}
           on:loadDeeper
           node={childNode}
+          {diff}
           {path}
+          {jsonDiffs}
           {index}
           {jsonResource} />
       </Wrapper>

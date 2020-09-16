@@ -3,17 +3,18 @@
   import Arrow from "../../icons/Arrow.svelte";
   import { NodeType } from "sirixdb";
   import { refreshDisplay } from "./store.js";
-  import type { JSONResource, ExtendedMetaNode } from "./tree";
+  import type { JSONResource, JSONDiffs, ExtendedMetaNode } from "./tree";
   import { createEventDispatcher } from "svelte";
 
   export let jsonResource: JSONResource;
   export let path: (string | number | null)[];
   export let node: ExtendedMetaNode;
+  export let jsonDiffs: JSONDiffs;
+  export let diff;
   // silence the compiler and runtime warnings
   export let index = undefined;
   index;
 
-  let self: HTMLElement;
   let childComponent;
 
   let hover = false;
@@ -35,7 +36,7 @@
   $: if (
     hover &&
     childIsContainer &&
-    node.metadata.childCount !== Object.keys(child.value).length
+    child.metadata.childCount !== Object.keys(child.value).length
   ) {
     dispatch("loadDeeper", {
       path: path.concat(null),
@@ -57,6 +58,7 @@
 
 <Wrapper
   {jsonResource}
+  {jsonDiffs}
   let:component
   let:node
   let:path={childPath}
@@ -66,7 +68,9 @@
     bind:this={childComponent}
     path={childPath}
     on:loadDeeper
+    {diff}
     {hover}
     {node}
-    {jsonResource} />
+    {jsonResource}
+    {jsonDiffs} />
 </Wrapper>
