@@ -11,10 +11,11 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
   let endIndex = 0;
   let topOffset = 0;
   let bottomOffset = 0;
-  let heightMap: number[] = Array(itemsCount);
+  let heightMap: number[] = Array(itemsCount).fill(averageHeight);
   node.style.maxHeight = `${maxHeight}px`;
-  async function handleScroll() {
+  async function handleScroll(event: Event) {
     const oldStartIndex = startIndex;
+    const oldEndIndex = endIndex;
     const { scrollTop } = node;
     let rows = Array.from(node.firstElementChild.children) as HTMLElement[];
 
@@ -67,37 +68,53 @@ export function virtualize(node: HTMLElement, { itemsCount, maxHeight, averageHe
     if (startIndex < oldStartIndex) {
       await tick();
 
-      let expected_height = 0;
+      let expectedHeight = 0;
       let actualHeight = 0;
 
       for (let i = startIndex; i < oldStartIndex; i += 1) {
         if (rows[i - startIndex]) {
-          expected_height += heightMap[i];
+          expectedHeight += heightMap[i];
           actualHeight += rows[i - startIndex].offsetHeight;
         }
       }
 
-      const d = actualHeight - expected_height;
+      const d = actualHeight - expectedHeight;
       node.scrollTo(0, scrollTop + d);
     }
+
+    // need this block for scrolling up when scrolling down into expanded elements
+    if (endIndex > oldEndIndex) {
+      await tick();
+
+      let expectedHeight = 0;
+      let actualHeight = 0;
+
+      for (let i = endIndex; i > oldEndIndex; i -= 1) {
+        if (rows[i - startIndex]) {
+          expectedHeight += heightMap[i];
+          actualHeight += rows[i - startIndex].offsetHeight;
+        }
+      }
+
+      const d = actualHeight - expectedHeight;
+      node.scrollTo(0, scrollTop + d);
+    }
+    event && event.stopPropagation();
+    event && event.preventDefault();
   }
 
   // init
   (async () => {
     await tick();
-    handleScroll();
+    handleScroll(undefined);
   })();
 
   node.addEventListener("scroll", handleScroll);
+  node.addEventListener("revirtualize", handleScroll);
   return {
     destroy: () => {
       node.removeEventListener("scroll", handleScroll);
-    },
-    update: (props: Props) => {
-      maxHeight = props.maxHeight;
-      node.style.maxHeight = `${maxHeight}px`;
-      itemsCount = props.itemsCount;
-      averageHeight = props.averageHeight;
+      node.removeEventListener("revirtualize", handleScroll);
     }
   }
 }

@@ -1,61 +1,76 @@
 <script lang="ts">
-  export let props;
+  import Wrapper from "./Wrapper.svelte";
+  import Arrow from "../../icons/Arrow.svelte";
+  import { NodeType } from "sirixdb";
+  import { refreshDisplay } from "./store.js";
+  import type { JSONResource, JSONDiffs, ExtendedMetaNode } from "./tree";
+  import { createEventDispatcher } from "svelte";
 
-  let hover = false;
-
-  export let expanded = false;
-  const toggleExpansion = () => {
-    expanded = !expanded;
-  };
-
+  export let jsonResource: JSONResource;
+  export let path: (string | number | null)[];
+  export let node: ExtendedMetaNode;
+  export let jsonDiffs: JSONDiffs;
+  export let diff;
   // silence the compiler and runtime warnings
   export let index = undefined;
   index;
 
-  let childNode;
-  let childNodes;
+  let childComponent;
 
-  let key, treeNode, path, nodeKey, nodeType, childs;
-
-  import { NodeType } from "sirixdb";
-
+  let hover = false;
+  let expanded = false;
+  const toggleExpansion = () => {
+    childComponent.toggleExpansion && childComponent.toggleExpansion();
+  };
+  let child: ExtendedMetaNode;
+  let childIsContainer: boolean;
+  $: $refreshDisplay, (expanded = child.expanded);
   $: {
-    ({ key, treeNode, path, nodeKey, nodeType, childs } = props);
-    childNode = childs;
+    child = node.value as ExtendedMetaNode;
+    childIsContainer =
+      child.metadata.type === NodeType.OBJECT ||
+      child.metadata.type === NodeType.ARRAY;
   }
-
-  import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
-
-  $: if (hover && Object.keys(childNode).length === 0) {
+  $: if (
+    hover &&
+    childIsContainer &&
+    child.metadata.childCount !== Object.keys(child.value).length
+  ) {
     dispatch("loadDeeper", {
-      path,
-      key: nodeKey,
-      insertKey: null
+      path: path.concat(null),
+      nodeKey: child.metadata.nodeKey,
+      insertKey: null,
     });
   }
-
-  import Arrow from "../../icons/Arrow.svelte";
-  // transformations
-  import { expandAndFade } from "../../../utils/transition.js";
 </script>
 
 <span
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
   on:click|stopPropagation={toggleExpansion}>
-  {#if childNode.metadata.type === NodeType.OBJECT || childNode.metadata.type === NodeType.ARRAY}
+  {#if childIsContainer}
     <Arrow {expanded} />
   {/if}
-  {key}:
+  {node.key}:
 </span>
 
-<span transition:expandAndFade|local>
+<Wrapper
+  {jsonResource}
+  {jsonDiffs}
+  let:component
+  let:node
+  let:path={childPath}
+  path={path.concat(null)}>
   <svelte:component
-    this={treeNode.component}
-    props={treeNode.props}
-    bind:expanded
+    this={component}
+    bind:this={childComponent}
+    path={childPath}
+    on:loadDeeper
+    {diff}
     {hover}
-    on:loadDeeper />
-</span>
+    {node}
+    {jsonResource}
+    {jsonDiffs} />
+</Wrapper>

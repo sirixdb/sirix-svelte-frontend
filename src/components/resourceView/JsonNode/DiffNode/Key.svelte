@@ -1,8 +1,7 @@
 <script>
-  export let child;
-  export let data;
+  export let props;
 </script>
 
-<span>{data}:</span>
+<span>{props.child}:</span>
 
-<svelte:component this={child.component} child={child.data} />
+<svelte:component this={props.data.component} props={props.data} />

@@ -20,7 +20,7 @@
     "highlight.js": "^10.2.0",
     "idb": "^5.0.6",
     "polka": "next",
-    "sirixdb": "^0.2.1",
+    "sirixdb": "^0.2.4",
     "sirv": "^1.0.6",
     "tauri": "^0.12.0"
   },
