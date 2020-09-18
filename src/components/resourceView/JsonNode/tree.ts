@@ -1,4 +1,4 @@
-import type { MetaNode, DiffResponse, Diff } from "sirixdb";
+import { MetaNode, DiffResponse, Diff, NodeType } from "sirixdb";
 
 export interface ExtendedMetaNode extends MetaNode {
   transition?: boolean;
@@ -35,16 +35,80 @@ const traverse = (metaNode: ExtendedMetaNode, path: (string | number | null)[]) 
   }, metaNode);
 }
 
+export type NodeAndType = [ExtendedMetaNode, (number | string | null)[]];
+
+const slice = (
+  start: number,
+  end: number,
+  path: (number | string | null)[],
+  node: ExtendedMetaNode,
+  ref: { index: number },
+  results: NodeAndType[],
+  countKeys = false): NodeAndType[] => {
+  if (ref.index >= end) return results;
+  if (ref.index >= start && ref.index <= end) {
+    results.push([node, path]);
+  }
+  if (!node.expanded && node.metadata.type !== NodeType.OBJECT_KEY) return results;
+  if (Array.isArray(node.value)) {
+    for (let [index, entry] of node.value.entries()) {
+      ref.index += 1;
+      slice(start, end, path.concat(entry.key ? entry.key : index), entry, ref, results);
+    }
+  } else if (node.metadata.type === NodeType.OBJECT_KEY) {
+    countKeys && ref.index++;
+    slice(start, end, path.concat(null), node.value as ExtendedMetaNode, ref, results);
+  }
+  return results;
+}
+
+const coalesce = (node: ExtendedMetaNode, count: number = 0) => {
+  count++;
+  if (Array.isArray(node.value)) {
+    count = (node.value as ExtendedMetaNode[]).map(item => coalesce(item)).reduce((acc, curr) => acc + curr, count);
+  } else if (node.metadata.type === NodeType.OBJECT_KEY) {
+    count--;
+    count = coalesce(node.value as ExtendedMetaNode, count);
+  }
+  return count;
+}
+
+const totalExpanded = (node: ExtendedMetaNode, count = 0) => {
+  count++;
+  if (node.expanded && Array.isArray(node.value)) {
+    count = (node.value as ExtendedMetaNode[]).map(item => totalExpanded(item)).reduce((acc, curr) => acc + curr, count);
+  } else if ((node.value as ExtendedMetaNode).expanded && node.metadata.type === NodeType.OBJECT_KEY) {
+    count--;
+    count = totalExpanded(node.value as ExtendedMetaNode, count);
+  }
+  return count;
+}
+
 export class JSONResource {
-  constructor(private metaNode: ExtendedMetaNode) { }
-  reset = (metaNode: MetaNode) => { this.metaNode = metaNode }
+  public totalNodes: number;
+  constructor(public metaNode: ExtendedMetaNode) {
+    this.totalNodes = coalesce(metaNode);
+  }
+  totalExpanded = () => {
+    return totalExpanded(this.metaNode);
+  }
+  slice = (start: number, end: number) => {
+    return slice(start, end, [], this.metaNode, { index: 0 }, []);
+  }
   get = (path: Array<number | string | null>) => {
     if (!this.metaNode) return undefined;
     return traverse(this.metaNode, path);
   }
+  toggleProperty = (path: (string | number | null)[], property: "transition" | "expanded") => {
+    const node = traverse(this.metaNode, path);
+    // node was not loaded yet, and we won't be able to access it's metadata. So don't do anything
+    if (Object.keys(node).length === 0) return;
+    node[property] = !node[property];
+  }
   setProperty = (path: (string | number | null)[], property: "transition" | "expanded", value: any) => {
     if (!this.metaNode) return;
-    traverse(this.metaNode, path)[property] = value;
+    const node = traverse(this.metaNode, path);
+    node[property] = value;
   }
   inject = (
     path: (string | number | null)[],
@@ -55,6 +119,7 @@ export class JSONResource {
     let node = traverse(this.metaNode, path);
     if (insertKey === null) {
       node.value = insertNode;
+      this.totalNodes += (insertNode as MetaNode[]).map(coalesce).reduce((acc, curr) => acc + curr);
       return true;
     } else if (Array.isArray(node.value)) {
       if (typeof insertKey === "string") {

@@ -2,26 +2,22 @@
   import Wrapper from "./Wrapper.svelte";
   import Arrow from "../../icons/Arrow.svelte";
   import { NodeType } from "sirixdb";
-  import { refreshDisplay } from "./store.js";
-  import type { JSONResource, JSONDiffs, ExtendedMetaNode } from "./tree";
-  import { createEventDispatcher } from "svelte";
+  import { refreshDisplay } from "./store";
+  import type { JSONResource, ExtendedMetaNode } from "./tree";
+  import { createEventDispatcher, tick } from "svelte";
 
   export let jsonResource: JSONResource;
   export let path: (string | number | null)[];
   export let node: ExtendedMetaNode;
-  export let jsonDiffs: JSONDiffs;
-  export let diff;
-  // silence the compiler and runtime warnings
-  export let index = undefined;
-  index;
-
-  let childComponent;
 
   let hover = false;
   let expanded = false;
+
   const toggleExpansion = () => {
-    childComponent.toggleExpansion && childComponent.toggleExpansion();
+    jsonResource.toggleProperty(path.concat(null), "expanded");
+    refreshDisplay.refresh();
   };
+
   let child: ExtendedMetaNode;
   let childIsContainer: boolean;
   $: $refreshDisplay, (expanded = child.expanded);
@@ -47,6 +43,7 @@
 </script>
 
 <span
+  style="margin-left: {path.filter((val) => val !== null).length}rem"
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
   on:click|stopPropagation={toggleExpansion}>
@@ -55,22 +52,3 @@
   {/if}
   {node.key}:
 </span>
-
-<Wrapper
-  {jsonResource}
-  {jsonDiffs}
-  let:component
-  let:node
-  let:path={childPath}
-  path={path.concat(null)}>
-  <svelte:component
-    this={component}
-    bind:this={childComponent}
-    path={childPath}
-    on:loadDeeper
-    {diff}
-    {hover}
-    {node}
-    {jsonResource}
-    {jsonDiffs} />
-</Wrapper>

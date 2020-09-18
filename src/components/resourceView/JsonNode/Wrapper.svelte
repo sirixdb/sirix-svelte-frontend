@@ -131,20 +131,18 @@
 </script>
 
 <script lang="ts">
-  import type { JSONResource, ExtendedMetaNode, JSONDiffs } from "./tree";
+  import type { ExtendedMetaNode, JSONDiffs } from "./tree";
   import type { Diff } from "sirixdb";
 
-  export let jsonResource: JSONResource;
   export let jsonDiffs: JSONDiffs;
   export let path: (string | number | null)[];
 
   let component: typeof Container | typeof Key | typeof Value;
 
-  let currentNode: ExtendedMetaNode;
+  export let currentNode: ExtendedMetaNode;
   let diff: Diff;
   let diffComponentObj: DiffComponentObj;
   $: {
-    currentNode = jsonResource.get(path);
     component = getComponent(currentNode.metadata.type);
     if (jsonDiffs) {
       diff = jsonDiffs.get(currentNode.metadata.nodeKey);
@@ -174,9 +172,13 @@
   </json-diff-wrapper>
 {/if}
 
+<!--
 <json-node-wrapper class:red={diff && !diff.insert}>
   <slot {component} {path} node={currentNode} diff={diffComponentObj} />
 </json-node-wrapper>
+-->
+
+<slot {component} {path} node={currentNode} diff={diffComponentObj} />
 
 {#if diff && diffComponentObj.type === 'insertAsRightSibling'}
   <json-diff-wrapper

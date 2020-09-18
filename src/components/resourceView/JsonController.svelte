@@ -6,12 +6,14 @@
   export let diff: number;
 
   import Wrapper from "./JsonNode/Wrapper.svelte";
+  import { virtualize } from "./JsonNode/virtualList";
 
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
   import type { MetaNode } from "sirixdb";
   import { selected } from "../../store";
   import { JSONResource, JSONDiffs } from "./JsonNode/tree";
+  import VirtualList from "./JsonNode/VirtualList.svelte";
 
   let jsonResource: JSONResource;
   let jsonDiffs: JSONDiffs = null;
@@ -55,22 +57,23 @@
         });
     }
   };
+
+  //@ts-ignore
+  const maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 </script>
 
-<Wrapper
-  {jsonResource}
-  {jsonDiffs}
-  path={[]}
-  let:path
-  let:diff
-  let:component
-  let:node>
-  <svelte:component
-    this={component}
-    {diff}
-    {path}
-    {node}
-    on:loadDeeper={loadDeeper}
+<VirtualList {jsonResource} {maxHeight} let:item={currentNode}>
+  <Wrapper
     {jsonDiffs}
-    {jsonResource} />
-</Wrapper>
+    currentNode={currentNode[0]}
+    path={currentNode[1]}
+    let:component
+    let:node>
+    <svelte:component
+      this={component}
+      path={currentNode[1]}
+      {node}
+      on:loadDeeper={loadDeeper}
+      {jsonResource} />
+  </Wrapper>
+</VirtualList>
