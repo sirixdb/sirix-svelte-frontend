@@ -1,5 +1,5 @@
 <script lang="typescript">
-  export let showForm: boolean;
+  export let close: Function;
   export let dbName: string;
   export let dbType: string;
   let resourceName = "";
@@ -27,7 +27,7 @@
         dbInfo.set(data);
       });
       submitting = false;
-      showForm = false;
+      close();
     });
   };
   // class style values

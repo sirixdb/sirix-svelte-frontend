@@ -1,9 +1,10 @@
 <script lang="typescript">
-  import AddDialog from "./AddDialog.svelte";
+  import AddDatabase from "./AddDatabase.svelte";
+  import { openModal } from "renderless-svelte";
 
   let form = false;
   let showForm = () => {
-    form = true;
+    openModal({component: AddDatabase});
   };
 </script>
 
@@ -13,6 +14,3 @@
   cursor-pointer hover:bg-blue-200 m-2 p-2 inline-block">
   Add Database
 </span>
-{#if form}
-  <AddDialog bind:showForm={form} />
-{/if}

@@ -1,5 +1,5 @@
 <script lang="typescript">
-  export let showForm: boolean;
+  export let close: Function;
   let name = "";
   let dbType = "";
   let submitting = false;
@@ -18,7 +18,7 @@
       sirix.getInfo().then((info) => {
         dbInfo.set(info);
         submitting = false;
-        showForm = false;
+        close();
       });
     });
   };

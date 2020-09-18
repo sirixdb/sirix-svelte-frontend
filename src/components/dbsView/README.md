@@ -2,9 +2,11 @@
 
 This directory contains components for a sidebar displaying current databases and resources, as well as components for creating new databases and resources.
 
+Several of these components call `openModal` from the `renderless-svelte` package, which instantiates the modal defined in `routes/_layout.svelte`. Some components here are intended to be used withing this modal.
+
 ### TODO
 
-There is some generic code repeated in these files, (such as refreshing the list of databases/resources). So as to eliminate code duplication, this logic should be moved to `routes/_layout`, and triggered by way of an event.
+There is some generic code repeated in these files, (such as refreshing the list of databases/resources). So as to eliminate code duplication, perhaps this logic should be moved to `routes/_layout`, and triggered by way of an event?
 
 ## `Tree.svelte`
 
@@ -12,13 +14,13 @@ This component is the container component for the sidebar.
 
 ## `Add.svelte`
 
-This component is the contains a button to add a database. When clicked, it will render the `AddDialog.svelte` component.
+This component is the contains a button to add a database. When clicked, it will call `openModal` with the `AddDatabase.svelte` component.
 
 ## `Database.svelte`
 
 This component renders a tab representing a database, as well as the resources associated with that database, by way of rendering `Resources.svelte`.
 
-It also renders a delete button, which will render an instance of `DeleteDialog.svelte`, as well as an add button, to add additional resources to the database, by way of rendering `AddDialog.svelte`.
+It also renders a delete button, which will call `openModal` with an instance of `DeleteDialog.svelte`, as well as an add button, to add additional resources to the database, by way of calling `openModal` with an instance of `AddResource.svelte`.
 
 ## `Resources.svelte`
 
@@ -30,14 +32,7 @@ This component renders a tab representing a resource, as well as a delete button
 
 ## `DeleteDialog.svelte`
 
-This component renders a modal confirming that the user indeed wishes to delete a given database or resource. It also handles logic related to the actual deletion, including refreshing the svelte store of databases and resources.
-
-## `AddDialog.svelte`
-
-This component renders a modal in which it will render one of the following, depending on the props passed to it:
-
-+ render `AddDatabase.svelte`
-+ render `AddResource.svelte`
+This component renders an alert confirming that the user indeed wishes to delete a given database or resource. It handles logic related to the actual deletion, including refreshing the svelte store of databases and resources.
 
 ## `AddDatabase.svelte`
 
