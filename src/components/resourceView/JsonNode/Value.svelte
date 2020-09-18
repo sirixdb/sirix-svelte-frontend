@@ -1,5 +1,6 @@
 <script lang="ts">
   import { NodeType } from "sirixdb";
+  import { tooltip } from "renderless-svelte";
   import type { ExtendedMetaNode } from "./tree";
 
   export let node: ExtendedMetaNode;
@@ -26,13 +27,24 @@
         : // NULL or BOOLEAN
           "text-indigo-600";
   }
-  $: index = path[path.length - 1];
-  $: style = `margin-left: ${path.filter((val) => val !== null).length}rem`;
+  let index: string | number, style: string;
+  $: {
+    index = path[path.length - 1];
+    style = `margin-left: ${path.filter((val) => val !== null).length}rem`;
+  }
+  let display: string, truncate: boolean;
+  $: {
+    display = node.value.toString();
+    truncate = display.length > 60;
+    if (truncate) {
+      display = display.slice(0, 60);
+    }
+  }
 </script>
 
 {#if typeof index === 'number'}<span {style}>{index}:</span>{/if}
 
-<span class={textColor}>
-  {typeof node.value === "string" ? `"${node.value.slice(0, 60)}"` : node.value}
+<span class={textColor} use:tooltip={truncate ? { text: node.value } : false}>
+  {node.metadata.type.endsWith('STRING_VALUE') ? `"${display}"` : display}{truncate ? '...' : ''}
 </span>
 <br />

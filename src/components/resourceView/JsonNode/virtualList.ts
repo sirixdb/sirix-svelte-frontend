@@ -49,7 +49,6 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
     averageHeight = y / (endIndex + 1);
     bottomOffset = remaining * averageHeight;
     bottomOffset = Math.max(0, bottomOffset);
-    console.log({ averageHeight, remaining, bottomOffset, topOffset })
 
     node.dispatchEvent(new CustomEvent('virtualize', {
       detail: { startIndex, endIndex, bottomOffset, topOffset }
