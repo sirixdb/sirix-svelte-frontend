@@ -67,11 +67,9 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
   })();
 
   node.addEventListener("scroll", handleScroll);
-  node.addEventListener("revirtualize", handleScroll);
   return {
     destroy: () => {
       node.removeEventListener("scroll", handleScroll);
-      node.removeEventListener("revirtualize", handleScroll);
       unsubscribe();
     },
     update: (props: Props) => {
