@@ -14,10 +14,7 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
   let topOffset = 0;
   let bottomOffset = 0;
   async function handleScroll(event: Event) {
-    const oldStartIndex = startIndex;
-    const oldEndIndex = endIndex;
     const { scrollTop } = node;
-    let rows = Array.from(node.firstElementChild.children) as HTMLElement[];
     const itemsCount = jsonResource.totalExpanded();
     let heightMap: number[] = Array(jsonResource.totalExpanded()).fill(averageHeight);
 

@@ -33,6 +33,6 @@
 {#if typeof index === 'number'}<span {style}>{index}:</span>{/if}
 
 <span class={textColor}>
-  {nodeType.endsWith('STRING_VALUE') ? `"${node.value.slice(0, 60)}"` : node.value}
+  {typeof node.value === "string" ? `"${node.value.slice(0, 60)}"` : node.value}
 </span>
 <br />

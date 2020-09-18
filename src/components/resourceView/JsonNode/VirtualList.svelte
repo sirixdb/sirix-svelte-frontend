@@ -21,20 +21,10 @@
   let topOffset = 0;
   let bottomOffset = 0;
   let items: NodeAndType[] = [];
-  let animationMap = [];
   const onVirtualize = ({ detail }) => {
     bottomOffset = detail.bottomOffset;
     topOffset = detail.topOffset;
-    const oldItems = items.map((item) => item[1]);
     items = jsonResource.slice(detail.startIndex, detail.endIndex + 1);
-
-    animationMap = [];
-    items.forEach((item, index) => {
-      const found = oldItems.findIndex(old => compare(item[1], old));
-      if (found === -1) {
-        animationMap[index] = true;
-      }
-    });
   };
 </script>
 
@@ -42,37 +32,6 @@
   virtual-list,
   virtual-list-inner {
     display: block;
-  }
-  @keyframes -global-expandAndFadeOut {
-    from {
-      opacity: 1;
-      line-height: 1;
-    }
-
-    to {
-      line-height: 0;
-      opacity: 0;
-    }
-  }
-
-  @keyframes -global-expandAndFadeIn {
-    from {
-      opacity: 0;
-      line-height: 0;
-    }
-
-    to {
-      line-height: 1;
-      opacity: 1;
-    }
-  }
-
-  .animate {
-    animation: expandAndFadeIn 300ms;
-  }
-
-  virtual-list-item {
-    vertical-align: top;
   }
 </style>
 
@@ -84,7 +43,7 @@
   <virtual-list-inner
     style="padding-bottom: {bottomOffset}px; padding-top: {topOffset}px">
     {#each items as row, index}
-      <virtual-list-item class:animate={animationMap[index]}>
+      <virtual-list-item>
         <slot item={row} />
       </virtual-list-item>
     {/each}
