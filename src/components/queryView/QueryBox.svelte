@@ -94,8 +94,8 @@
   }
   .tooltip:before {
     border-style: solid;
-    border-width: 6px 6px 0 6px;
-    border-color: black transparent transparent transparent;
+    border-width: 5px 5px 0 5px;
+    border-color: gray transparent transparent transparent;
     content: "";
     position: absolute;
     left: calc(50% - 5px);
@@ -133,7 +133,7 @@
 <Tooltip let:options let:dimensions>
   {#if options}
     <div
-      class="tooltip bg-gray-900 rounded text-white fixed py-1 px-2"
+      class="tooltip bg-gray-100 rounded text-gray-900 fixed py-1 px-2"
       style="left: {dimensions.x + dimensions.width / 2}px; top: calc({dimensions.y}px - 2.75rem - 5px);">
       <span>{options.text}</span>
     </div>
