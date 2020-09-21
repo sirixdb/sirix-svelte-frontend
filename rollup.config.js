@@ -47,7 +47,11 @@ export default {
         ]
       }),
       svelte({
-        preprocess: preprocess(),
+        preprocess: preprocess({
+          typescript: {
+            tsconfigFile: "./tsconfig.json",
+          }
+        }),
         dev,
         hydratable: true,
         emitCss: true
@@ -59,6 +63,7 @@ export default {
       typescript({
         noEmitOnError: !dev,
         sourceMap: !!sourcemap,
+        tsconfig: "./tsconfig.json",
       }),
       json(),
       commonjs(),
@@ -93,14 +98,18 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
-      replace(replaceObj),
+      replace({ ...replaceObj, 'process.browser': false }),
       alias({
         entries: [
           { find: '@componentLibrary', replacement: 'src/components/componentLibrary' }
         ]
       }),
       svelte({
-        preprocess: preprocess(),
+        preprocess: preprocess({
+          typescript: {
+            tsconfigFile: "./tsconfig.json",
+          }
+        }),
         generate: 'ssr',
         dev
       }),
@@ -110,6 +119,7 @@ export default {
       typescript({
         noEmitOnError: !dev,
         sourceMap: !!sourcemap,
+        tsconfig: "./tsconfig.json"
       }),
       json(),
       commonjs()

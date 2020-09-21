@@ -2,10 +2,10 @@
   import type { settingsStore as settingsStoreType } from "../../../lib/db_stores"
 
   export let settingsStore: typeof settingsStoreType;
-  let pagination = $settingsStore.globalPagination;
+  let pagination = $settingsStore["pagination-size"];
 
   const submit = () => {
-    pagination !== $settingsStore.globalPagination &&
+    pagination !== $settingsStore["pagination-size"] &&
       settingsStore.setPagination(pagination);
   };
 </script>

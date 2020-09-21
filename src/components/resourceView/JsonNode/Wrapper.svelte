@@ -79,50 +79,59 @@
 
     switch (diffType) {
       case "replace":
-        if (diff.replace.type === "jsonFragment") {
-          return parse("replace", diff.replace.data);
+        if ((diff as ReplaceDiff).replace.type === "jsonFragment") {
+          return parse("replace", (diff as ReplaceDiff).replace.data);
         } else {
           return {
             component: DiffValue,
-            data: diff.replace.data,
+            data: (diff as ReplaceDiff).replace.data,
             type: "replace",
           };
         }
       case "update":
         return {
           component: DiffKey,
-          data: diff.update.value,
+          data: (diff as UpdateDiff).update.value,
           type: "update",
         };
       case "delete":
         return null;
       case "insert":
-        switch (diff.insert.insertPosition) {
+        switch ((diff as InsertDiff).insert.insertPosition) {
           case "asFirstChild":
-            if (diff.insert.type === "jsonFragment") {
-              return parse("insertAsFirstChild", diff.insert.data);
+            if ((diff as InsertDiff).insert.type === "jsonFragment") {
+              return parse(
+                "insertAsFirstChild",
+                (diff as InsertDiff).insert.data
+              );
             }
             return {
               component: DiffValue,
-              data: diff.insert.data,
+              data: (diff as InsertDiff).insert.data,
               type: "insertAsFirstChild",
             };
           case "asLeftSibling":
-            if (diff.insert.type === "jsonFragment") {
-              return parse("insertAsLeftSibling", diff.insert.data);
+            if ((diff as InsertDiff).insert.type === "jsonFragment") {
+              return parse(
+                "insertAsLeftSibling",
+                (diff as InsertDiff).insert.data
+              );
             }
             return {
               component: DiffValue,
-              data: diff.insert.data,
+              data: (diff as InsertDiff).insert.data,
               type: "insertAsLeftSibling",
             };
           case "asRightSibling":
-            if (diff.insert.type === "jsonFragment") {
-              return parse("insertAsRightSibling", diff.insert.data);
+            if ((diff as InsertDiff).insert.type === "jsonFragment") {
+              return parse(
+                "insertAsRightSibling",
+                (diff as InsertDiff).insert.data
+              );
             }
             return {
               component: DiffValue,
-              data: diff.insert.data,
+              data: (diff as InsertDiff).insert.data,
               type: "insertAsRightSibling",
             };
         }
@@ -133,6 +142,11 @@
 <script lang="ts">
   import type { ExtendedMetaNode, JSONDiffs } from "./tree";
   import type { Diff } from "sirixdb";
+  import type {
+    InsertDiff,
+    ReplaceDiff,
+    UpdateDiff,
+  } from "sirixdb/dist/src/info";
 
   export let jsonDiffs: JSONDiffs;
   export let path: (string | number | null)[];

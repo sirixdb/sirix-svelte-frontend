@@ -3,7 +3,7 @@
     "include": ["src/**/*"],
     "exclude": ["node_modules/*"],
     "compilerOptions": {
-        "module": "esnext",
+        "module": "ESNext",
         "target": "es2017",
         "types": ["svelte"],
         "moduleResolution": "node",

@@ -2,8 +2,8 @@
   import type { settingsStore as settingsStoreType } from "../../../lib/db_stores";
 
   export let settingsStore: typeof settingsStoreType;
-  let initialDepth = $settingsStore.globalInitialDepth;
-  let lazyLoadDepth = $settingsStore.globalLazyLoadDepth;
+  let initialDepth = $settingsStore["lazy-loading"].initialDepth;
+  let lazyLoadDepth = $settingsStore["lazy-loading"].lazyLoadDepth;
 
   const submit = async () => {
     await settingsStore.setLazyLoadIng({ initialDepth, lazyLoadDepth });
