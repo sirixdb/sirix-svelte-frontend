@@ -2,6 +2,7 @@
   import Database from "./Database.svelte";
   import Add from "./Add.svelte";
   import Refresh from "./Refresh.svelte";
+  import Settings from "../componentLibrary/Settings.svelte";
 
   import { dbInfo } from "../../store";
 </script>
@@ -11,6 +12,7 @@
     <div class="w-full">
       <Add />
       <Refresh />
+      <Settings />
     </div>
     {#each $dbInfo as database (database.name)}
       <Database {database} />

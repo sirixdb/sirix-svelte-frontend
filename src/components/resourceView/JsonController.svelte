@@ -6,10 +6,10 @@
   export let diff: number;
 
   import Wrapper from "./JsonNode/Wrapper.svelte";
-  import { virtualize } from "./JsonNode/virtualList";
 
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
+  import { settingsStore } from "../../lib/db_stores";
   import type { MetaNode } from "sirixdb";
   import { selected } from "../../store";
   import { JSONResource, JSONDiffs } from "./JsonNode/tree";
@@ -29,7 +29,7 @@
     sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName)
-      .diff(revision, diff, { maxLevel: 4 })
+      .diff(revision, diff, { maxLevel: $settingsStore.globalInitialDepth })
       .then((diffResponse) => {
         console.log(diffResponse);
         jsonDiffs = new JSONDiffs(diffResponse);
@@ -41,7 +41,11 @@
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName);
     resource
-      .readWithMetadata({ nodeId: detail.nodeKey, revision, maxLevel: 3 })
+      .readWithMetadata({
+        nodeId: detail.nodeKey,
+        revision,
+        maxLevel: $settingsStore.globalLazyLoadDepth,
+      })
       .then((newNode) => {
         jsonResource.inject(
           detail.path,
@@ -51,7 +55,10 @@
       });
     if (diff) {
       resource
-        .diff(revision, diff, { nodeId: detail.nodeKey, maxLevel: 3 })
+        .diff(revision, diff, {
+          nodeId: detail.nodeKey,
+          maxLevel: $settingsStore.globalLazyLoadDepth,
+        })
         .then((diffResponse) => {
           jsonDiffs.add(diffResponse.diffs);
         });
