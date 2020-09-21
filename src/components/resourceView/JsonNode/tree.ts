@@ -87,7 +87,7 @@ const totalExpanded = (node: ExtendedMetaNode, count = 0) => {
 const greatestNodeKey = (node: ExtendedMetaNode, greatest: number = 0): number => {
   if (node.metadata.nodeKey > greatest) greatest = node.metadata.nodeKey;
   if (Array.isArray(node.value)) {
-    for (let item in node.value) {
+    for (let item of node.value) {
       greatest = greatestNodeKey(item as unknown as ExtendedMetaNode, greatest);
     }
   } else if (node.metadata.type === NodeType.OBJECT_KEY) {

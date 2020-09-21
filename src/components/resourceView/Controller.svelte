@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import { sirix } from "../../sirix";
   import { DBType } from "sirixdb";
   import { Tooltip } from "renderless-svelte";
   import { selected, refreshResource } from "../../store.js";
-  import { settingsStore } from "../../lib/db_stores.ts";
+  import { settingsStore } from "../../lib/db_stores";
 
   import { tick } from "svelte";
 
