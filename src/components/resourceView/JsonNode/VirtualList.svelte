@@ -36,6 +36,7 @@
 </style>
 
 <virtual-list
+  on:loadPage
   use:virtualize={{ jsonResource, maxHeight, averageHeight: defaultItemHeight }}
   on:virtualize={onVirtualize}
   style="height: {maxHeight}px"

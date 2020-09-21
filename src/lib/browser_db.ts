@@ -49,7 +49,7 @@ export async function removeFromQueriesByIndex(key: string, index: number): Prom
   refreshQueries.refresh();
 }
 
-export async function getSettings(instanceUri?: string): Promise<Settings> {
+export async function getSettings(): Promise<Settings> {
   const db = await openQueryDB();
   const globalLazyLoading = await db.get("global-settings", "lazy-loading") as SettingValue<"lazy-loading">;
   const globalPagination = await db.get("global-settings", "pagination-size") as SettingValue<"pagination-size">;

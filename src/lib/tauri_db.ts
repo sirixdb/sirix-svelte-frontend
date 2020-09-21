@@ -72,7 +72,7 @@ export async function removeFromQueriesByIndex(key: string, index: number): Prom
   refreshQueries.refresh();
 }
 
-export async function getSettings(instanceUri?: string): Promise<Settings> {
+export async function getSettings(): Promise<Settings> {
   const globalSettings = JSON.parse(await readTextFile(
     globalSettingsPath, { dir: Dir.App })) as Settings;
   const ret = {

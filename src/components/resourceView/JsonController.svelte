@@ -29,12 +29,35 @@
     sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName)
-      .diff(revision, diff, { maxLevel: $settingsStore.globalInitialDepth })
+      .diff(revision, diff, {
+        maxLevel: $settingsStore["lazy-loading"].initialDepth,
+      })
       .then((diffResponse) => {
         console.log(diffResponse);
         jsonDiffs = new JSONDiffs(diffResponse);
       });
   }
+
+  const onLoadPage = ({ detail }) => {
+    const resource = sirix
+      .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
+      .resource(resourceName);
+    resource
+      .readWithMetadata({
+        nodeId: detail.nodeKey,
+        revision,
+        maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
+        nextTopLevelNodes: $settingsStore["pagination-size"],
+        lastTopLevelNodeKey: detail.lastNode,
+      })
+      .then((newNode) => {
+        jsonResource.inject(
+          [],
+          newNode.value as MetaNode | MetaNode[],
+          detail.insertKey
+        );
+      });
+  };
 
   const loadDeeper = ({ detail }) => {
     const resource = sirix
@@ -44,7 +67,7 @@
       .readWithMetadata({
         nodeId: detail.nodeKey,
         revision,
-        maxLevel: $settingsStore.globalLazyLoadDepth,
+        maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
       })
       .then((newNode) => {
         jsonResource.inject(
@@ -57,7 +80,7 @@
       resource
         .diff(revision, diff, {
           nodeId: detail.nodeKey,
-          maxLevel: $settingsStore.globalLazyLoadDepth,
+          maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
         })
         .then((diffResponse) => {
           jsonDiffs.add(diffResponse.diffs);
@@ -71,6 +94,7 @@
 
 <VirtualList {jsonResource} {maxHeight} let:item={currentNode}>
   <Wrapper
+    on:loadPage={onLoadPage}
     {jsonDiffs}
     currentNode={currentNode[0]}
     path={currentNode[1]}

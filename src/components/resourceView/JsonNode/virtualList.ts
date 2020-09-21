@@ -1,5 +1,5 @@
 import { tick } from "svelte";
-import type { JSONResource } from "./tree";
+import type { ExtendedMetaNode, JSONResource } from "./tree";
 import { refreshDisplay } from "./store.js"
 
 interface Props {
@@ -53,6 +53,17 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
     node.dispatchEvent(new CustomEvent('virtualize', {
       detail: { startIndex, endIndex, bottomOffset, topOffset }
     }));
+
+    if (itemsCount - endIndex < 2) {
+      const topLevel = jsonResource.get([]);
+      const currentSize = (jsonResource.get([]).value as ExtendedMetaNode[]).length
+      if (topLevel.metadata.childCount !== currentSize) {
+        const key = (topLevel.value[currentSize - 1] as ExtendedMetaNode).key;
+        node.dispatchEvent(new CustomEvent('loadPage', {
+          detail: { lastNode: jsonResource.greatestNodeKey(), insertKey: key ? key : currentSize - 1 },
+        }));
+      }
+    }
 
     event && event.stopPropagation();
     event && event.preventDefault();

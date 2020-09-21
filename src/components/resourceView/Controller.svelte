@@ -3,6 +3,7 @@
   import { DBType } from "sirixdb";
   import { Tooltip } from "renderless-svelte";
   import { selected, refreshResource } from "../../store.js";
+  import { settingsStore } from "../../lib/db_stores.ts";
 
   import { tick } from "svelte";
 
@@ -17,7 +18,11 @@
     sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName)
-      .readWithMetadata({ revision, maxLevel: 4 })
+      .readWithMetadata({
+        revision,
+        maxLevel: $settingsStore["lazy-loading"].initialDepth,
+        nextTopLevelNodes: $settingsStore["pagination-size"],
+      })
       .then((nodes) => {
         jsonResource = nodes;
       });

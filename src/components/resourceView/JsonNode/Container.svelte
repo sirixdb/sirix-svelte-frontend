@@ -20,7 +20,11 @@
   };
 
   const dispatch = createEventDispatcher();
-  $: if (hover && node.metadata.childCount !== Object.keys(node.value).length) {
+  $: if (
+    hover &&
+    node.metadata.childCount !== 0 &&
+    Object.keys(node.value).length === 0
+  ) {
     dispatch("loadDeeper", {
       path,
       nodeKey: node.metadata.nodeKey,

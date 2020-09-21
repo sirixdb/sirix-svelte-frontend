@@ -2,14 +2,14 @@ import { writable } from "svelte/store";
 
 import * as tauri_db from "./tauri_db";
 import * as browser_db from "./browser_db";
-import type { DataLoadSettings, Settings } from "./db_utils";
+import type { DataLoadSettings } from "./db_utils";
 //@ts-ignore
 const { getSettings, setSetting } = process.tauri ? tauri_db : browser_db;
 
-const createSettingsStore = async (instanceUri: string = undefined) => {
+const createSettingsStore = async () => {
   //@ts-ignore
   if (process.browser) {
-    var settings = await getSettings(instanceUri);
+    var settings = await getSettings();
   }
   const { subscribe, update } = writable(settings || {});
   return {
