@@ -58,9 +58,9 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
       const topLevel = jsonResource.get([]);
       const currentSize = (jsonResource.get([]).value as ExtendedMetaNode[]).length
       if (topLevel.metadata.childCount !== currentSize) {
-        const key = (topLevel.value[currentSize - 1] as ExtendedMetaNode).key;
+        const lastNode = topLevel.value[currentSize - 1] as ExtendedMetaNode;
         node.dispatchEvent(new CustomEvent('loadPage', {
-          detail: { lastNode: jsonResource.greatestNodeKey(), insertKey: key ? key : currentSize - 1 },
+          detail: { lastNode: lastNode.metadata.nodeKey, index: currentSize - 1 },
         }));
       }
     }

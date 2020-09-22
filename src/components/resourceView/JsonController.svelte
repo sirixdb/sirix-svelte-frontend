@@ -14,6 +14,7 @@
   import { selected } from "../../store";
   import { JSONResource, JSONDiffs } from "./JsonNode/tree";
   import VirtualList from "./JsonNode/VirtualList.svelte";
+  import { refreshDisplay } from "./JsonNode/store";
 
   let jsonResource: JSONResource;
   let jsonDiffs: JSONDiffs = null;
@@ -38,7 +39,11 @@
       });
   }
 
+  let pageIsLoading = false;
+
   const onLoadPage = (event) => {
+    if (pageIsLoading) return;
+    pageIsLoading = true;
     const { detail } = event;
     const resource = sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
@@ -51,11 +56,16 @@
         lastTopLevelNodeKey: detail.lastNode,
       })
       .then((newNode) => {
-        jsonResource.inject(
-          [],
-          newNode.value as MetaNode | MetaNode[],
-          detail.insertKey
-        );
+        const nodeValue = newNode.value as MetaNode[];
+        let index = detail.index;
+        nodeValue.forEach((item) => {
+          index++;
+          jsonResource.inject([], item, index);
+        });
+        refreshDisplay.refresh();
+      })
+      .finally(() => {
+        pageIsLoading = false;
       });
   };
 

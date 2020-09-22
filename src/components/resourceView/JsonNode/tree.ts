@@ -85,18 +85,6 @@ const totalExpanded = (node: ExtendedMetaNode, count = 0) => {
   return count;
 }
 
-const greatestNodeKey = (node: ExtendedMetaNode, greatest: number = 0): number => {
-  if (node.metadata.nodeKey > greatest) greatest = node.metadata.nodeKey;
-  if (Array.isArray(node.value)) {
-    for (let item of node.value) {
-      greatest = greatestNodeKey(item as unknown as ExtendedMetaNode, greatest);
-    }
-  } else if (node.metadata.type === NodeType.OBJECT_KEY) {
-    greatest = greatestNodeKey(node.value as ExtendedMetaNode, greatest);
-  }
-  return greatest;
-}
-
 export class JSONResource {
   public totalNodes: number;
   constructor(public metaNode: ExtendedMetaNode) {
@@ -104,9 +92,6 @@ export class JSONResource {
   }
   totalExpanded = () => {
     return totalExpanded(this.metaNode);
-  }
-  greatestNodeKey = () => {
-    return greatestNodeKey(this.metaNode);
   }
   slice = (start: number, end: number) => {
     return slice(start, end, [], this.metaNode, { index: 0 }, []);
@@ -143,7 +128,7 @@ export class JSONResource {
         insertKey = nodeValue.findIndex(item => item.key === insertKey);
       }
       node.value[insertKey] = insertNode as MetaNode;
-      return false;
+      return true;
     }
     return false;
   }
