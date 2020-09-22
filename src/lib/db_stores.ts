@@ -2,17 +2,16 @@ import { writable } from "svelte/store";
 
 import * as tauri_db from "./tauri_db";
 import * as browser_db from "./browser_db";
-import type { DataLoadSettings } from "./db_utils";
+import type { DataLoadSettings, Settings } from "./db_utils";
 //@ts-ignore
 const { getSettings, setSetting } = process.tauri ? tauri_db : browser_db;
 
-const createSettingsStore = async () => {
-  //@ts-ignore
-  if (process.browser) {
-    var settings = await getSettings();
-  }
-  const { subscribe, update } = writable(settings || {});
+const createSettingsStore = () => {
+  const { subscribe, update, set } = writable<Settings>(undefined);
   return {
+    init: async () => {
+      set(await getSettings());
+    },
     subscribe,
     setPagination: async (newPage: number) => {
       await setSetting("pagination-size", newPage);
@@ -29,9 +28,9 @@ const createSettingsStore = async () => {
   }
 }
 
-let settingsStore;
-(async () => {
-  settingsStore = await createSettingsStore();
-})();
+export const settingsStore = createSettingsStore();
 
-export { settingsStore };
+//@ts-ignore
+if (process.browser) {
+  settingsStore.init()
+}

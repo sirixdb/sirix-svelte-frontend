@@ -38,13 +38,13 @@
       });
   }
 
-  const onLoadPage = ({ detail }) => {
+  const onLoadPage = (event) => {
+    const { detail } = event;
     const resource = sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName);
     resource
       .readWithMetadata({
-        nodeId: detail.nodeKey,
         revision,
         maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
         nextTopLevelNodes: $settingsStore["pagination-size"],
@@ -92,9 +92,12 @@
   const maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
 </script>
 
-<VirtualList {jsonResource} {maxHeight} let:item={currentNode}>
+<VirtualList
+  on:loadPage={onLoadPage}
+  {jsonResource}
+  {maxHeight}
+  let:item={currentNode}>
   <Wrapper
-    on:loadPage={onLoadPage}
     {jsonDiffs}
     currentNode={currentNode[0]}
     path={currentNode[1]}

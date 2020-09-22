@@ -54,7 +54,7 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
       detail: { startIndex, endIndex, bottomOffset, topOffset }
     }));
 
-    if (itemsCount - endIndex < 2) {
+    if (itemsCount - endIndex <= 1) {
       const topLevel = jsonResource.get([]);
       const currentSize = (jsonResource.get([]).value as ExtendedMetaNode[]).length
       if (topLevel.metadata.childCount !== currentSize) {
