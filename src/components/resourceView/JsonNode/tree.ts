@@ -1,4 +1,5 @@
 import { MetaNode, DiffResponse, Diff, NodeType } from "sirixdb";
+import type { DeleteDiff, InsertDiff, ReplaceDiff, UpdateDiff } from "sirixdb/dist/src/info";
 
 export interface ExtendedMetaNode extends MetaNode {
   transition?: boolean;
@@ -167,16 +168,16 @@ export class JSONDiffs {
     diffs.forEach(diff => {
       switch (Object.keys(diff)[0]) {
         case "replace":
-          this.diffsMap[diff.replace.oldNodeKey] = diff;
+          this.diffsMap[(diff as ReplaceDiff).replace.oldNodeKey] = diff;
           break;
         case "insert":
-          this.diffsMap[diff.insert.insertPositionNodeKey] = diff;
+          this.diffsMap[(diff as InsertDiff).insert.insertPositionNodeKey] = diff;
           break;
         case "delete":
-          this.diffsMap[diff.delete.nodeKey] = diff;
+          this.diffsMap[(diff as DeleteDiff).delete.nodeKey] = diff;
           break;
         case "update":
-          this.diffsMap[diff.update.nodeKey] = diff;
+          this.diffsMap[(diff as UpdateDiff).update.nodeKey] = diff;
           break;
       }
     })
