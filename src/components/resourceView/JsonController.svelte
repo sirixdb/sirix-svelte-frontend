@@ -15,6 +15,7 @@
   import { JSONResource, JSONDiffs } from "./JsonNode/tree";
   import VirtualList from "./JsonNode/VirtualList.svelte";
   import { refreshDisplay } from "./JsonNode/store";
+  import { tick } from "svelte";
 
   let jsonResource: JSONResource;
   let jsonDiffs: JSONDiffs = null;
@@ -98,8 +99,12 @@
     }
   };
 
-  //@ts-ignore
-  const maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
+  let maxHeight: number;
+  const getMaxHeight = () => {
+    //@ts-ignore
+    maxHeight = document.querySelector("#resource-view").offsetHeight - 30;
+  };
+  getMaxHeight();
 </script>
 
 <VirtualList
@@ -121,3 +126,10 @@
       {jsonResource} />
   </Wrapper>
 </VirtualList>
+
+<svelte:window
+  on:resize={async () => {
+    getMaxHeight();
+    await tick();
+    refreshDisplay.refresh();
+  }} />
