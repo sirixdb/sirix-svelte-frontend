@@ -33,7 +33,7 @@
     "@babel/runtime": "^7.11.2",
     "@fullhuman/postcss-purgecss": "^3.0.0",
     "@rollup/plugin-alias": "^3.1.1",
-    "@rollup/plugin-commonjs": "15.0.0",
+    "@rollup/plugin-commonjs": "15.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.3.3",
