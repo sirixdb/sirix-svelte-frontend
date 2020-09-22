@@ -72,8 +72,8 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
   let unsubscribe;
   // init
   (async () => {
-    await tick();
     unsubscribe = refreshDisplay.subscribe(() => handleScroll(undefined));
+    await tick();
     handleScroll(undefined);
   })();
 

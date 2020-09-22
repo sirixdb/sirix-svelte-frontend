@@ -5,7 +5,7 @@
   let dataType: string;
 
   $: {
-    dataType = typeof props.child;
+    dataType = typeof props;
     textColor =
       dataType === "number"
         ? "text-green-600"
@@ -16,5 +16,5 @@
 </script>
 
 <span class={textColor}>
-  {#if dataType === 'string'}"{props.data}"{:else}{props.data}{/if}
+  {#if dataType === 'string'}"{props}"{:else}{props}{/if}
 </span>

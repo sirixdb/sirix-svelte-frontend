@@ -95,7 +95,11 @@
           type: "update",
         };
       case "delete":
-        return null;
+        return {
+          component: null,
+          data: null,
+          type: "delete",
+        };
       case "insert":
         switch ((diff as InsertDiff).insert.insertPosition) {
           case "asFirstChild":
@@ -186,15 +190,12 @@
   </json-diff-wrapper>
 {/if}
 
-<!--
-<json-node-wrapper class:red={diff && !diff.insert}>
-  <slot {component} {path} node={currentNode} diff={diffComponentObj} />
+<json-node-wrapper
+  class:red={diff && ['replace', 'delete', 'update'].includes(diffComponentObj.type)}>
+  <slot {component} {path} node={currentNode} />
 </json-node-wrapper>
--->
 
-<slot {component} {path} node={currentNode} diff={diffComponentObj} />
-
-{#if diff && diffComponentObj.type === 'insertAsRightSibling'}
+{#if diff && ['insertAsRightSibling', 'insertAsFirstChild', 'update', 'replace'].includes(diffComponentObj.type)}
   <json-diff-wrapper
     class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
     <svelte:component
