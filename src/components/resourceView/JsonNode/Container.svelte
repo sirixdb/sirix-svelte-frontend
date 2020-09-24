@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Wrapper from "./Wrapper.svelte";
   import Arrow from "../../icons/Arrow.svelte";
   import { NodeType } from "sirixdb";
-  import { createEventDispatcher, tick } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { refreshDisplay } from "./store";
   import type { JSONResource, ExtendedMetaNode } from "./tree";
 
@@ -12,7 +11,6 @@
 
   export let hover = false;
   export let index: number = null;
-  export let diff = undefined;
 
   const toggleExpansion = () => {
     jsonResource.toggleProperty(path, "expanded");
@@ -34,7 +32,6 @@
 </script>
 
 <span
-  style={path[path.length - 1] !== null ? `margin-left: ${path.filter((val) => val !== null).length}rem` : ''}
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
   on:click|stopPropagation={toggleExpansion}>
@@ -49,11 +46,3 @@
 </span>
 
 <br />
-
-{#if diff && diff.type === 'insertAsFirstChild'}
-  <json-diff-wrapper
-    class="pl-4 block"
-    style="background-color: rgba(0, 255, 0, 0.4);">
-    <svelte:component this={diff.component} props={diff.data} />
-  </json-diff-wrapper>
-{/if}

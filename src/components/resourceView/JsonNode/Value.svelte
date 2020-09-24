@@ -30,7 +30,7 @@
   let index: string | number, style: string;
   $: {
     index = path[path.length - 1];
-    style = `margin-left: ${path.filter((val) => val !== null).length}rem`;
+    style = ``;
   }
   let display: string, truncate: boolean;
   $: {

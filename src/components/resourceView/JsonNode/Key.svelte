@@ -43,7 +43,6 @@
 </script>
 
 <span
-  style="margin-left: {path.filter((val) => val !== null).length}rem"
   on:mouseover={() => (hover = true)}
   on:mouseout={() => (hover = false)}
   on:click|stopPropagation={toggleExpansion}>

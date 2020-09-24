@@ -160,11 +160,15 @@
   export let currentNode: ExtendedMetaNode;
   let diff: Diff;
   let diffComponentObj: DiffComponentObj;
+  let diffIndentStyle: string;
   $: {
     component = getComponent(currentNode.metadata.type);
     if (jsonDiffs) {
       diff = jsonDiffs.get(currentNode.metadata.nodeKey);
       diffComponentObj = getDiffComponent(diff);
+      diffIndentStyle = `margin-left: ${
+        path.filter((val) => val !== null).length + 1
+      }rem`;
     }
   }
 </script>
@@ -183,6 +187,7 @@
 
 {#if diff && diffComponentObj.type === 'insertAsLeftSibling'}
   <json-diff-wrapper
+    style={diffIndentStyle}
     class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
     <svelte:component
       this={diffComponentObj.component}
@@ -191,12 +196,14 @@
 {/if}
 
 <json-node-wrapper
+  style={path[path.length - 1] !== null ? `margin-left: calc(${path.filter((val) => val !== null).length}rem)` : ''}
   class:red={diff && ['replace', 'delete', 'update'].includes(diffComponentObj.type)}>
   <slot {component} {path} node={currentNode} />
 </json-node-wrapper>
 
 {#if diff && ['insertAsRightSibling', 'insertAsFirstChild', 'update', 'replace'].includes(diffComponentObj.type)}
   <json-diff-wrapper
+    style={diffIndentStyle}
     class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
     <svelte:component
       this={diffComponentObj.component}

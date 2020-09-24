@@ -35,8 +35,8 @@
         maxLevel: $settingsStore["lazy-loading"].initialDepth,
       })
       .then((diffResponse) => {
-        console.log(diffResponse);
         jsonDiffs = new JSONDiffs(diffResponse);
+        refreshDisplay.refresh();
       });
   }
 
