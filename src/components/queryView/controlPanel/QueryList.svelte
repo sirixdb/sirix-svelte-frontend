@@ -17,7 +17,6 @@
   const handleDelete = function (index: number) {
     dispatcher("delete", { type: typeOfQueries, index });
   };
-  let showFullQuery: number = null;
 </script>
 
 <style>
@@ -39,17 +38,10 @@
     <div class="list overflow-y-scroll scroll ml-1" transition:expandAndFade>
       {#each list as item, index}
         <div
-          on:mouseenter={() => {
-            showFullQuery = index;
-          }}
-          on:mouseleave={() => {
-            showFullQuery = null;
-          }}
           on:click={() => queryStore.set(item)}
           class="py-1 my-1 ml-1 pl-1 hover:bg-gray-200 cursor-pointer">
           <pre
-            class="my-0 text-sm font-mono inline-block
-            {showFullQuery === index ? ' whitespace-pre-wrap' : ' truncate'}"
+            class="my-0 text-sm font-mono inline-block truncate"
             style="width: calc(100% - 30px);">
             {item}
           </pre>
