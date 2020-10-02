@@ -13,12 +13,10 @@
   import { tweened } from "svelte/motion";
   import { sineInOut } from "svelte/easing";
 
-  const opts = {
+  let shift = tweened(0, {
     duration: 750,
     easing: sineInOut,
-  };
-
-  let shift = tweened(0, opts);
+  });
 
   import { selected, refreshHistory, diffView } from "../store";
   import { sirix } from "../sirix";
