@@ -1,4 +1,11 @@
 <script lang="typescript">
+  import { sirix } from "../../sirix";
+  import { dbInfo } from "../../store";
+
+  import Dropzone from "@componentLibrary/Dropzone.svelte";
+  import ProgressBar from "@componentLibrary/ProgressBar.svelte";
+  import { DBType } from "sirixdb";
+
   export let close: Function;
   export let dbName: string;
   export let dbType: string;
@@ -6,28 +13,31 @@
   let submitting = false;
   let file = "";
   let fileName = "";
+  let progress = 0;
 
   // use file name as default resourceName, if no name has been provided
   $: resourceName =
     fileName !== "" && resourceName === "" ? fileName : resourceName;
-
-  import { sirix } from "../../sirix";
-  import { dbInfo } from "../../store";
-
-  import Dropzone from "@componentLibrary/Dropzone.svelte";
-  import { DBType } from "sirixdb";
 
   const formSubmit = () => {
     submitting = true;
     const resource = sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)
       .resource(resourceName);
-    resource.create(file).then((resp) => {
-      sirix.getInfo().then((data) => {
-        dbInfo.set(data);
-      });
-      submitting = false;
-      close();
+    resource.createBrowser(file, {
+      uploadProgressCallback: (event: ProgressEvent) => {
+        if (event.lengthComputable) {
+          progress = Math.round((event.loaded * 100) / event.total);
+        }
+      },
+      loadCallback: (e) => {
+        sirix.getInfo().then((data) => {
+          dbInfo.set(data);
+        });
+        submitting = false;
+        close();
+      },
+      errorCallback: (e) => {},
     });
   };
   // class style values
@@ -36,6 +46,12 @@
   const disabled = base + " opacity-50 cursor-not-allowed";
   const loading = base + " opacity-50 cursor-wait";
 </script>
+
+<style>
+  .align-initial {
+    text-align: initial;
+  }
+</style>
 
 <form class="text-center">
   <div class="p-2 m-2 inline-block">
@@ -58,5 +74,10 @@
       on:click={formSubmit}>
       Create
     </button>
+  </div>
+  <div class="{submitting ? '' : 'invisible'} mt-2">
+    <div class="inline-block h-24 w-24 center align-initial">
+      <ProgressBar value={progress} />
+    </div>
   </div>
 </form>
