@@ -29,7 +29,7 @@
 </script>
 
 <div class="inline-block mt-8">
-  <form class="text-2xl" on:submit={getFormData}>
+  <form class="text-2xl" on:submit|preventDefault={getFormData}>
     <div>
       <label class="block" for="username">Username</label>
       <input

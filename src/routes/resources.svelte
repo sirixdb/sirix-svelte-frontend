@@ -48,11 +48,13 @@
 </script>
 
 <style>
+  /*
   div,
   #history-view,
   #diff-view {
     contain: strict;
   }
+  */
   #grid-container {
     display: grid;
     column-gap: 20px;
