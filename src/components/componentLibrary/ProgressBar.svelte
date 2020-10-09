@@ -24,6 +24,6 @@
 
 <progress-circle-wrapper style="--progress-color: {progressColor}">
   <ProgressCircle max={100} value={$tweenedValue}>
-    <span>{$tweenedValue}%</span>
+    <span>{Math.round($tweenedValue)}%</span>
   </ProgressCircle>
 </progress-circle-wrapper>

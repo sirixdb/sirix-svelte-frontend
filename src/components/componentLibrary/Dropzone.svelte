@@ -1,6 +1,6 @@
 <script lang="typescript">
   export let dbType;
-  export let file: string | ArrayBuffer;
+  export let file: string;
   export let fileName: string;
   let fileType;
   $: fileType = dbType === "json" ? "application/json" : "application/xml";
@@ -10,7 +10,7 @@
     const fr = new FileReader();
     fileName = f.name;
     fr.onload = () => {
-      file = fr.result;
+      file = fr.result as string;
     };
     fr.onerror = e => {
       console.error(e);

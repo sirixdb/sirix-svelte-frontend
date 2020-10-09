@@ -134,10 +134,18 @@ export class JSONResource {
   }
 }
 
+import type { DiffComponentObj } from "./types";
+
 export class JSONDiffs {
   database: string;
   resource: string;
   diffsMap: { [key: number]: Diff };
+  deferredDiffsMap: {
+    [key: number]: {
+      originNodeKey: number;
+      diff: [DiffComponentObj, string];
+    }[];
+  };
   oldRevision: number;
   newRevision: number;
   constructor(diffResponse: DiffResponse) { this.reset(diffResponse) }
@@ -148,6 +156,7 @@ export class JSONDiffs {
     this.oldRevision = diffResponse["old-revision"];
     this.newRevision = diffResponse["new-revision"];
     this.add(diffResponse.diffs);
+    this.deferredDiffsMap = [];
   }
   add = (diffs: Diff[]) => {
     diffs.forEach(diff => {
@@ -165,9 +174,28 @@ export class JSONDiffs {
           this.diffsMap[(diff as UpdateDiff).update.nodeKey] = diff;
           break;
       }
-    })
+    });
   }
   get = (nodeKey: number) => {
     return this.diffsMap[nodeKey];
+  }
+  addDeferredDiff = (originNodeKey: number, nodeKey: number, diff: [DiffComponentObj, string]) => {
+    if (this.deferredDiffsMap[nodeKey] === undefined) {
+      this.deferredDiffsMap[nodeKey] = [{ diff, originNodeKey }];
+    } else {
+      this.deferredDiffsMap[nodeKey].push({ diff, originNodeKey });
+    }
+  }
+  getDeferredDiffs = (nodeKey: number) => {
+    const ret = this.deferredDiffsMap[nodeKey] || [];
+    return ret.map(item => item.diff);
+  }
+  removeDeferredDiff = (nodeKey: number, diffOriginNodeKey: number) => {
+    let arr = this.deferredDiffsMap[nodeKey];
+    if (arr === undefined) return;
+    this.deferredDiffsMap[nodeKey] = arr.filter(item => {
+      item.originNodeKey !== diffOriginNodeKey;
+    });
+    console.log(this.deferredDiffsMap)
   }
 }
