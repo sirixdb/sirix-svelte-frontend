@@ -43,10 +43,12 @@
   class="overflow-y-auto scroll">
   <virtual-list-inner
     style="padding-bottom: {bottomOffset}px; padding-top: {topOffset}px">
-    {#each items as row, index}
-      <virtual-list-item>
-        <slot item={row} />
-      </virtual-list-item>
-    {/each}
+    {#key items}
+      {#each items as row}
+        <virtual-list-item>
+          <slot item={row} />
+        </virtual-list-item>
+      {/each}
+    {/key}
   </virtual-list-inner>
 </virtual-list>
