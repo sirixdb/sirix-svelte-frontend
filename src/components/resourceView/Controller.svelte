@@ -48,9 +48,9 @@
     }
     oldSelection = sel;
     await emptyRevision();
-    if (resourceName !== null && revision) {
+    /*if (resourceName !== null && revision) {
       loadRevision(dbName, dbType, resourceName, revision);
-    }
+    }*/
   };
   const refresh = async () => {
     await emptyRevision();
