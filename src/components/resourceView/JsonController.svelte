@@ -40,6 +40,7 @@
       });
   }
 
+  /*
   let pageIsLoading = false;
 
   const onLoadPage = (event) => {
@@ -69,6 +70,7 @@
         pageIsLoading = false;
       });
   };
+  */
 
   const loadDeeper = ({ detail }) => {
     const resource = sirix
@@ -79,6 +81,9 @@
         nodeId: detail.nodeKey,
         revision,
         maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
+        maxChildren: $settingsStore["pagination-size"].maxChildren || undefined,
+        numberOfNodes:
+          $settingsStore["pagination-size"].numberOfNodes || undefined,
       })
       .then((newNode) => {
         jsonResource.inject(
@@ -107,11 +112,7 @@
   getMaxHeight();
 </script>
 
-<VirtualList
-  on:loadPage={onLoadPage}
-  {jsonResource}
-  {maxHeight}
-  let:item={currentNode}>
+<VirtualList {jsonResource} {maxHeight} let:item={currentNode}>
   <Wrapper
     {jsonDiffs}
     currentNode={currentNode[0]}

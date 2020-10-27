@@ -37,7 +37,7 @@ export function init(): Promise<boolean> {
       favorites: [],
     })),
     initFile(globalSettingsPath, JSON.stringify({
-      "pagination-size": 100,
+      "pagination-size": { maxChildren: 100, numberOfNodes: 750 },
       "lazy-loading": { initialDepth: 4, lazyLoadDepth: 3 },
     })),
   ])

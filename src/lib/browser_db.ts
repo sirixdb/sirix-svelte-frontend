@@ -5,7 +5,7 @@ import type { Schema, Setting, SettingValue, Settings } from "./db_utils";
 
 
 async function openQueryDB() {
-  return await openDB<Schema>("SirixDBEnquirer", 2, {
+  return await openDB<Schema>("SirixDBEnquirer", 3, {
     upgrade(db, oldVersion, newVersion, transaction) {
       // this is a migration method, called on creating
       // a DB with a version that did not previously exist
@@ -19,7 +19,7 @@ async function openQueryDB() {
       // unless overriden by instance-settings, or db-settings, or resource-settings
       db.createObjectStore("global-settings");
       const tx = transaction.objectStore("global-settings");
-      tx.put(100, "pagination-size");
+      tx.put({ maxChildren: 100, numberOfNodes: 750 }, "pagination-size");
       tx.put({ initialDepth: 4, lazyLoadDepth: 3 }, "lazy-loading");
     }
   });

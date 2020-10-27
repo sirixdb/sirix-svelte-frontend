@@ -21,7 +21,9 @@
       .readWithMetadata({
         revision,
         maxLevel: $settingsStore["lazy-loading"].initialDepth,
-        nextTopLevelNodes: $settingsStore["pagination-size"],
+        numberOfNodes:
+          $settingsStore["pagination-size"].numberOfNodes || undefined,
+        maxChildren: $settingsStore["pagination-size"].maxChildren || undefined,
       })
       .then((nodes) => {
         jsonResource = nodes;

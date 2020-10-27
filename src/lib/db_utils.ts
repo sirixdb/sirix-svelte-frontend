@@ -1,13 +1,22 @@
 import type { DBSchema } from "idb";
 
-export interface DataLoadSettings {
+export interface DataDepthLoadSettings {
   initialDepth: number;
   lazyLoadDepth: number;
 }
 
+export interface DataBreadthLoadSettings {
+  maxChildren: number;
+  numberOfNodes: number;
+}
+
 export type Setting = "pagination-size" | "lazy-loading";
 
-export type SettingValue<T> = T extends "pagination-size" ? number : T extends "lazy-loading" ? DataLoadSettings : never;
+export type SettingValue<T> = T extends "pagination-size"
+  ? DataBreadthLoadSettings
+  : T extends "lazy-loading"
+  ? DataDepthLoadSettings
+  : never;
 
 export interface Settings {
   "lazy-loading": SettingValue<"lazy-loading">;
@@ -21,7 +30,7 @@ export interface Schema extends DBSchema {
   };
   "global-settings": {
     key: Setting;
-    value: number | DataLoadSettings;
+    value: DataBreadthLoadSettings | DataDepthLoadSettings;
   }
 }
 

@@ -59,9 +59,12 @@ export function virtualize(node: HTMLElement, { jsonResource, maxHeight, average
       const currentSize = (jsonResource.get([]).value as ExtendedMetaNode[]).length
       if (topLevel.metadata.childCount !== currentSize) {
         const lastNode = topLevel.value[currentSize - 1] as ExtendedMetaNode;
+        /*
+         * this enabled lazy depth loading. it is removed (permanently?)
         node.dispatchEvent(new CustomEvent('loadPage', {
           detail: { lastNode: lastNode.metadata.nodeKey, index: currentSize - 1 },
         }));
+        */
       }
     }
 

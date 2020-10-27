@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 import * as tauri_db from "./tauri_db";
 import * as browser_db from "./browser_db";
-import type { DataLoadSettings, Settings } from "./db_utils";
+import type { DataBreadthLoadSettings, DataDepthLoadSettings, Settings } from "./db_utils";
 //@ts-ignore
 const { getSettings, setSetting } = process.tauri ? tauri_db : browser_db;
 
@@ -13,13 +13,13 @@ const createSettingsStore = () => {
       set(await getSettings());
     },
     subscribe,
-    setPagination: async (newPage: number) => {
-      await setSetting("pagination-size", newPage);
+    setPagination: async (newSetting: DataBreadthLoadSettings) => {
+      await setSetting("pagination-size", newSetting);
       update(old => {
-        return { ...old, "pagination-size": newPage };
+        return { ...old, "pagination-size": newSetting };
       })
     },
-    setLazyLoadIng: async (newSetting: DataLoadSettings) => {
+    setLazyLoadIng: async (newSetting: DataDepthLoadSettings) => {
       await setSetting("lazy-loading", newSetting);
       update(old => {
         return { ...old, "lazy-loading": newSetting };

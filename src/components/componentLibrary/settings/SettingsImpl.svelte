@@ -1,7 +1,7 @@
 <script>
   import { TabControl, TabControlItem } from "renderless-svelte";
-  import LazyLoadingSettings from "./LazyLoadingSettings.svelte";
-  import PaginationSettings from "./PaginationSettings.svelte";
+  import DepthLoadSettings from "./DepthLoadSettings.svelte";
+  import BreadthLoadSettings from "./BreadthLoadSettings.svelte";
 
   export let settingsStore;
   export let close;
@@ -22,11 +22,11 @@
       {/each}
     </div>
     <div class="tab">
-      <TabControlItem id="lazy-loading" payload="Lazy Loading" active>
-        <LazyLoadingSettings {settingsStore} />
+      <TabControlItem id="loading-depth" payload="Lazy Loading - Depth" active>
+        <DepthLoadSettings {settingsStore} />
       </TabControlItem>
-      <TabControlItem id="paging" payload="Row Paging">
-        <PaginationSettings {settingsStore} />
+      <TabControlItem id="loading-breadth" payload="Loading - Breadth">
+        <BreadthLoadSettings {settingsStore} />
       </TabControlItem>
     </div>
   </TabControl>
