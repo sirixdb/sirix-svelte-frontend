@@ -78,7 +78,7 @@ const totalExpanded = (node: ExtendedMetaNode, count = 0) => {
   count++;
   if (node.expanded && Array.isArray(node.value)) {
     count = (node.value as ExtendedMetaNode[]).map(item => totalExpanded(item)).reduce((acc, curr) => acc + curr, count);
-  } else if ((node.value as ExtendedMetaNode).expanded && node.metadata.type === NodeType.OBJECT_KEY) {
+  } else if (node.metadata.type === NodeType.OBJECT_KEY && (node.value as ExtendedMetaNode).expanded) {
     count--;
     count = totalExpanded(node.value as ExtendedMetaNode, count);
   }

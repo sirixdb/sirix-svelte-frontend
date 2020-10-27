@@ -34,7 +34,7 @@
   }
   let display: string, truncate: boolean;
   $: {
-    display = node.value.toString();
+    display = String(node.value);
     truncate = display.length > 60;
     if (truncate) {
       display = display.slice(0, 60);
