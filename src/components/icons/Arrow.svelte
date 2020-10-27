@@ -4,7 +4,7 @@
 
   const opts = {
     duration: 300,
-    easing: cubicOut
+    easing: cubicOut,
   };
   const rotate = tweened(0, opts);
   const move = tweened(0, opts);
@@ -13,7 +13,7 @@
   $: {
     if (expanded) {
       rotate.set(90, {});
-      move.set(4, {});
+      move.set(2, {});
     } else {
       rotate.set(0, {});
       move.set(0, {});
@@ -25,5 +25,5 @@
   style="transform: rotate({$rotate}deg) translateX({$move}px);"
   class="inline-block -ml-2 px-2 cursor-pointer hover:shadow-inner rounded-full
   select-none">
-  &#x1f892;
+  &rsaquo;
 </span>

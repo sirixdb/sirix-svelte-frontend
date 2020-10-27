@@ -24,7 +24,7 @@
   $: {
     if (expanded) {
       rotate.set(90, {});
-      move.set(4, {});
+      move.set(2, {});
     } else {
       rotate.set(0, {});
       move.set(0, {});
@@ -46,7 +46,7 @@
   <span
     style="transform: rotate({$rotate}deg) translateX({$move}px);"
     class="float-left mr-2 select-none">
-    &#x1f892;
+    &rsaquo;
   </span>
   <span>{database.name}</span>
   <span
