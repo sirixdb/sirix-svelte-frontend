@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@types/express": "^4.17.8",
-    "@types/node": "^14.14.3",
+    "@types/node": "^14.14.5",
     "compression": "^1.7.4",
     "highlight.js": "^10.3.1",
     "idb": "^5.0.7",
