@@ -19,7 +19,7 @@
     isString = typeof value === "string";
     if (!isContainer) {
       textColor = isString
-        ? "text-orange-900"
+        ? "text-yellow-700"
         : typeof value === "number"
         ? "text-green-600"
         : // NULL or BOOLEAN
@@ -51,7 +51,7 @@
     {isString ? `"${value}"` : value}
   </span>
   <span
-    class="hover:bg-teal-100 rounded-full inline-block align-bottom"
+    class="hover:bg-green-100 rounded-full inline-block align-bottom"
     on:click|stopPropagation={handleClick}>
     <ArrowRight size={22} />
   </span>

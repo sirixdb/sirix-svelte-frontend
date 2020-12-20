@@ -63,11 +63,11 @@
 <nav>
   <ul>
     <li>
-      <a class:selected={segment === undefined} href=".">home</a>
+      <a class:selected={segment === undefined} href=".">Home</a>
     </li>
     {#if !$loggedIn}
       <li>
-        <a class:selected={segment === 'login'} href="login">login</a>
+        <a class:selected={segment === 'login'} href="login">Login</a>
       </li>
     {:else}
       <li>

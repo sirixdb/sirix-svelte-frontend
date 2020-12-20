@@ -7,7 +7,7 @@
   import { dbInfo } from "../../store";
 </script>
 
-<nav class="ml-0 my-0 bg-teal-900 min-h-full">
+<nav class="ml-0 my-0 bg-gray-800 min-h-full">
   <div>
     <div class="w-full">
       <Add />

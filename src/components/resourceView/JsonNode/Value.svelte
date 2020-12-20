@@ -20,7 +20,7 @@
       nodeType === NodeType.STRING_VALUE ||
       nodeType === NodeType.OBJECT_STRING_VALUE ||
       nodeType === NodeType.OBJECT_KEY
-        ? "text-orange-900"
+        ? "text-yellow-900"
         : nodeType === NodeType.NUMBER_VALUE ||
           nodeType === NodeType.OBJECT_NUMBER_VALUE
         ? "text-green-600"

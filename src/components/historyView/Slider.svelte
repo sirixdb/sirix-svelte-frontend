@@ -7,7 +7,7 @@
 <label for="slider-{id}" class="select-none">
   <label
     for="slider-{id}"
-    class="relative inline-block float-left m-1 w-10 h-6 bg-blue-500
+    class="relative inline-block float-left m-1 w-10 h-6
       rounded-full">
     <input
       bind:checked
@@ -16,7 +16,7 @@
       class="w-0 h-0 opacity-0" />
     <span
       style="transition: .2s"
-      class="absolute cursor-pointer rounded-full inset-0 {checked ? 'bg-blue-400' : 'bg-teal-500'}">
+      class="absolute cursor-pointer rounded-full inset-0 {checked ? 'bg-blue-600' : 'bg-blue-400'}">
       <span
         style="left: 4px; bottom: 4px; transition: .2s; {checked ? 'transform: translateX(16px);' : ''}"
         class="absolute w-4 h-4 bg-gray-100 rounded-full">
