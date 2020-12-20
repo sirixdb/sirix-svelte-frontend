@@ -52,8 +52,10 @@ export default {
             tsconfigFile: "./tsconfig.json",
           }
         }),
-        dev,
-        hydratable: true,
+        compilerOptions: {
+          dev,
+          hydratable: true,
+        },
         emitCss: true
       }),
       resolve({
@@ -110,8 +112,10 @@ export default {
             tsconfigFile: "./tsconfig.json",
           }
         }),
-        generate: 'ssr',
-        dev
+        compilerOptions: {
+          generate: 'ssr',
+          dev,
+        },
       }),
       resolve({
         dedupe: ['svelte']
