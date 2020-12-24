@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "compression": "^1.7.4",
-    "highlight.js": "^10.4.1",
+    "highlight.js": "^10.5.0",
     "idb": "^5.0.8",
     "polka": "next",
     "sirixdb": "^0.2.7",
