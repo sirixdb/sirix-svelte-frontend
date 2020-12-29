@@ -33,7 +33,7 @@
       tree["component"] = DiffContainer;
       tree["type"] = "array";
       tree["data"] = data.map((obj) => buildTree(obj));
-    } else if (typeof data === "object") {
+    } else if (typeof data === "object" && data !== null) {
       tree["component"] = DiffContainer;
       tree["type"] = "object";
       tree["data"] = Object.keys(data).map((key) => buildTree(data[key], key));

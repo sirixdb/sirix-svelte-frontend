@@ -6,7 +6,7 @@
   let text;
 
   $: {
-    text = props.data;
+    text = typeof props === "string" ? props : props.data;
     dataType = typeof text;
     textColor =
       dataType === "number"
