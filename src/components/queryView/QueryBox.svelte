@@ -75,13 +75,32 @@
         isLoading = false;
       });
   };
-  const handleKeydown = (event) => {
+  const handleKeydown = (
+    event: KeyboardEvent & {
+      currentTarget: EventTarget & HTMLElement;
+    }
+  ) => {
     if (event.ctrlKey) {
-      if (event.keyCode == 10 || event.keyCode == 13 || event.metaKey) {
+      if (event.key === "Enter" || event.metaKey) {
         handleQuery();
         event.preventDefault();
-      } else if (event.keyCode == 83) {
+      } else if (event.key == "s") {
         handleSave();
+        event.preventDefault();
+      }
+    } else {
+      if (event.key === "Tab") {
+        const position = getCaretCharacterOffsetWithin(event.target);
+        const before = (event.currentTarget.innerText as string).substring(
+          0,
+          position
+        );
+        const after = (event.currentTarget.innerText as string).substring(
+          position,
+          event.currentTarget.innerText.length
+        );
+        event.currentTarget.innerText = [before, "\t", after].join("");
+        render(event);
         event.preventDefault();
       }
     }
