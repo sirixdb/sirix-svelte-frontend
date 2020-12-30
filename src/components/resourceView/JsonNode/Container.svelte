@@ -10,7 +10,11 @@
   export let node: ExtendedMetaNode;
 
   export let hover = false;
-  export let index: number = null;
+  let index: string | number;
+  $: {
+    if (path.length === 0) index = null;
+    else index = path[path.length - 1];
+  }
 
   const toggleExpansion = () => {
     jsonResource.toggleProperty(path, "expanded");

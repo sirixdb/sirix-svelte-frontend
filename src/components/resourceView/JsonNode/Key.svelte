@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Wrapper from "./Wrapper.svelte";
   import Arrow from "../../icons/Arrow.svelte";
   import { NodeType } from "sirixdb";
   import { refreshDisplay } from "./store";
