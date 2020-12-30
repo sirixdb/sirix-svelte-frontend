@@ -120,7 +120,7 @@ export class JSONResource {
     let node = traverse(this.metaNode, path);
     if (insertKey === null) {
       node.value = insertNode;
-      this.totalNodes += (insertNode as MetaNode[]).map(coalesce).reduce((acc, curr) => acc + curr);
+      this.totalNodes += (insertNode as MetaNode[]).map(coalesce).reduce((acc, curr) => acc + curr, 0);
       return true;
     } else if (Array.isArray(node.value)) {
       if (typeof insertKey === "string") {

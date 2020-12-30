@@ -28,7 +28,7 @@
   </label>
   <label class="flex flex-row">
     <span class="flex-grow">Lazy Load Depth (in nodes)</span>
-    <input type="number" min="1" bind:value={lazyLoadDepth} />
+    <input type="number" min="2" bind:value={lazyLoadDepth} />
   </label>
   <button type="submit">Save</button>
 </form>
