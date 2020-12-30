@@ -71,7 +71,7 @@
       </li>
     {:else}
       <li>
-        <span on:click={logout}>logout</span>
+        <span on:click={logout}>Logout</span>
       </li>
       <li>
         <a class:selected={segment === 'resources'} href="resources">
