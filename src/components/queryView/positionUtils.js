@@ -46,7 +46,8 @@ function createRange(node, chars, range) {
     }
 
     if (chars.count === 0) {
-        range.setEnd(node, chars.count);
+        range.setStart(node.firstChild, chars.count);
+        range.setEnd(node.firstChild, chars.count);
     } else if (node && chars.count > 0) {
         if (node.nodeType === Node.TEXT_NODE) {
             if (node.textContent.length < chars.count) {

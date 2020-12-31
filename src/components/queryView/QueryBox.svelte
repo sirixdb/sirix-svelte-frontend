@@ -36,10 +36,9 @@
       event.target,
       event.inputType === "insertParagraph"
         ? position + 1
-        : position > 0
-        ? position
-        : 1
+        : position
     );
+    
   }
 
   let isLoading = false;
@@ -100,6 +99,10 @@
           event.currentTarget.innerText.length
         );
         event.currentTarget.innerText = [before, "\t", after].join("");
+        setCurrentCursorPosition(
+          event.target,
+          position + 2
+        );
         render(event);
         event.preventDefault();
       }
