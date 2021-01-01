@@ -123,6 +123,9 @@
     left: calc(50% - 5px);
     bottom: -5px;
   }
+  pre {
+    tab-size: 4;
+  }
 </style>
 
 <pre class="my-0">
