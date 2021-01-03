@@ -8,8 +8,8 @@ import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import json from "@rollup/plugin-json";
 import pkg from './package.json';
-import preprocess from 'svelte-preprocess';
 import alias from '@rollup/plugin-alias';
+import { preprocess } from "./svelte.config.js";
 
 import configFile from "./sirix-config";
 
@@ -47,11 +47,7 @@ export default {
         ]
       }),
       svelte({
-        preprocess: preprocess({
-          typescript: {
-            tsconfigFile: "./tsconfig.json",
-          }
-        }),
+        preprocess,
         compilerOptions: {
           dev,
           hydratable: true,
@@ -107,11 +103,7 @@ export default {
         ]
       }),
       svelte({
-        preprocess: preprocess({
-          typescript: {
-            tsconfigFile: "./tsconfig.json",
-          }
-        }),
+        preprocess,
         compilerOptions: {
           generate: 'ssr',
           dev,

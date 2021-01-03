@@ -1,8 +1,3 @@
-const sveltePreprocess = require('svelte-preprocess');
+const { typescript } = require('svelte-preprocess-esbuild');
 
-module.exports = {
-    preprocess: sveltePreprocess({
-        typescript:
-            { tsconfigFile: "./tsconfig.json" },
-    }),
-};
+export const preprocess = typescript({ tsconfig: "./tsconfig.json" });
