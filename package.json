@@ -20,7 +20,7 @@
     "polka": "next",
     "sirixdb": "^0.2.7",
     "sirv": "^1.0.10",
-    "tauri": "^0.13.0"
+    "tauri": "^0.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
