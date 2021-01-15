@@ -42,17 +42,12 @@
   const newSelection = async (sel) => {
     ({ dbName, dbType, resourceName, revision, diff } = sel);
     for (let key in oldSelection) {
-      if (sel[key] !== oldSelection[key]) {
-        if (key !== "diff") {
-          await emptyRevision();
-        }
+      if (key !== "diff" && sel[key] !== oldSelection[key]) {
+        await emptyRevision();
       }
     }
     oldSelection = sel;
     await emptyRevision();
-    /*if (resourceName !== null && revision) {
-      loadRevision(dbName, dbType, resourceName, revision);
-    }*/
   };
   const refresh = async () => {
     await emptyRevision();

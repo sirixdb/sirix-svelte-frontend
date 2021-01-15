@@ -11,7 +11,7 @@
   import { DBType } from "sirixdb";
   import { settingsStore } from "../../lib/db_stores";
   import type { MetaNode } from "sirixdb";
-  import { selected } from "../../store";
+  import { refreshResource, selected } from "../../store";
   import { JSONResource, JSONDiffs } from "./JsonNode/tree";
   import VirtualList from "./JsonNode/VirtualList.svelte";
   import { refreshDisplay } from "./JsonNode/store";
@@ -27,6 +27,7 @@
   if (diff) {
     if (diff < revision) {
       selected.update((old) => ({ ...old, revision: diff, diff: revision }));
+      refreshResource.refresh();
     }
     sirix
       .database(dbName, dbType === "json" ? DBType.JSON : DBType.XML)

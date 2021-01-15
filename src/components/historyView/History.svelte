@@ -10,6 +10,14 @@
   // return new reversed list, if reverse is true
   $: list = reverse ? history.slice().reverse() : history;
 
+  $: if (diffColumn) {
+    selected.update((old) => ({
+      ...old,
+      diff: old.revision,
+      revision: old.revision - 1,
+    }));
+  }
+
   import Commit from "./Commit.svelte";
   import Slider from "./Slider.svelte";
   import DiffOption from "./DiffOption.svelte";
@@ -33,13 +41,14 @@
   <div
     style="width: {width}px;"
     id="fade-screen"
-    class="py-2 z-10 sticky top-0">
+    class="py-2 z-10 sticky top-0"
+  >
     <div class="z-20">
       {#if !diffColumn}
         <Refresh />
         <DiffOption />
       {/if}
-      <Slider bind:checked={reverse} id={diffColumn ? 'diff' : 'history'} />
+      <Slider bind:checked={reverse} id={diffColumn ? "diff" : "history"} />
     </div>
   </div>
 {/if}
