@@ -8,7 +8,7 @@ interface Props {
   averageHeight?: number;
 }
 
-export function virtualize(node: HTMLElement, { jsonResource, maxHeight, averageHeight = 24 }: Props) {
+export function virtualize(node: HTMLElement, { jsonResource, maxHeight, averageHeight = 21.6 }: Props) {
   let startIndex = 0;
   let endIndex = 0;
   let topOffset = 0;

@@ -3,7 +3,8 @@
   import { NodeType } from "sirixdb";
   import { refreshDisplay } from "./store";
   import type { JSONResource, ExtendedMetaNode } from "./tree";
-  import { createEventDispatcher, tick } from "svelte";
+  import { createEventDispatcher } from "svelte";
+  import { expandAndFade } from "utils/transition";
 
   export let jsonResource: JSONResource;
   export let path: (string | number | null)[];
@@ -40,6 +41,12 @@
     });
   }
 </script>
+
+<style>
+  span {
+    display: inline-block;
+  }
+</style>
 
 <span
   on:mouseover={() => (hover = true)}

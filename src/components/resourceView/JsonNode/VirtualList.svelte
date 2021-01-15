@@ -16,7 +16,7 @@
 
   export let jsonResource: JSONResource;
   export let maxHeight: number;
-  export let defaultItemHeight = 24;
+  export let defaultItemHeight = 21.6;
 
   let topOffset = 0;
   let bottomOffset = 0;
@@ -32,6 +32,7 @@
   virtual-list,
   virtual-list-inner {
     display: block;
+    overflow-x: hidden;
   }
 </style>
 

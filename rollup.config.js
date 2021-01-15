@@ -9,7 +9,7 @@ import config from 'sapper/config/rollup.js';
 import json from "@rollup/plugin-json";
 import pkg from './package.json';
 import alias from '@rollup/plugin-alias';
-import { preprocess } from "./svelte.config.js";
+const { preprocess } = require("./svelte.config.js");
 
 import configFile from "./sirix-config";
 

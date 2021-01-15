@@ -161,6 +161,8 @@
 
   let component: typeof Container | typeof Key | typeof Value;
 
+  let deletedNode: HTMLElement;
+
   export let currentNode: ExtendedMetaNode;
   let diff: Diff;
   let diffComponentObj: DiffComponentObj;
@@ -175,11 +177,26 @@
       diff = jsonDiffs.get(currentNode.metadata.nodeKey);
       diffComponentObj = getDiffComponent(diff);
       additionalDiffs = [];
-      diffIndentStyle = `margin-left: ${
+      diffIndentStyle = `padding-left: ${
         path.filter((val) => val !== null).length
       }rem`;
       if (diffComponentObj !== undefined) {
         additionalDiffs = buildDiffArray(diffComponentObj.nodekey);
+        if (["replace", "delete", "update"].includes(diffComponentObj.type)) {
+          jsonDiffs.addDeleteDiffPrefix(path);
+        }
+      }
+      if (deletedNode) {
+        if (
+          (diff &&
+            ["replace", "delete", "update"].includes(diffComponentObj.type)) ||
+          (jsonDiffs && jsonDiffs.checkForDeleteDiffPrefix(path))
+        ) {
+          deletedNode.parentElement.style.backgroundColor =
+            "rgba(255, 0, 0, 0.6)";
+        } else {
+          deletedNode.parentElement.style.backgroundColor = "";
+        }
       }
     }
   }
@@ -254,9 +271,6 @@
 </script>
 
 <style>
-  .red {
-    background-color: rgba(255, 0, 0, 0.4);
-  }
   .green {
     background-color: rgba(0, 255, 0, 0.4);
   }
@@ -265,29 +279,44 @@
   }
 </style>
 
-{#if diff && diffComponentObj.type === 'insertAsLeftSibling'}
+{#if diff && diffComponentObj.type === "insertAsLeftSibling"}
   <json-diff-wrapper
     style={diffIndentStyle}
     class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
     <svelte:component
       this={diffComponentObj.component}
-      props={diffComponentObj.data} />
+      props={diffComponentObj.data}
+    />
+  </json-diff-wrapper>
+{/if}
+
+{#if diff && ("replace" === diffComponentObj.type || (!currentNode.expanded && diffComponentObj.type == "insertAsRightSibling"))}
+  <json-diff-wrapper
+    style={diffIndentStyle}
+    class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
+    <svelte:component
+      this={diffComponentObj.component}
+      props={diffComponentObj.data}
+    />
   </json-diff-wrapper>
 {/if}
 
 <json-node-wrapper
-  style={path[path.length - 1] !== null ? `margin-left: calc(${path.filter((val) => val !== null).length}rem)` : ''}
-  class:red={diff && ['replace', 'delete', 'update'].includes(diffComponentObj.type)}>
+  bind:this={deletedNode}
+  style={path[path.length - 1] !== null
+    ? `margin-left: ${path.filter((val) => val !== null).length}rem`
+    : ""}>
   <slot {component} {path} node={currentNode} />
 </json-node-wrapper>
 
-{#if diff && (['insertAsFirstChild', 'update', 'replace'].includes(diffComponentObj.type) || (!currentNode.expanded && diffComponentObj.type == 'insertAsRightSibling'))}
+{#if diff && (["insertAsFirstChild", "update"].includes(diffComponentObj.type) || (!currentNode.expanded && diffComponentObj.type == "insertAsRightSibling"))}
   <json-diff-wrapper
     style={diffIndentStyle}
     class="green{diffComponentObj.type.startsWith('insert') ? ' ml-4' : ''}">
     <svelte:component
       this={diffComponentObj.component}
-      props={diffComponentObj.data} />
+      props={diffComponentObj.data}
+    />
   </json-diff-wrapper>
 {/if}
 
@@ -303,6 +332,7 @@
   <json-diff-wrapper style={defferedDiff[1]} class="green ml-4">
     <svelte:component
       this={defferedDiff[0].component}
-      props={defferedDiff[0].data} />
+      props={defferedDiff[0].data}
+    />
   </json-diff-wrapper>
 {/each}

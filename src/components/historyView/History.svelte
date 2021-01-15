@@ -1,5 +1,5 @@
 <script>
-  import { selected } from "../../store";
+  import { refreshResource, selected } from "../../store";
 
   export let diffColumn = false;
 
@@ -11,11 +11,16 @@
   $: list = reverse ? history.slice().reverse() : history;
 
   $: if (diffColumn) {
-    selected.update((old) => ({
-      ...old,
-      diff: old.revision,
-      revision: old.revision - 1,
-    }));
+    selected.update((old) => {
+      if (old.revision) {
+        return {
+          ...old,
+          diff: old.revision,
+          revision: old.revision - 1,
+        };
+      } else return old;
+    });
+    refreshResource.refresh();
   }
 
   import Commit from "./Commit.svelte";

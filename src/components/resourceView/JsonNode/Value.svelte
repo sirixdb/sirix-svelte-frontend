@@ -2,6 +2,7 @@
   import { NodeType } from "sirixdb";
   import { tooltip } from "renderless-svelte";
   import type { ExtendedMetaNode } from "./tree";
+  import { expandAndFade } from "utils/transition";
 
   export let node: ExtendedMetaNode;
 
@@ -11,7 +12,7 @@
   export let jsonResource;
   export let path: (string | number | null)[];
   //@ts-ignore
-  jsonResource, path, hover, diff;
+  jsonResource, hover, diff;
 
   let nodeType: NodeType, textColor: string;
   $: {
@@ -27,10 +28,9 @@
         : // NULL or BOOLEAN
           "text-indigo-600";
   }
-  let index: string | number, style: string;
+  let index: string | number;
   $: {
     index = path[path.length - 1];
-    style = ``;
   }
   let display: string, truncate: boolean;
   $: {
@@ -42,9 +42,15 @@
   }
 </script>
 
-{#if typeof index === 'number'}<span {style}>{index}:</span>{/if}
+<style>
+  span {
+    display: inline-block;
+    width: 100%;
+  }
+</style>
 
 <span class={textColor} use:tooltip={truncate ? { text: node.value } : false}>
+  {#if typeof index === 'number'}{index}:{/if}
   {node.metadata.type.endsWith('STRING_VALUE') ? `"${display}"` : display}{truncate ? '...' : ''}
 </span>
 <br />

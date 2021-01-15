@@ -1,9 +1,10 @@
 <script lang="ts">
   import Arrow from "../../icons/Arrow.svelte";
   import { NodeType } from "sirixdb";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, getContext } from "svelte";
   import { refreshDisplay } from "./store";
   import type { JSONResource, ExtendedMetaNode } from "./tree";
+  import { expandAndFade } from "utils/transition";
 
   export let jsonResource: JSONResource;
   export let path: (string | number | null)[];
@@ -11,9 +12,12 @@
 
   export let hover = false;
   let index: string | number;
+  let margin = 0;
   $: {
     if (path.length === 0) index = null;
     else index = path[path.length - 1];
+
+    margin = path.filter((val) => val !== null).length
   }
 
   const toggleExpansion = () => {
@@ -33,7 +37,15 @@
       insertKey: null,
     });
   }
+
 </script>
+
+<style>
+  span {
+    display: inline-block;
+    width: 100%;
+  }
+</style>
 
 <span
   on:mouseover={() => (hover = true)}

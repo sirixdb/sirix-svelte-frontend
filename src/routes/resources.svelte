@@ -59,7 +59,7 @@
     display: grid;
     column-gap: 20px;
     grid-auto-columns: 4fr 3fr 0 10fr;
-    grid-auto-rows: calc(100vh - 57px);
+    grid-auto-rows: calc(100vh - 54.6px);
     grid-template-areas: "dbs-view history-view diff-view resource-view";
   }
   #dbs-view {
@@ -74,6 +74,8 @@
   }
   #resource-view {
     grid-area: resource-view;
+    box-sizing: border-box;
+    white-space: nowrap;
   }
 </style>
 
@@ -112,7 +114,7 @@
   <section
     id="resource-view"
     class="bottom-0 min-h-full"
-    on:scroll|stopPropagation={() => {}}>
+    on:scroll|stopPropagation>
     <Controller />
   </section>
 </div>

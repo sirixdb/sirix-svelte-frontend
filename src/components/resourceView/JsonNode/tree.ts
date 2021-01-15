@@ -6,7 +6,17 @@ export interface ExtendedMetaNode extends MetaNode {
   expanded?: boolean;
 }
 
-const traverse = (metaNode: ExtendedMetaNode, path: (string | number | null)[]) => {
+type Path = (number | string | null)[];
+
+export const comparePathPrefix = (path: Path, prefix: Path) => {
+  if (path.length < prefix.length) return false;
+  for (let i = 0; i < prefix.length; i++) {
+    if (path[i] !== prefix[i]) return false;
+  }
+  return true;
+};
+
+const traverse = (metaNode: ExtendedMetaNode, path: Path) => {
   // path is an array of strings and/or numbers,
   // which make up the sequence of keys to reach the intended node.
   // we can use reduce to iterate through the path, and filter
@@ -41,7 +51,7 @@ export type NodeAndType = [ExtendedMetaNode, (number | string | null)[]];
 const slice = (
   start: number,
   end: number,
-  path: (number | string | null)[],
+  path: Path,
   node: ExtendedMetaNode,
   ref: { index: number },
   results: NodeAndType[],
@@ -96,23 +106,23 @@ export class JSONResource {
   slice = (start: number, end: number) => {
     return slice(start, end, [], this.metaNode, { index: 0 }, []);
   }
-  get = (path: Array<number | string | null>) => {
+  get = (path: Path) => {
     if (!this.metaNode) return undefined;
     return traverse(this.metaNode, path);
   }
-  toggleProperty = (path: (string | number | null)[], property: "transition" | "expanded") => {
+  toggleProperty = (path: Path, property: "transition" | "expanded") => {
     const node = traverse(this.metaNode, path);
     // node was not loaded yet, and we won't be able to access it's metadata. So don't do anything
     if (Object.keys(node).length === 0) return;
     node[property] = !node[property];
   }
-  setProperty = (path: (string | number | null)[], property: "transition" | "expanded", value: any) => {
+  setProperty = (path: Path, property: "transition" | "expanded", value: any) => {
     if (!this.metaNode) return;
     const node = traverse(this.metaNode, path);
     node[property] = value;
   }
   inject = (
-    path: (string | number | null)[],
+    path: Path,
     insertNode: MetaNode | MetaNode[],
     insertKey: number | string | null = null
   ): boolean => {
@@ -148,6 +158,7 @@ export class JSONDiffs {
   };
   oldRevision: number;
   newRevision: number;
+  deleteDiffPrefixArray: Path[];
   constructor(diffResponse: DiffResponse) { this.reset(diffResponse) }
   reset = (diffResponse: DiffResponse) => {
     this.diffsMap = [];
@@ -157,6 +168,7 @@ export class JSONDiffs {
     this.newRevision = diffResponse["new-revision"];
     this.add(diffResponse.diffs);
     this.deferredDiffsMap = [];
+    this.deleteDiffPrefixArray = [];
   }
   add = (diffs: Diff[]) => {
     diffs.forEach(diff => {
@@ -178,6 +190,17 @@ export class JSONDiffs {
   }
   get = (nodeKey: number) => {
     return this.diffsMap[nodeKey];
+  }
+  addDeleteDiffPrefix = (path: Path) => {
+    this.deleteDiffPrefixArray.push(path);
+  }
+  checkForDeleteDiffPrefix = (path: Path) => {
+    for (const prefix of this.deleteDiffPrefixArray) {
+      if (comparePathPrefix(path, prefix)) {
+        return true;
+      }
+    }
+    return false;
   }
   addDeferredDiff = (originNodeKey: number, nodeKey: number, diff: [DiffComponentObj, string]) => {
     if (this.deferredDiffsMap[nodeKey] === undefined) {
