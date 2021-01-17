@@ -2,7 +2,7 @@
 
 Unfortunately, this is currently a bit messy, but still rather straightforward.
 
-There are several resources required to run SirixDB, and they can all be found in the resource directory of this repository.
+There are several resources required to run SirixDB, and they can all be found in the resources directory of this repository.
 
 SirixDB depends on keycloak for authentication, so we first need to run (in the directory in which you have the above resources):
 
@@ -10,9 +10,11 @@ SirixDB depends on keycloak for authentication, so we first need to run (in the 
 docker-compose up -d keycloak
 ```
 
-It can take about a minute for keycloak to be ready for connections. If you like, you can use the `wait.sh` script in the above mentioned resources folder to wait until keycloak is ready. The docker-compose file runs a script from the resources folder to initialize keycloak with a user "admin" with the password "admin".
+Navigate to `http://localhost:8080/admin` and login using the credentials `admin`/`admin`. Hover over `Master` on the top left, and select `Add realm` from the dropdown. Click `select file`, and select the `realm-export.json` file from the `resources` directory, and press `create`. 
 
-Once keycloak is ready, run:
+Now, click on `Users` in the sidebar navigation, then click `Add user`. Enter the name of the new user (`admin`, for example), select email verified, and click `Save`. Then, click on the credentials tab and create your password. In the `Credentials` tab, add all available roles.
+
+Once the above is complete, run:
 
 ```bash
 docker-compose up -d server
