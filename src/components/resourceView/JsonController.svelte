@@ -36,7 +36,7 @@
         maxLevel: $settingsStore["lazy-loading"].initialDepth,
       })
       .then((diffResponse) => {
-        jsonDiffs = new JSONDiffs(diffResponse);
+        jsonDiffs = new JSONDiffs(diffResponse, jsonResource.autoExpand);
         refreshDisplay.refresh();
       });
   }
@@ -100,7 +100,8 @@
           maxLevel: $settingsStore["lazy-loading"].lazyLoadDepth,
         })
         .then((diffResponse) => {
-          jsonDiffs.add(diffResponse.diffs);
+          const keys = jsonDiffs.add(diffResponse.diffs);
+          jsonResource.autoExpand(keys);
         });
     }
   };
@@ -119,13 +120,15 @@
     currentNode={currentNode[0]}
     path={currentNode[1]}
     let:component
-    let:node>
+    let:node
+  >
     <svelte:component
       this={component}
       path={currentNode[1]}
       {node}
       on:loadDeeper={loadDeeper}
-      {jsonResource} />
+      {jsonResource}
+    />
   </Wrapper>
 </VirtualList>
 
@@ -134,4 +137,5 @@
     getMaxHeight();
     await tick();
     refreshDisplay.refresh();
-  }} />
+  }}
+/>

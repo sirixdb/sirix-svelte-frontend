@@ -16,12 +16,42 @@ export const comparePathPrefix = (path: Path, prefix: Path) => {
   return true;
 };
 
-const traverse = (metaNode: ExtendedMetaNode, path: Path) => {
+const autoExpand = (metaNode: ExtendedMetaNode, keys: number[]) => {
+  let paths = [];
+  const search = (metaNode: ExtendedMetaNode, path: Path) => {
+    if (keys.includes(metaNode.metadata.nodeKey)) {
+      paths.push(path);
+    }
+    const metaValue = metaNode.value;
+    if (Array.isArray(metaValue)) {
+      if (metaNode.metadata.type === "OBJECT") {
+        metaValue.forEach(val => {
+          search(val, path.concat(val.key));
+        });
+      } else {
+        metaValue.forEach((val, index) => {
+          search(val, path.concat(index));
+        });
+      }
+    } else if (metaNode.key) {
+      search(metaValue as MetaNode, path.concat(null));
+    }
+  }
+  search(metaNode, []);
+  for (const path of paths) {
+    traverse(metaNode, path, (node) => { node.expanded = true; });
+  }
+};
+
+type traverseCallback = (metaNode: ExtendedMetaNode) => void;
+
+const traverse = (metaNode: ExtendedMetaNode, path: Path, callback: traverseCallback = () => { }) => {
   // path is an array of strings and/or numbers,
   // which make up the sequence of keys to reach the intended node.
   // we can use reduce to iterate through the path, and filter
   // the MetaNode object
   return path.reduce((oldNode: ExtendedMetaNode, key: number | string | null): ExtendedMetaNode => {
+    callback(oldNode);
     if (key === null) {
       // if key is null, then return the `value` node of the current node.
       // this is used with OBJECT_ * _VALUE types,
@@ -121,6 +151,10 @@ export class JSONResource {
     const node = traverse(this.metaNode, path);
     node[property] = value;
   }
+  autoExpand = (keys: number[]) => {
+    if (!this.metaNode) return;
+    autoExpand(this.metaNode, keys);
+  }
   inject = (
     path: Path,
     insertNode: MetaNode | MetaNode[],
@@ -145,6 +179,7 @@ export class JSONResource {
 }
 
 import type { DiffComponentObj } from "./types";
+type Callback = (keys: number[]) => void;
 
 export class JSONDiffs {
   database: string;
@@ -159,34 +194,45 @@ export class JSONDiffs {
   oldRevision: number;
   newRevision: number;
   deleteDiffPrefixArray: Path[];
-  constructor(diffResponse: DiffResponse) { this.reset(diffResponse) }
-  reset = (diffResponse: DiffResponse) => {
+  constructor(diffResponse: DiffResponse, callback: Callback = (keys) => { }) { this.reset(diffResponse, callback) }
+  reset = (diffResponse: DiffResponse, callback: Callback = (keys) => { }) => {
     this.diffsMap = [];
     this.database = diffResponse.database;
     this.resource = diffResponse.resource;
     this.oldRevision = diffResponse["old-revision"];
     this.newRevision = diffResponse["new-revision"];
-    this.add(diffResponse.diffs);
+    callback(this.add(diffResponse.diffs));
     this.deferredDiffsMap = [];
     this.deleteDiffPrefixArray = [];
   }
-  add = (diffs: Diff[]) => {
+  add = (diffs: Diff[]): number[] => {
+    const ret = [];
+    let key: number;
     diffs.forEach(diff => {
       switch (Object.keys(diff)[0]) {
         case "replace":
-          this.diffsMap[(diff as ReplaceDiff).replace.oldNodeKey] = diff;
+          key = (diff as ReplaceDiff).replace.oldNodeKey;
+          ret.push(key);
+          this.diffsMap[key] = diff;
           break;
         case "insert":
-          this.diffsMap[(diff as InsertDiff).insert.insertPositionNodeKey] = diff;
+          key = (diff as InsertDiff).insert.insertPositionNodeKey;
+          ret.push(key);
+          this.diffsMap[key] = diff;
           break;
         case "delete":
-          this.diffsMap[(diff as DeleteDiff).delete.nodeKey] = diff;
+          key = (diff as DeleteDiff).delete.nodeKey;
+          ret.push(key);
+          this.diffsMap[key] = diff;
           break;
         case "update":
-          this.diffsMap[(diff as UpdateDiff).update.nodeKey] = diff;
+          key = (diff as UpdateDiff).update.nodeKey;
+          ret.push(key);
+          this.diffsMap[key] = diff;
           break;
       }
     });
+    return ret;
   }
   get = (nodeKey: number) => {
     return this.diffsMap[nodeKey];
