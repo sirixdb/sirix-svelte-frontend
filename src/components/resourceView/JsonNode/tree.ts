@@ -26,7 +26,8 @@ const autoExpand = (metaNode: ExtendedMetaNode, keys: number[]) => {
     if (Array.isArray(metaValue)) {
       if (metaNode.metadata.type === "OBJECT") {
         metaValue.forEach(val => {
-          search(val, path.concat(val.key));
+          // not sure why the rollup typescript plugin complains here. But it does, hence the cast
+          search(val, path.concat((val as MetaNode).key));
         });
       } else {
         metaValue.forEach((val, index) => {
