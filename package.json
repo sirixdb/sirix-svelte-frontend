@@ -29,7 +29,7 @@
     "@babel/plugin-transform-runtime": "^7.13.7",
     "@babel/preset-env": "^7.13.5",
     "@babel/runtime": "^7.13.7",
-    "@fullhuman/postcss-purgecss": "^4.0.2",
+    "@fullhuman/postcss-purgecss": "^4.0.3",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "17.1.0",
     "@rollup/plugin-json": "^4.1.0",
