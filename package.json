@@ -52,7 +52,7 @@
     "svelte": "^3.37.0",
     "svelte-preprocess-esbuild": "^2.0.0",
     "svelte-progresscircle": "^0.3.0",
-    "tailwindcss": "2.1.1",
+    "tailwindcss": "2.1.2",
     "typescript": "^4.2.4"
   },
   "repository": {
