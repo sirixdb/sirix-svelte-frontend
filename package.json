@@ -19,7 +19,7 @@
     "idb": "^6.1.2",
     "polka": "next",
     "sirixdb": "^0.2.9",
-    "sirv": "^1.0.11",
+    "sirv": "^1.0.12",
     "tauri": "^0.14.1"
   },
   "devDependencies": {
