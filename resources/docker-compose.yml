@@ -23,4 +23,4 @@ services:
     restart: always
     volumes:
       - /opt/sirix/sirix-data:/opt/sirix/sirix-data
-      - ./sirix-conf.json:/opt/sirix/sirix-conf.json
+      - ./sirix-docker-conf.json:/opt/sirix/sirix-docker-conf.json
